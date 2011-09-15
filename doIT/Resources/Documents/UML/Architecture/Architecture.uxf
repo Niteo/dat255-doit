@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.1">
+  <zoom_level>8</zoom_level>
+  <element>
+    <type>com.umlet.element.custom.Database</type>
+    <coordinates>
+      <x>312</x>
+      <y>520</y>
+      <w>96</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>SQL Database</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>184</x>
+      <y>144</y>
+      <w>336</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>Presentation Layer</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>184</x>
+      <y>264</y>
+      <w>520</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>Logic Layer</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Package</type>
+    <coordinates>
+      <x>392</x>
+      <y>408</y>
+      <w>112</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Implementation
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Package</type>
+    <coordinates>
+      <x>208</x>
+      <y>408</y>
+      <w>112</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Storage
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Package</type>
+    <coordinates>
+      <x>208</x>
+      <y>288</y>
+      <w>112</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Verification
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Package</type>
+    <coordinates>
+      <x>392</x>
+      <y>288</y>
+      <w>112</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Controller
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Package</type>
+    <coordinates>
+      <x>208</x>
+      <y>168</y>
+      <w>112</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Activities
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Package</type>
+    <coordinates>
+      <x>392</x>
+      <y>168</y>
+      <w>112</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Implementation
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Package</type>
+    <coordinates>
+      <x>576</x>
+      <y>288</y>
+      <w>112</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Implementation
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Package</type>
+    <coordinates>
+      <x>24</x>
+      <y>184</y>
+      <w>112</w>
+      <h>232</h>
+    </coordinates>
+    <panel_attributes>Core
+bg=#09cdda</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>184</x>
+      <y>384</y>
+      <w>336</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>Data layer</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

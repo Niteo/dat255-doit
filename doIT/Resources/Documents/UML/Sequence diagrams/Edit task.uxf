@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.SequenceDiagram</type>
+    <coordinates>
+      <x>180</x>
+      <y>120</y>
+      <w>550</w>
+      <h>230</h>
+    </coordinates>
+    <panel_attributes>title: Edit task
+_GUI layer~id1_|_Logic layer~id2_|_Data layer~id3_|_Database~id4_
+id1.&gt;&gt;id2:id1,id2:edit(Task)
+id2-&gt;&gt;id3:id2,id3:edit(Task)
+id3-&gt;&gt;id4:id3,id4:*Store in database*
+id1-&gt;id1:id1:update()</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
