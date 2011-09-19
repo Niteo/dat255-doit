@@ -13,7 +13,6 @@ import se.chalmers.doit.core.*;
 
 public final class Task implements ITask {
 	
-	final private int id;
 	final private String name;
 	final private String description;
 	final private IPriority priority;
@@ -22,8 +21,7 @@ public final class Task implements ITask {
 	final private int customPosition;
 	final private boolean isCompleted;
 	
-	public Task(int id, String name, String description, IPriority priority, Date dueDate, Date reminderDate, int customPosition, boolean isCompleted) {
-		this.id = id;
+	public Task(String name, String description, IPriority priority, Date dueDate, Date reminderDate, int customPosition, boolean isCompleted) {
 		this.name = name;
 		this.description = description;
 		this.priority = priority;
@@ -33,7 +31,6 @@ public final class Task implements ITask {
 		this.isCompleted = isCompleted;
 	}
 	public Task(ITask task) {
-		this.id = task.getID();
 		this.name = task.getName();
 		this.description = task.getDescription();
 		this.priority = task.getPriority();
@@ -57,11 +54,6 @@ public final class Task implements ITask {
 	@Override
 	public Date getDueDate() {
 		return dueDate;
-	}
-
-	@Override
-	public int getID() {
-		return id;
 	}
 
 	@Override
