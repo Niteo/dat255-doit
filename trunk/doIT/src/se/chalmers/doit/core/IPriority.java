@@ -1,7 +1,7 @@
 package se.chalmers.doit.core;
 
 /**
- * Interface representing a comparable priority.
+ * Interface representing a immutable comparable priority.
  * @author Kaufmann
  */
 public interface IPriority extends Comparable<Integer>{
