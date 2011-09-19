@@ -10,12 +10,6 @@ import java.util.Date;
 public interface ITask {
 
 	/**
-	 * Returns the represented task's ID.
-	 * @return integer representing the ID of the task
-	 */
-	public int getID();
-
-	/**
 	 * Returns the represented task's name.
 	 * @return String representing the ID of the task
 	 */
