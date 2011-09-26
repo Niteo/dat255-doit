@@ -3,7 +3,7 @@ package se.chalmers.doit.core;
 import java.util.Collection;
 
 /**
- * Represents a list containing a collection of ID-numbers for tasks.
+ * Represents a list containing a collection of tasks.
  *
  * @author Kaufmann
  *
@@ -17,9 +17,9 @@ public interface ITaskCollection {
 	public String getName();
 
 	/**
-	 * Returns the collection of IDs the collection contains.
+	 * Returns the collection of ITasks the collection contains.
 	 *
-	 * @return collection of IDs
+	 * @return collection of ITasks
 	 */
-	public Collection<Integer> getIDCollection();
+	public Collection<ITask> getTaskCollection();
 }
