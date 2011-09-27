@@ -1,7 +1,7 @@
 package se.chalmers.doit.core.implementation;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 
 import se.chalmers.doit.core.ITask;
 import se.chalmers.doit.core.ITaskCollection;
@@ -11,9 +11,9 @@ public class TaskCollection implements ITaskCollection {
 	private String name;
 	private Collection<ITask> taskCollection;
 
-	public TaskCollection(String name){
+	public TaskCollection(String name, Collection<ITask> taskCollection) {
 		this.name = name;
-		taskCollection = new LinkedList<ITask>();
+		this.taskCollection = new ArrayList<ITask>(taskCollection);
 	}
 
 	@Override
@@ -22,8 +22,8 @@ public class TaskCollection implements ITaskCollection {
 	}
 
 	@Override
-	public Collection<ITask> getTaskCollection() {
-		return new LinkedList<ITask>(taskCollection);
+	public Collection<ITask> getTaskList() {
+		return new ArrayList<ITask>(taskCollection);
 	}
 
 }
