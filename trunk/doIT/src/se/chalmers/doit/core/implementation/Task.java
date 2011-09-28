@@ -38,7 +38,17 @@ public final class Task implements ITask {
 		this.reminderDate = new Date(task.getReminderDate().getTime());
 		this.customPosition = task.getCustomPosition();
 		this.isCompleted = task.isCompleted();
-}
+	}
+	public Task(String name, String description) {
+		//TODO Look over this constructor, for now it exists for temporary purposes.
+		this.name = name;
+		this.description = description;
+		this.priority = null;
+		this.dueDate = null;
+		this.reminderDate = null;
+		this.customPosition = 0;
+		this.isCompleted = false;
+	}
 	                                                                                                                                                 
 	
 	@Override
@@ -74,6 +84,11 @@ public final class Task implements ITask {
 	@Override
 	public boolean isCompleted() {
 		return isCompleted;
+	}
+	
+	@Override
+	public String toString() {
+		return name;
 	}
 
 }
