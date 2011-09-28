@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/hello"
-    />
-</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content" android:layout_height="wrap_content"
+	android:orientation="vertical">
+	<RelativeLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:id="@+id/top_control_bar">
+		
+	</RelativeLayout>
+	<LinearLayout android:id="@+id/bottom_control_bar"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true" android:orientation="horizontal">
+	        <EditText 
+	        	android:id="@+id/quickaddedittext"
+				android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:hint="@string/quick_add_hint"
+			    android:layout_weight="1"
+				/>
+			<Button
+				android:id="@+id/quickaddbutton"
+				android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="Add"
+			   	
+				/>
+	</LinearLayout>
+			<ListView 
+			android:id="@android:id/list"
+			android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content"
+			android:layout_below="@id/top_control_bar" 
+			android:layout_above="@id/bottom_control_bar"/>
+	<TextView android:id="@android:id/empty" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="@string/empty_list"
+		android:layout_below="@id/top_control_bar" android:layout_above="@id/bottom_control_bar" />
+</RelativeLayout>
