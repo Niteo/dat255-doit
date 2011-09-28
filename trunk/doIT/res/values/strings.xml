@@ -2,4 +2,6 @@
 <resources>
     <string name="hello">HI I AM A BOEL! :D</string>
     <string name="app_name">doIT</string>
+    <string name="quick_add_hint">New task..</string>
+    <string name="empty_list">This list is empty.</string>
 </resources>
