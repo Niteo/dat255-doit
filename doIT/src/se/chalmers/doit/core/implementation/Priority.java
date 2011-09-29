@@ -3,9 +3,8 @@ package se.chalmers.doit.core.implementation;
 import se.chalmers.doit.core.IPriority;
 
 public class Priority implements IPriority {
-
 	private byte value;
-
+	
 	public Priority(byte value){
 		this.value = value;
 	}
@@ -25,5 +24,4 @@ public class Priority implements IPriority {
 	public byte getValue() {
 		return value;
 	}
-
 }
