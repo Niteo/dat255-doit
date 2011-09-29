@@ -17,5 +17,5 @@ public interface ISortingStrategy {
 	 *            the list to sort
 	 * @return a sorted version of the input list
 	 */
-	public List<ITask> sort(List<ITask> list);
+	public List<List<ITask>> sort(List<ITask> list);
 }
