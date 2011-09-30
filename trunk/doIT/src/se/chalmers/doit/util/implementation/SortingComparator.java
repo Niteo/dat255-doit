@@ -5,6 +5,13 @@ import java.util.Comparator;
 import se.chalmers.doit.core.ITask;
 import se.chalmers.doit.util.IComparatorStrategy;
 
+/**
+ * An implementation of Comparator<ITask> that compares ITasks based on the
+ * given IComparatorStrategies
+ * 
+ * @author Karl Bristav
+ * 
+ */
 public class SortingComparator implements Comparator<ITask> {
 
 	private final Comparator<ITask> primary, secondary, tertiary;

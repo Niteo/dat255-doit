@@ -5,9 +5,9 @@ import java.util.Comparator;
 import se.chalmers.doit.core.ITask;
 
 /**
- * Strategy for sorting a list containing classes implementing ITask.
+ * Strategy for comparing classes implementing ITask.
  * 
- * @author Kaufmann, Karl
+ * @author Robert Kaufmann, Karl Bristav
  */
 public interface IComparatorStrategy extends Comparator<ITask> {
 
