@@ -7,10 +7,10 @@ import se.chalmers.doit.core.ITask;
 import se.chalmers.doit.core.implementation.Task;
 import android.app.ListActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -21,19 +21,23 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+/**
+ * Activity displaying the default list.
+ * @author phelerox
+ *
+ */
 public class DefaultListView extends ListActivity {
 	/** Called when the activity is first created. */
 
 	private TaskListAdapter adapter;
-	private final int MENU_HELP=1, MENU_ABOUT=2, MENU_STATISTICS=3, MENU_SETTINGS=4;
-	private final int GROUP_DEFAULT=0;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.defaultlistview);
 		ArrayList<ITask> tasks = new ArrayList<ITask>();
-		tasks.add(new Task("Wash the dishes", "Use the Yes washing-up liquid", false));
+		tasks.add(new Task("Wash the dishes", "Use the Yes washing-up liquid",
+				false));
 		tasks.add(new Task("Do homework", "All chapters!", false));
 		adapter = new TaskListAdapter(this, tasks);
 
@@ -84,11 +88,8 @@ public class DefaultListView extends ListActivity {
 		if (v.getId() == android.R.id.list) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 			menu.setHeaderTitle(adapter.getItem(info.position).getName());
-			String[] menuItems = getResources().getStringArray(R.array.context_menu_items);
-			
-			for (int i = 0; i < menuItems.length; i++) {
-				menu.add(Menu.NONE, i, i, menuItems[i]);
-			}
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.context_menu, menu);
 		}
 	}
 
@@ -96,46 +97,49 @@ public class DefaultListView extends ListActivity {
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
-		//Was Delete clicked?
-		if (item.getTitle().equals((getResources().getStringArray(R.array.context_menu_items)[2]))) {
+		switch (item.getItemId()) {
+		case R.id.context_complete:
+			Task task = (Task) adapter.getItem(info.position);
+			adapter.insert(new Task(task, !task.isCompleted()), info.position);
+			adapter.remove(adapter.getItem(info.position+1));
+			Toast.makeText(DefaultListView.this, "Finished!",
+					Toast.LENGTH_SHORT).show();
+			return true;
+		case R.id.context_edit:
+			// TODO
+			return true;
+		case R.id.context_delete:
 			Toast.makeText(DefaultListView.this, "Deleted", Toast.LENGTH_SHORT)
 					.show();
 			deleteTask(adapter.getItem(info.position));
-		} else {
-			Toast.makeText(DefaultListView.this,
-					"Clicked on: " + item.getTitle(), Toast.LENGTH_SHORT)
-					.show();
+			return true;
 		}
-
 		return true;
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(GROUP_DEFAULT, MENU_HELP, 4, "Help");
-		menu.add(GROUP_DEFAULT, MENU_ABOUT, 3, "About");
-		menu.add(GROUP_DEFAULT, MENU_SETTINGS, 2, "Settings");
-		menu.add(GROUP_DEFAULT, MENU_STATISTICS, 1, "Statistics");
-		
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu, menu);
 		return super.onCreateOptionsMenu(menu);
+
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()) {
-		case MENU_HELP:
-			Toast.makeText(DefaultListView.this,
-					"You're on your own!", Toast.LENGTH_SHORT)
-					.show();
+		switch (item.getItemId()) {
+		case R.id.menu_help:
+			Toast.makeText(DefaultListView.this, "You're on your own!",
+					Toast.LENGTH_SHORT).show();
 			return true;
-		case MENU_ABOUT:
-			//TODO
+		case R.id.menu_about:
+			// TODO
 			return true;
-		case MENU_STATISTICS:
-			//TODO
+		case R.id.menu_statistics:
+			// TODO
 			return true;
-		case MENU_SETTINGS:
-			//TODO
+		case R.id.menu_settings:
+			// TODO
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
