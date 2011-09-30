@@ -26,8 +26,8 @@ public final class Task implements ITask {
 		this.name = name;
 		this.description = description;
 		this.priority = priority;
-		this.dueDate = new Date(dueDate.getTime());
-		this.reminderDate = new Date(reminderDate.getTime());
+		this.dueDate = dueDate == null ? null : new Date(dueDate.getTime());
+		this.reminderDate = reminderDate == null ? null : new Date(reminderDate.getTime());
 		this.customPosition = customPosition;
 		this.isCompleted = isCompleted;
 	}
@@ -40,6 +40,16 @@ public final class Task implements ITask {
 		this.reminderDate = task.getReminderDate() == null ? null : new Date(task.getReminderDate().getTime());
 		this.customPosition = task.getCustomPosition();
 		this.isCompleted = task.isCompleted();
+	}
+	
+	public Task(ITask task, boolean completed) {
+		this.name = task.getName();
+		this.description = task.getDescription();
+		this.priority = task.getPriority();
+		this.dueDate = task.getDueDate() == null ? null : new Date(task.getDueDate().getTime());
+		this.reminderDate = task.getReminderDate() == null ? null : new Date(task.getReminderDate().getTime());
+		this.customPosition = task.getCustomPosition();
+		this.isCompleted = completed;
 	}
 	
 	public Task(String name, String description, boolean completed) {
