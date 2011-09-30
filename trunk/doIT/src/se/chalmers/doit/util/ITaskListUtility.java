@@ -6,15 +6,15 @@ import se.chalmers.doit.core.ITask;
 
 /**
  * Utility for doing operations on lists containing ITask objects.
- *
+ * 
  * @author Robert Kaufmann, Karl Bristav
  */
 public interface ITaskListUtility {
 
 	/**
-	 * Sorts the provided task using primary, secondary and tertiary sorting
+	 * Sorts the provided task using primary, secondary and tertiary comparator
 	 * strategies.
-	 *
+	 * 
 	 * @param list
 	 *            list to sort
 	 * @param primary
