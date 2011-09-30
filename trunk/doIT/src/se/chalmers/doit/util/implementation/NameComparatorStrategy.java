@@ -12,19 +12,35 @@ import se.chalmers.doit.util.IComparatorStrategy;
  */
 public class NameComparatorStrategy implements IComparatorStrategy {
 
+	private final boolean invertedSortOrder;
+
+	/**
+	 * @param invertedSortOrder
+	 *            Boolean stating whether the sorting order is to be reversed
+	 */
+	public NameComparatorStrategy(final boolean invertedSortOrder) {
+		this.invertedSortOrder = invertedSortOrder;
+	}
+
 	@Override
 	public int compare(final ITask t1, final ITask t2) {
+
+		int ret = 0;
 
 		final String n1 = t1.getName();
 		final String n2 = t2.getName();
 
 		if (n1.compareTo(n2) > 0) {
-			return 1;
+			ret = 1;
 		} else if (n1.compareTo(n2) < 0) {
-			return -1;
-		} else {
-			return 0;
+			ret = -1;
 		}
+
+		if (invertedSortOrder) {
+			ret *= -1;
+		}
+
+		return ret;
 	}
 
 }

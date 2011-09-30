@@ -14,19 +14,35 @@ import se.chalmers.doit.util.IComparatorStrategy;
  */
 public class DueDateComparatorStrategy implements IComparatorStrategy {
 
+	private final boolean invertedSortOrder;
+
+	/**
+	 * @param invertedSortOrder
+	 *            Boolean stating whether the sorting order is to be reversed
+	 */
+	public DueDateComparatorStrategy(final boolean invertedSortOrder) {
+		this.invertedSortOrder = invertedSortOrder;
+	}
+
 	@Override
 	public int compare(final ITask t1, final ITask t2) {
+
+		int ret = 0;
 
 		final Date d1 = t1.getDueDate();
 		final Date d2 = t2.getDueDate();
 
 		if (d1.compareTo(d2) > 0) {
-			return 1;
+			ret = 1;
 		} else if (d1.compareTo(d2) < 0) {
-			return -1;
-		} else {
-			return 0;
+			ret = -1;
 		}
+
+		if (invertedSortOrder) {
+			ret *= -1;
+		}
+
+		return ret;
 	}
 
 }
