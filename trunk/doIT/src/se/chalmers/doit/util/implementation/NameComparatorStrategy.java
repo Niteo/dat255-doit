@@ -31,9 +31,9 @@ public class NameComparatorStrategy implements IComparatorStrategy {
 		final String n2 = t2.getName();
 
 		if (n1.compareTo(n2) > 0) {
-			ret = 1;
-		} else if (n1.compareTo(n2) < 0) {
 			ret = -1;
+		} else if (n1.compareTo(n2) < 0) {
+			ret = 1;
 		}
 
 		if (invertedSortOrder) {
