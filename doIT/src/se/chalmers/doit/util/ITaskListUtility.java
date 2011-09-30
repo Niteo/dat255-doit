@@ -7,7 +7,7 @@ import se.chalmers.doit.core.ITask;
 /**
  * Utility for doing operations on lists containing ITask objects.
  * 
- * @author Kaufmann
+ * @author Robert Kaufmann, Karl Bristav
  */
 public interface ITaskListUtility {
 
@@ -18,11 +18,11 @@ public interface ITaskListUtility {
 	 * @param list
 	 *            list to sort
 	 * @param primary
-	 *            primary sorting strategy
+	 *            primary comparator strategy
 	 * @param secondary
-	 *            secondary sorting strategy
+	 *            secondary comparator strategy
 	 * @param tertiary
-	 *            tertiary sorting strategy
+	 *            tertiary comparator strategy
 	 * @return a list in the provided order
 	 */
 	public List<ITask> sortTasks(List<ITask> list, IComparatorStrategy primary,

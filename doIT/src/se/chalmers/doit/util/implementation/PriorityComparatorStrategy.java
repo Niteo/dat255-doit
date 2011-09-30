@@ -4,7 +4,14 @@ import se.chalmers.doit.core.IPriority;
 import se.chalmers.doit.core.ITask;
 import se.chalmers.doit.util.IComparatorStrategy;
 
-public class PriorityComparator implements IComparatorStrategy {
+/**
+ * An implementation of IComparatorStrategy that compares the priorities of two
+ * ITasks
+ * 
+ * @author Karl Bristav
+ * 
+ */
+public class PriorityComparatorStrategy implements IComparatorStrategy {
 
 	@Override
 	public int compare(final ITask task1, final ITask task2) {
