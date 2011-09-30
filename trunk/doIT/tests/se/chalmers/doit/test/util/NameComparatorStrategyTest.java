@@ -10,7 +10,7 @@ import android.test.AndroidTestCase;
 
 public class NameComparatorStrategyTest extends AndroidTestCase {
 
-	private ITask t1, t2, t3, t4, t5, t6, t7, t8, t9;
+	private ITask t1, t2, t3, t4, t5, t6, t7;
 
 	@Override
 	@Before
@@ -22,7 +22,6 @@ public class NameComparatorStrategyTest extends AndroidTestCase {
 		t5 = new Task("A", "asd", false);
 		t6 = new Task("B", "asd", false);
 		t7 = new Task("AA", "asd", false);
-		t8 = new Task("AB", "asd", false);
 	}
 
 	public void testNameComparatorStrategy() {
@@ -34,28 +33,28 @@ public class NameComparatorStrategyTest extends AndroidTestCase {
 		final IComparatorStrategy strat = new NameComparatorStrategy(false);
 		final IComparatorStrategy stratInv = new NameComparatorStrategy(true);
 
-		assertTrue(strat.compare(t1, t2) == 1);
-		assertTrue(strat.compare(t2, t1) == -1);
+		assertTrue(strat.compare(t1, t2) == -1);
+		assertTrue(strat.compare(t2, t1) == 1);
 		assertTrue(strat.compare(t1, t1) == 0);
 
-		assertTrue(strat.compare(t3, t4) == 1);
-		assertTrue(strat.compare(t5, t1) == 1);
-		assertTrue(strat.compare(t6, t2) == 1);
+		assertTrue(strat.compare(t3, t4) == -1);
+		assertTrue(strat.compare(t5, t1) == -1);
+		assertTrue(strat.compare(t6, t2) == -1);
 
-		assertTrue(strat.compare(t1, t3) == 1);
-		assertTrue(strat.compare(t7, t1) == 1);
+		assertTrue(strat.compare(t1, t3) == -1);
+		assertTrue(strat.compare(t7, t1) == -1);
 
 		// Test with inverted strategy
-		assertTrue(stratInv.compare(t1, t2) == -1);
-		assertTrue(stratInv.compare(t2, t1) == 1);
+		assertTrue(stratInv.compare(t1, t2) == 1);
+		assertTrue(stratInv.compare(t2, t1) == -1);
 		assertTrue(stratInv.compare(t1, t1) == 0);
 
-		assertTrue(stratInv.compare(t3, t4) == -1);
-		assertTrue(stratInv.compare(t5, t1) == -1);
-		assertTrue(stratInv.compare(t6, t2) == -1);
+		assertTrue(stratInv.compare(t3, t4) == 1);
+		assertTrue(stratInv.compare(t5, t1) == 1);
+		assertTrue(stratInv.compare(t6, t2) == 1);
 
-		assertTrue(stratInv.compare(t1, t3) == -1);
-		assertTrue(stratInv.compare(t7, t1) == -1);
+		assertTrue(stratInv.compare(t1, t3) == 1);
+		assertTrue(stratInv.compare(t7, t1) == 1);
 	}
 
 }
