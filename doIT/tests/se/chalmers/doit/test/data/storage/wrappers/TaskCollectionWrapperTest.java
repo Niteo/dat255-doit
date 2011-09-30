@@ -15,9 +15,9 @@ import android.test.AndroidTestCase;
 
 public class TaskCollectionWrapperTest extends AndroidTestCase {
 
-	ITaskCollectionWrapper wrapper;
-	ITaskCollection taskCollection;
-	Collection<ITask> tasks;
+	private ITaskCollectionWrapper wrapper;
+	private ITaskCollection taskCollection;
+	private Collection<ITask> tasks;
 
 	@Override
 	@Before
