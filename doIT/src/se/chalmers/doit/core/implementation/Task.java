@@ -36,8 +36,8 @@ public final class Task implements ITask {
 		this.name = task.getName();
 		this.description = task.getDescription();
 		this.priority = task.getPriority();
-		this.dueDate = new Date(task.getDueDate().getTime());
-		this.reminderDate = new Date(task.getReminderDate().getTime());
+		this.dueDate = task.getDueDate() == null ? null : new Date(task.getDueDate().getTime());
+		this.reminderDate = task.getReminderDate() == null ? null : new Date(task.getReminderDate().getTime());
 		this.customPosition = task.getCustomPosition();
 		this.isCompleted = task.isCompleted();
 	}
