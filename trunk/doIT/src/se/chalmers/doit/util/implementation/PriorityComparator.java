@@ -1,11 +1,10 @@
 package se.chalmers.doit.util.implementation;
 
-import java.util.Comparator;
-
 import se.chalmers.doit.core.IPriority;
 import se.chalmers.doit.core.ITask;
+import se.chalmers.doit.util.IComparatorStrategy;
 
-public class PriorityComparator implements Comparator<ITask> {
+public class PriorityComparator implements IComparatorStrategy {
 
 	@Override
 	public int compare(final ITask task1, final ITask task2) {
