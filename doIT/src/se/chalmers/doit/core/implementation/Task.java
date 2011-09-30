@@ -3,11 +3,12 @@ package se.chalmers.doit.core.implementation;
 import java.util.Date;
 
 import se.chalmers.doit.core.*;
+import se.chalmers.doit.util.implementation.Constants;
 
 /**
  * Immutable class carrying properties of a task.
  * 
- * @author Marco Baxemyr
+ * @author Marco Baxemyr, Robert Kaufmann
  *
  */
 
@@ -30,6 +31,7 @@ public final class Task implements ITask {
 		this.customPosition = customPosition;
 		this.isCompleted = isCompleted;
 	}
+	
 	public Task(ITask task) {
 		this.name = task.getName();
 		this.description = task.getDescription();
@@ -39,15 +41,15 @@ public final class Task implements ITask {
 		this.customPosition = task.getCustomPosition();
 		this.isCompleted = task.isCompleted();
 	}
-	public Task(String name, String description) {
-		//TODO Look over this constructor, for now it exists for temporary purposes.
+	
+	public Task(String name, String description, boolean completed) {
 		this.name = name;
 		this.description = description;
-		this.priority = null;
+		this.priority = new Priority(Constants.PRIORITY_DEFAULT);
 		this.dueDate = null;
 		this.reminderDate = null;
-		this.customPosition = 0;
-		this.isCompleted = false;
+		this.customPosition = Constants.CUSTOMPOSITION_DEFAULT;
+		this.isCompleted = completed;
 	}
 	                                                                                                                                                 
 	
