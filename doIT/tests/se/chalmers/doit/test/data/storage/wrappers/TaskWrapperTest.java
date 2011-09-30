@@ -1,7 +1,6 @@
 package se.chalmers.doit.test.data.storage.wrappers;
 
 import org.junit.Before;
-import org.junit.Test;
 
 import se.chalmers.doit.core.ITask;
 import se.chalmers.doit.core.implementation.Task;
@@ -22,42 +21,34 @@ public class TaskWrapperTest extends AndroidTestCase {
 		tw = new TaskWrapper(0, task);
 	}
 
-	@Test
 	public void testGetName() {
 		assertTrue(tw.getName().equals(task.getName()));
 	}
 
-	@Test
 	public void testGetDescription() {
-		assertTrue(tw.getDescription().equals(task.getName()));
+		assertTrue(tw.getDescription().equals(task.getDescription()));
 	}
 
-	@Test
 	public void testGetDueDate() {
-		assertTrue(tw.getDueDate().equals(task.getDueDate()));
+		assertTrue(tw.getDueDate() == null);
 	}
 
-	@Test
 	public void testGetPriority() {
 		assertTrue(tw.getPriority().equals(task.getPriority()));
 	}
 
-	@Test
 	public void testGetReminderDate() {
-		assertTrue(tw.getReminderDate().equals(task.getReminderDate()));
+		assertTrue(tw.getReminderDate() == null);
 	}
 
-	@Test
 	public void testGetCustomPosition() {
 		assertTrue(tw.getCustomPosition() == task.getCustomPosition());
 	}
 
-	@Test
 	public void testIsCompleted() {
 		assertTrue(tw.isCompleted() == task.isCompleted());
 	}
 
-	@Test
 	public void testGetID() {
 		assertTrue(tw.getID() == 0);
 		assertTrue(new TaskWrapper(5, task).getID() == 5);
