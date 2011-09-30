@@ -25,7 +25,7 @@ public interface ITaskListUtility {
 	 *            tertiary sorting strategy
 	 * @return a list in the provided order
 	 */
-	public List<ITask> sortTasks(List<ITask> list, ISortingStrategy primary,
-			ISortingStrategy secondary, ISortingStrategy tertiary);
+	public List<ITask> sortTasks(List<ITask> list, IComparatorStrategy primary,
+			IComparatorStrategy secondary, IComparatorStrategy tertiary);
 
 }
