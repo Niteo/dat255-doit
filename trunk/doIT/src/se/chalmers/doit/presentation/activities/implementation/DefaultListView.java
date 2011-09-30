@@ -31,8 +31,8 @@ public class DefaultListView extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.defaultlistview);
 		ArrayList<ITask> tasks = new ArrayList<ITask>();
-		tasks.add(new Task("Wash the dishes", "Use the Yes washing-up liquid"));
-		tasks.add(new Task("Do homework", "All chapters!"));
+		tasks.add(new Task("Wash the dishes", "Use the Yes washing-up liquid", false));
+		tasks.add(new Task("Do homework", "All chapters!", false));
 		adapter = new TaskListAdapter(this, tasks);
 
 		setListAdapter(adapter);
@@ -47,7 +47,7 @@ public class DefaultListView extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				addTask(new Task(edittext.getText().toString(),
-						"Preset description."));
+						"Preset description.", false));
 			}
 		});
 
@@ -58,7 +58,7 @@ public class DefaultListView extends ListActivity {
 						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					// Perform action on key press
 					addTask(new Task(edittext.getText().toString(),
-							"Preset description."));
+							"Preset description.", false));
 					return true;
 				}
 				return false;

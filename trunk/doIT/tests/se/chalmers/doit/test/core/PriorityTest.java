@@ -1,7 +1,6 @@
 package se.chalmers.doit.test.core;
 
-import static org.junit.Assert.*;
-import org.junit.*;
+import org.junit.Before;
 
 import se.chalmers.doit.core.implementation.Priority;
 import android.test.AndroidTestCase;
@@ -19,13 +18,8 @@ public class PriorityTest extends AndroidTestCase{
 	public void setUp() throws Exception {
 		super.setUp();
 		lowPriority = new Priority((byte)0);
-		lowPriority = new Priority((byte)3);
-		lowPriority = new Priority((byte)5);
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		super.tearDown();
+		mediumPriority = new Priority((byte)3);
+		highPriority = new Priority((byte)5);
 	}
 	
 	public void testGetValue() throws Exception {
