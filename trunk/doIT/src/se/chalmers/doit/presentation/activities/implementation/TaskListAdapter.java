@@ -34,6 +34,10 @@ public class TaskListAdapter extends ArrayAdapter<ITask> {
 		TextView bottomText = (TextView) view.findViewById(R.id.bottomtext);
 		topText.setText(task.getName());
 		bottomText.setText(task.getDescription());
+		topText.setTextSize(16);
+		if (task.isCompleted()) {
+			topText.setTextSize(7);
+		}
 		return view;
 	}
 }
