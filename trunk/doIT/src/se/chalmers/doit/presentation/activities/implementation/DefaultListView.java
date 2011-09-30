@@ -7,6 +7,7 @@ import se.chalmers.doit.core.ITask;
 import se.chalmers.doit.core.implementation.Task;
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -19,13 +20,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemLongClickListener;
 
 public class DefaultListView extends ListActivity {
 	/** Called when the activity is first created. */
 
 	private TaskListAdapter adapter;
-
+	private final int MENU_HELP=1, MENU_ABOUT=2, MENU_STATISTICS=3, MENU_SETTINGS=4;
+	private final int GROUP_DEFAULT=0;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -82,7 +84,8 @@ public class DefaultListView extends ListActivity {
 		if (v.getId() == android.R.id.list) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 			menu.setHeaderTitle(adapter.getItem(info.position).getName());
-			String[] menuItems = { "Mark as Complete", "Edit", "Delete" };
+			String[] menuItems = getResources().getStringArray(R.array.context_menu_items);
+			
 			for (int i = 0; i < menuItems.length; i++) {
 				menu.add(Menu.NONE, i, i, menuItems[i]);
 			}
@@ -93,8 +96,8 @@ public class DefaultListView extends ListActivity {
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
-
-		if (item.getTitle() == "Delete") {
+		//Was Delete clicked?
+		if (item.getTitle().equals((getResources().getStringArray(R.array.context_menu_items)[2]))) {
 			Toast.makeText(DefaultListView.this, "Deleted", Toast.LENGTH_SHORT)
 					.show();
 			deleteTask(adapter.getItem(info.position));
@@ -105,6 +108,37 @@ public class DefaultListView extends ListActivity {
 		}
 
 		return true;
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add(GROUP_DEFAULT, MENU_HELP, 4, "Help");
+		menu.add(GROUP_DEFAULT, MENU_ABOUT, 3, "About");
+		menu.add(GROUP_DEFAULT, MENU_SETTINGS, 2, "Settings");
+		menu.add(GROUP_DEFAULT, MENU_STATISTICS, 1, "Statistics");
+		
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+		case MENU_HELP:
+			Toast.makeText(DefaultListView.this,
+					"You're on your own!", Toast.LENGTH_SHORT)
+					.show();
+			return true;
+		case MENU_ABOUT:
+			//TODO
+			return true;
+		case MENU_STATISTICS:
+			//TODO
+			return true;
+		case MENU_SETTINGS:
+			//TODO
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	public void addTask(ITask task) {
