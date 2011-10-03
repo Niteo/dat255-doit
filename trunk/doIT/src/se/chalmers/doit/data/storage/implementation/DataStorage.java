@@ -3,6 +3,7 @@ package se.chalmers.doit.data.storage.implementation;
 import java.util.*;
 
 import se.chalmers.doit.core.*;
+import se.chalmers.doit.core.implementation.TaskCollection;
 import se.chalmers.doit.data.storage.IDataStorage;
 import se.chalmers.doit.data.storage.wrappers.ITaskCollectionWrapper;
 import se.chalmers.doit.data.storage.wrappers.implementation.TaskCollectionWrapper;
@@ -17,17 +18,17 @@ import se.chalmers.doit.data.storage.wrappers.implementation.TaskCollectionWrapp
 //TODO Add connections to DB
 public class DataStorage implements IDataStorage {
 
-	private Collection<ITaskCollectionWrapper> lists = new ArrayList<ITaskCollectionWrapper>();
+	// TODO: Add hash maps :)
+	private Collection<ITaskCollection> lists = new ArrayList<ITaskCollection>();
 	private static int listIDEnumerator = 0; // TODO: Remove with db connection
 	private static int taskIDEnumerator = 0; // TODO: Remove with db connection
-	
 	
 	@Override
 	public void addList(ITaskCollection collection) {
 		lists.add(new TaskCollectionWrapper(listIDEnumerator, collection));
 		listIDEnumerator++;
 	}
-
+	
 	@Override
 	public void addLists(Collection<ITaskCollection> collection) {
 		for(ITaskCollection t : collection){
@@ -38,27 +39,36 @@ public class DataStorage implements IDataStorage {
 
 	@Override
 	public void addTask(ITask task, ITaskCollection collection) {
-		// TODO Auto-generated method stub
-
+		Collection oldTasks = collection.getTasks();
+		String oldName = collection.getName();
+		oldTasks.add(task);
+		if(lists.remove(collection)){
+			lists.add(new TaskCollection(oldName, oldTasks));
+		}
 	}
 
 	@Override
 	public void addTasks(Collection<ITask> tasks, ITaskCollection collection) {
-		// TODO Auto-generated method stub
-
+		Collection oldTasks = collection.getTasks();
+		String oldName = collection.getName();
+		oldTasks.addAll(tasks);
+		if(lists.remove(collection)){
+			lists.add(new TaskCollection(oldName, oldTasks));
+		}
 	}
 
 	@Override
 	public void clearData() {
-		// TODO Auto-generated method stub
-
+		lists.clear();
+		listIDEnumerator = 0;
+		taskIDEnumerator = 0;
 	}
 
 	@Override
 	public void editList(ITaskCollection oldCollection,
 			ITaskCollection newCollection) {
-		// TODO Auto-generated method stub
-
+		lists.remove(oldCollection);
+		lists.add(newCollection);
 	}
 
 	@Override
@@ -70,21 +80,17 @@ public class DataStorage implements IDataStorage {
 	@Override
 	public Collection<ITaskCollection> getAllLists() {
 		Collection<ITaskCollection> ret = new ArrayList<ITaskCollection>();
-		
-		// Create list to return
-		for(ITaskCollectionWrapper w : lists)
+		for(ITaskCollection w : lists)
 		{
 			ret.add(w);
 		}
-		// TODO: Discuss. ACtually returning the wrappers but won't be noticed atm.
-		// Convert to actual TaskCollection or keep it as is?
 		return ret;
 	}
 
 	@Override
 	public Collection<ITask> getAllTasks() {
 		Collection<ITask> ret = new ArrayList<ITask>();
-		for(ITaskCollectionWrapper w : lists){
+		for(ITaskCollection w : lists){
 			ret.addAll(w.getTasks());
 		}
 		return ret;
