@@ -17,9 +17,9 @@ public interface ITaskCollection {
 	public String getName();
 
 	/**
-	 * Returns a copy of the list of ITasks.
+	 * Returns a list of the collection's ITasks.
 	 *
 	 * @return Collection of ITasks
 	 */
-	public Collection<ITask> getTaskList();
+	public Collection<ITask> getTasks();
 }

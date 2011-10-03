@@ -22,7 +22,7 @@ public class TaskCollection implements ITaskCollection {
 	}
 
 	@Override
-	public Collection<ITask> getTaskList() {
+	public Collection<ITask> getTasks() {
 		return new ArrayList<ITask>(taskCollection);
 	}
 
