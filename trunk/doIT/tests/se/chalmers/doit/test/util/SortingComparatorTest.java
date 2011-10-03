@@ -1,10 +1,17 @@
 package se.chalmers.doit.test.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 import se.chalmers.doit.core.ITask;
-import se.chalmers.doit.core.implementation.*;
-import se.chalmers.doit.util.implementation.*;
+import se.chalmers.doit.core.implementation.Priority;
+import se.chalmers.doit.core.implementation.Task;
+import se.chalmers.doit.util.implementation.DueDateComparatorStrategy;
+import se.chalmers.doit.util.implementation.NameComparatorStrategy;
+import se.chalmers.doit.util.implementation.PriorityComparatorStrategy;
+import se.chalmers.doit.util.implementation.SortingComparator;
 import android.test.AndroidTestCase;
 
 /**
@@ -17,13 +24,13 @@ public class SortingComparatorTest extends AndroidTestCase {
 		DueDateComparatorStrategy dd = new DueDateComparatorStrategy(false);
 		NameComparatorStrategy nn = new NameComparatorStrategy(false);
 		PriorityComparatorStrategy pp = new PriorityComparatorStrategy(false);
-		SortingComparator sc = new SortingComparator(nn, dd, pp);
-		SortingComparator sc2 = new SortingComparator(null, dd, pp);
-		SortingComparator sc3 = new SortingComparator(null, null, pp);
-		SortingComparator sc4 = new SortingComparator(null, null, null);
-		SortingComparator sc5 = new SortingComparator(nn, null, pp);
-		SortingComparator sc6 = new SortingComparator(nn, null, null);
-		SortingComparator sc7 = new SortingComparator(nn, dd, null);
+		new SortingComparator(nn, dd, pp);
+		new SortingComparator(null, dd, pp);
+		new SortingComparator(null, null, pp);
+		new SortingComparator(null, null, null);
+		new SortingComparator(nn, null, pp);
+		new SortingComparator(nn, null, null);
+		new SortingComparator(nn, dd, null);
 	}
 
 	public void testCompare() {
@@ -41,14 +48,14 @@ public class SortingComparatorTest extends AndroidTestCase {
 				new Date(0), 0, false);
 		Task t6 = new Task("B", "...", new Priority((byte) 2), new Date(100),
 				new Date(0), 0, false);
-		
+
 		Task t7 = new Task("C", "...", new Priority((byte) 1), new Date(2000),
 				new Date(0), 0, false);
 		Task t8 = new Task("C", "...", new Priority((byte) 2), new Date(100),
 				new Date(0), 0, false);
 		Task t9 = new Task("C", "...", new Priority((byte) 3), new Date(100),
 				new Date(0), 0, false);
-		
+
 		// Set up list
 		List<ITask> list = new ArrayList<ITask>();
 		list.add(t9);
@@ -69,7 +76,7 @@ public class SortingComparatorTest extends AndroidTestCase {
 
 		// Sort and check results
 		Collections.sort(list, sc);
-		boolean value = 
+		boolean value =
 			list.indexOf(t1) == 0 &&
 			list.indexOf(t2) == 2 &&
 			list.indexOf(t3) == 1 &&
@@ -79,7 +86,7 @@ public class SortingComparatorTest extends AndroidTestCase {
 			list.indexOf(t7) == 8 &&
 			list.indexOf(t8) == 6 &&
 			list.indexOf(t9) == 7;
-		
+
 		assertTrue(value);
 	}
 }

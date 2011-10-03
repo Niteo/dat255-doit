@@ -7,7 +7,7 @@ import android.test.AndroidTestCase;
 
 /**
  * JUnit testclass for testing se.chalmers.doit.test.core.Task
- * 
+ *
  * @author Kaufmann
  */
 public class PriorityTest extends AndroidTestCase {
@@ -15,6 +15,7 @@ public class PriorityTest extends AndroidTestCase {
 	private Priority mediumPriority;
 	private Priority highPriority;
 
+	@Override
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
