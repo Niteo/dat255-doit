@@ -33,7 +33,7 @@ public class TaskCollectionWrapperTest extends AndroidTestCase {
 	}
 
 	public void testGetTaskList() {
-		assertTrue(wrapper.getTaskList().equals(taskCollection.getTaskList()));
+		assertTrue(wrapper.getTasks().equals(taskCollection.getTasks()));
 	}
 
 	public void testGetID() {

@@ -22,8 +22,8 @@ public class TaskCollectionWrapper implements ITaskCollectionWrapper {
 	}
 
 	@Override
-	public Collection<ITask> getTaskList() {
-		return taskCollection.getTaskList();
+	public Collection<ITask> getTasks() {
+		return taskCollection.getTasks();
 	}
 
 	@Override

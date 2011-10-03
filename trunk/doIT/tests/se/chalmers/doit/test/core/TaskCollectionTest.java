@@ -24,8 +24,8 @@ public class TaskCollectionTest extends AndroidTestCase{
 		ArrayList<ITask> list2 = new ArrayList<ITask>();
 		
 		TaskCollection t = new TaskCollection("Name", list1);
-		assertTrue(t.getTaskList().equals(list1));
+		assertTrue(t.getTasks().equals(list1));
 		t = new TaskCollection("Sw0mp", list2);
-		assertTrue(t.getTaskList().equals(list2));
+		assertTrue(t.getTasks().equals(list2));
 	}
 }
