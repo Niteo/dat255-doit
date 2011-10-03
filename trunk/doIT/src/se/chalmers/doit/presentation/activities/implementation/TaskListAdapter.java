@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import se.chalmers.doit.R;
 import se.chalmers.doit.core.ITask;
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,9 +36,21 @@ public class TaskListAdapter extends ArrayAdapter<ITask> {
 		TextView bottomText = (TextView) view.findViewById(R.id.bottomtext);
 		topText.setText(task.getName());
 		bottomText.setText(task.getDescription());
-		topText.setTextSize(16);
+		
+		
 		if (task.isCompleted()) {
-			topText.setTextSize(7);
+			//Strikethrough text
+			topText.setPaintFlags(topText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+			topText.setTextColor(Color.GRAY);
+			bottomText.setPaintFlags(bottomText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+			bottomText.setTextColor(Color.GRAY);
+		}
+		else {
+			//Remove strikethough flag
+			topText.setPaintFlags( topText.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+			topText.setTextColor(Color.WHITE);
+			bottomText.setPaintFlags( bottomText.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+			bottomText.setTextColor(Color.WHITE);
 		}
 		return view;
 	}

@@ -6,6 +6,7 @@ import se.chalmers.doit.R;
 import se.chalmers.doit.core.ITask;
 import se.chalmers.doit.core.implementation.Task;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -87,9 +88,16 @@ public class DefaultListView extends ListActivity {
 			ContextMenuInfo menuInfo) {
 		if (v.getId() == android.R.id.list) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-			menu.setHeaderTitle(adapter.getItem(info.position).getName());
+			ITask task = adapter.getItem(info.position);
+			menu.setHeaderTitle(task.getName());
 			MenuInflater inflater = getMenuInflater();
 			inflater.inflate(R.menu.context_menu, menu);
+			if (task.isCompleted()) {
+				menu.removeItem(R.id.context_complete);
+			}
+			else {
+				menu.removeItem(R.id.context_incomplete);
+			}
 		}
 	}
 
@@ -97,13 +105,12 @@ public class DefaultListView extends ListActivity {
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
+		ITask task = adapter.getItem(info.position);;
 		switch (item.getItemId()) {
 		case R.id.context_complete:
-			Task task = (Task) adapter.getItem(info.position);
+		case R.id.context_incomplete:
 			adapter.insert(new Task(task, !task.isCompleted()), info.position);
 			adapter.remove(adapter.getItem(info.position+1));
-			Toast.makeText(DefaultListView.this, "Finished!",
-					Toast.LENGTH_SHORT).show();
 			return true;
 		case R.id.context_edit:
 			// TODO
@@ -129,11 +136,12 @@ public class DefaultListView extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_help:
-			Toast.makeText(DefaultListView.this, "You're on your own!",
-					Toast.LENGTH_SHORT).show();
+			Intent showHelp = new Intent(this, Help.class);
+			startActivity(showHelp);
 			return true;
 		case R.id.menu_about:
-			// TODO
+			Intent showAbout = new Intent(this, About.class);
+			startActivity(showAbout);
 			return true;
 		case R.id.menu_statistics:
 			// TODO

@@ -6,9 +6,9 @@
   android:padding="6dip"
   >  
   <TextView android:id="@+id/toptext" android:layout_width="fill_parent"  
-      android:layout_height="wrap_content"  
+      android:layout_height="wrap_content" android:textColor="#FFFFFF"
       android:gravity="center_vertical" android:singleLine="true" />  
   <TextView android:layout_width="fill_parent"  
       android:layout_height="wrap_content"  android:id="@+id/bottomtext"
-      android:singleLine="true" />
+      android:singleLine="true" android:textColor="#FFFFFF" />
 </LinearLayout>
