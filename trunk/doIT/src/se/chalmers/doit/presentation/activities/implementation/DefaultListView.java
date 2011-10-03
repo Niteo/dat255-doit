@@ -147,7 +147,7 @@ public class DefaultListView extends ListActivity {
 			// TODO
 			return true;
 		case R.id.menu_settings:
-			// TODO
+			startActivity(new Intent(this, Preferences.class));
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -157,6 +157,8 @@ public class DefaultListView extends ListActivity {
 		adapter.add(task);
 		Toast.makeText(DefaultListView.this, "Task added!", Toast.LENGTH_SHORT)
 				.show();
+		((EditText) findViewById(R.id.quickaddedittext)).setText("");
+		
 	}
 
 	public void deleteTask(ITask task) {
