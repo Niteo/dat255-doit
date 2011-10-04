@@ -1,6 +1,7 @@
 package se.chalmers.doit.presentation.activities.implementation;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import se.chalmers.doit.R;
 import se.chalmers.doit.core.ITask;
@@ -8,10 +9,19 @@ import se.chalmers.doit.core.implementation.Task;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.*;
+import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnKeyListener;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * Activity displaying the default list.
@@ -25,10 +35,10 @@ public class DefaultListView extends ListActivity {
 	private TaskListAdapter adapter;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.defaultlistview);
-		ArrayList<ITask> tasks = new ArrayList<ITask>();
+		final ArrayList<ITask> tasks = new ArrayList<ITask>();
 		tasks.add(new Task("Wash the dishes", "Use the Yes washing-up liquid",
 				false));
 		tasks.add(new Task("Do homework", "All chapters!", false));
@@ -36,22 +46,25 @@ public class DefaultListView extends ListActivity {
 
 		setListAdapter(adapter);
 
-		ListView list = getListView();
+		final ListView list = getListView();
 
 		registerForContextMenu(list);
 		final EditText edittext = (EditText) findViewById(R.id.quickaddedittext);
-		Button quickAddButton = (Button) findViewById(R.id.quickaddbutton);
+		final Button quickAddButton = (Button) findViewById(R.id.quickaddbutton);
 		quickAddButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
-			public void onClick(View v) {
-				addTask(new Task(edittext.getText().toString(),
-						"Preset description.", false));
+			public void onClick(final View v) {
+				if (edittext.getText().toString().length() > 0) {
+					addTask(new Task(edittext.getText().toString(), "", false));
+				}
 			}
 		});
 
 		edittext.setOnKeyListener(new OnKeyListener() {
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
+			@Override
+			public boolean onKey(final View v, final int keyCode,
+					final KeyEvent event) {
 				// If the event is a key-down event on the "enter" button
 				if ((event.getAction() == KeyEvent.ACTION_DOWN)
 						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
@@ -68,13 +81,13 @@ public class DefaultListView extends ListActivity {
 	}
 
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
+	public void onCreateContextMenu(final ContextMenu menu, final View v,
+			final ContextMenuInfo menuInfo) {
 		if (v.getId() == android.R.id.list) {
-			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-			ITask task = adapter.getItem(info.position);
+			final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+			final ITask task = adapter.getItem(info.position);
 			menu.setHeaderTitle(task.getName());
-			MenuInflater inflater = getMenuInflater();
+			final MenuInflater inflater = getMenuInflater();
 			inflater.inflate(R.menu.context_menu, menu);
 			if (task.isCompleted()) {
 				menu.removeItem(R.id.context_complete);
@@ -85,40 +98,39 @@ public class DefaultListView extends ListActivity {
 	}
 
 	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
+	public boolean onContextItemSelected(final MenuItem item) {
+		final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
-		ITask task = adapter.getItem(info.position);
-		
+		final ITask task = adapter.getItem(info.position);
+
 		switch (item.getItemId()) {
-			case R.id.context_complete:
-			case R.id.context_incomplete:
-				adapter.insert(new Task(task, !task.isCompleted()),
-						info.position);
-				adapter.remove(adapter.getItem(info.position + 1));
-				return true;
-			case R.id.context_edit:
-				// TODO
-				return true;
-			case R.id.context_delete:
-				Toast.makeText(DefaultListView.this, "Deleted",
-						Toast.LENGTH_SHORT).show();
-				deleteTask(adapter.getItem(info.position));
-				return true;
+		case R.id.context_complete:
+		case R.id.context_incomplete:
+			adapter.insert(new Task(task, !task.isCompleted()), info.position);
+			adapter.remove(adapter.getItem(info.position + 1));
+			return true;
+		case R.id.context_edit:
+			// TODO
+			return true;
+		case R.id.context_delete:
+			Toast.makeText(DefaultListView.this, "Deleted", Toast.LENGTH_SHORT)
+					.show();
+			deleteTask(adapter.getItem(info.position));
+			return true;
 		}
 		return true;
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
+	public boolean onCreateOptionsMenu(final Menu menu) {
+		final MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent intent = intentMap.get(item.getItemId());
+	public boolean onOptionsItemSelected(final MenuItem item) {
+		final Intent intent = intentMap.get(item.getItemId());
 		if (intent != null) {
 			startActivity(intent);
 			return true;
@@ -126,23 +138,24 @@ public class DefaultListView extends ListActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void addTask(ITask task) {
+	public void addTask(final ITask task) {
 		adapter.add(task);
 		Toast.makeText(DefaultListView.this, "Task added!", Toast.LENGTH_SHORT)
 				.show();
 		((EditText) findViewById(R.id.quickaddedittext)).setText("");
 	}
 
-	public void deleteTask(ITask task) {
+	public void deleteTask(final ITask task) {
 		adapter.remove(task);
 	}
 
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
+	protected void onListItemClick(final ListView l, final View v,
+			final int position, final long id) {
 		super.onListItemClick(l, v, position, id);
 		// Get the item that was clicked
-		Object o = this.getListAdapter().getItem(position);
-		String keyword = o.toString();
+		final Object o = this.getListAdapter().getItem(position);
+		final String keyword = o.toString();
 		Toast.makeText(DefaultListView.this, "Clicked on: " + keyword,
 				Toast.LENGTH_SHORT).show();
 	}

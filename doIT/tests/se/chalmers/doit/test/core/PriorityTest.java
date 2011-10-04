@@ -7,7 +7,7 @@ import android.test.AndroidTestCase;
 
 /**
  * JUnit testclass for testing se.chalmers.doit.test.core.Task
- *
+ * 
  * @author Kaufmann
  */
 public class PriorityTest extends AndroidTestCase {
@@ -42,5 +42,14 @@ public class PriorityTest extends AndroidTestCase {
 		assertTrue(highPriority.compareTo(lowPriority) == 1);
 		assertTrue(highPriority.compareTo(mediumPriority) == 1);
 		assertTrue(highPriority.compareTo(highPriority) == 0);
+	}
+
+	public void testEquals() {
+		final Priority otherLowPriority = new Priority((byte) 0);
+
+		assertTrue(lowPriority.equals(lowPriority));
+		assertFalse(lowPriority.equals(highPriority));
+
+		assertTrue(lowPriority.equals(otherLowPriority));
 	}
 }
