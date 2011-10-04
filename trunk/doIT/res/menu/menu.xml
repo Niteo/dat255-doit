@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:id="@+id/menu.statistics" android:title="Statistics" />
-	<item android:id="@+id/menu.settings" android:title="Settings" />
-	<item android:id="@+id/menu.about" android:title="About" />
-	<item android:id="@+id/menu.help" android:title="Help" />
+	<item android:id="@+id/menu.statistics" android:title="Statistics" android:icon="@drawable/icon"/>
+	<item android:id="@+id/menu.settings" android:title="Settings" android:icon="@drawable/icon"/>
+	<item android:id="@+id/menu.about" android:title="About" android:icon="@drawable/icon"/>
+	<item android:id="@+id/menu.help" android:title="Help" android:icon="@drawable/icon"/>
 </menu>
