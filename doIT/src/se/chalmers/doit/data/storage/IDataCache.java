@@ -12,7 +12,7 @@ import se.chalmers.doit.core.ITaskCollection;
  * @author Karl Bristav
  * 
  */
-public interface IDataStorage {
+public interface IDataCache {
 
 	/**
 	 * Adds a List to the data storage
