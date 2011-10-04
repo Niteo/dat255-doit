@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">doIT</string>
-    <string name="about">About doIT.</string>
+    <string name="about">doIt is a FLOSS application </string>
     <string name="help">doIT Help: </string>
     <string name="quick_add_hint">New task..</string>
     <string name="empty_list">This list is empty.</string>

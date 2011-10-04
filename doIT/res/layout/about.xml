@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:orientation="vertical">
-
-	<TextView android:text="@string/about" android:layout_width="fill_parent"
-		android:layout_height="fill_parent" android:textColor="#FFFFFF" />
+	android:orientation="vertical" android:weightSum="1">
+    <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout1" android:layout_height="fill_parent" android:weightSum="1">
+        <ImageView android:id="@+id/imageView1" android:src="@drawable/icon" android:layout_height="199dp" android:layout_width="90dp"></ImageView>
+        <LinearLayout android:layout_width="wrap_content" android:id="@+id/linearLayout2" android:layout_height="fill_parent" android:orientation="vertical" android:layout_weight="0.55">
+            <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="doIT" android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+            <TextView android:textAppearance="?android:attr/textAppearanceMedium" android:text="Version: 0.1" android:id="@+id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+            <TextView android:textAppearance="?android:attr/textAppearanceSmall" android:text="Copyleft 2011. This application is distributed under the GNU license." android:id="@+id/textView4" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
