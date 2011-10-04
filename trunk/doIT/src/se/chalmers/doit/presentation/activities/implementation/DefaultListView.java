@@ -1,6 +1,6 @@
 package se.chalmers.doit.presentation.activities.implementation;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import se.chalmers.doit.R;
 import se.chalmers.doit.core.ITask;
@@ -8,28 +8,20 @@ import se.chalmers.doit.core.implementation.Task;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnKeyListener;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.*;
 
 /**
  * Activity displaying the default list.
+ * 
  * @author phelerox
- *
+ * 
  */
 public class DefaultListView extends ListActivity {
-	/** Called when the activity is first created. */
 
+	private final HashMap<Integer, Intent> intentMap = new HashMap<Integer, Intent>();
 	private TaskListAdapter adapter;
 
 	@Override
@@ -71,16 +63,8 @@ public class DefaultListView extends ListActivity {
 				return false;
 			}
 		});
-	}
 
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-		// Get the item that was clicked
-		Object o = this.getListAdapter().getItem(position);
-		String keyword = o.toString();
-		Toast.makeText(DefaultListView.this, "Clicked on: " + keyword,
-				Toast.LENGTH_SHORT).show();
+		_createIntentMap();
 	}
 
 	@Override
@@ -94,8 +78,7 @@ public class DefaultListView extends ListActivity {
 			inflater.inflate(R.menu.context_menu, menu);
 			if (task.isCompleted()) {
 				menu.removeItem(R.id.context_complete);
-			}
-			else {
+			} else {
 				menu.removeItem(R.id.context_incomplete);
 			}
 		}
@@ -105,21 +88,23 @@ public class DefaultListView extends ListActivity {
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
-		ITask task = adapter.getItem(info.position);;
+		ITask task = adapter.getItem(info.position);
+		
 		switch (item.getItemId()) {
-		case R.id.context_complete:
-		case R.id.context_incomplete:
-			adapter.insert(new Task(task, !task.isCompleted()), info.position);
-			adapter.remove(adapter.getItem(info.position+1));
-			return true;
-		case R.id.context_edit:
-			// TODO
-			return true;
-		case R.id.context_delete:
-			Toast.makeText(DefaultListView.this, "Deleted", Toast.LENGTH_SHORT)
-					.show();
-			deleteTask(adapter.getItem(info.position));
-			return true;
+			case R.id.context_complete:
+			case R.id.context_incomplete:
+				adapter.insert(new Task(task, !task.isCompleted()),
+						info.position);
+				adapter.remove(adapter.getItem(info.position + 1));
+				return true;
+			case R.id.context_edit:
+				// TODO
+				return true;
+			case R.id.context_delete:
+				Toast.makeText(DefaultListView.this, "Deleted",
+						Toast.LENGTH_SHORT).show();
+				deleteTask(adapter.getItem(info.position));
+				return true;
 		}
 		return true;
 	}
@@ -129,25 +114,13 @@ public class DefaultListView extends ListActivity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu, menu);
 		return super.onCreateOptionsMenu(menu);
-
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_help:
-			Intent showHelp = new Intent(this, Help.class);
-			startActivity(showHelp);
-			return true;
-		case R.id.menu_about:
-			Intent showAbout = new Intent(this, About.class);
-			startActivity(showAbout);
-			return true;
-		case R.id.menu_statistics:
-			// TODO
-			return true;
-		case R.id.menu_settings:
-			startActivity(new Intent(this, Preferences.class));
+		Intent intent = intentMap.get(item.getItemId());
+		if (intent != null) {
+			startActivity(intent);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -158,10 +131,27 @@ public class DefaultListView extends ListActivity {
 		Toast.makeText(DefaultListView.this, "Task added!", Toast.LENGTH_SHORT)
 				.show();
 		((EditText) findViewById(R.id.quickaddedittext)).setText("");
-		
 	}
 
 	public void deleteTask(ITask task) {
 		adapter.remove(task);
+	}
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		// Get the item that was clicked
+		Object o = this.getListAdapter().getItem(position);
+		String keyword = o.toString();
+		Toast.makeText(DefaultListView.this, "Clicked on: " + keyword,
+				Toast.LENGTH_SHORT).show();
+	}
+
+	private void _createIntentMap() {
+		intentMap.clear();
+		intentMap.put(R.id.menu_about, new Intent(this, About.class));
+		intentMap.put(R.id.menu_help, new Intent(this, Help.class));
+		intentMap.put(R.id.menu_statistics, new Intent(this, Statistics.class));
+		intentMap.put(R.id.menu_settings, new Intent(this, Preferences.class));
 	}
 }
