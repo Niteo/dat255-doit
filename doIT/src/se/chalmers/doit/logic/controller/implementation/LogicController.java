@@ -22,14 +22,26 @@ public class LogicController implements ILogicController {
 
 	@Override
 	public boolean addList(ITaskCollection taskCollection) {
-		// TODO Auto-generated method stub
+		for (ITaskCollection list : data.getAllLists()) {
+			if (list.getName() != taskCollection.getName()) {
+				data.addList(taskCollection);
+				return true;
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public boolean addLists(Collection<ITaskCollection> collection) {
-		// TODO Auto-generated method stub
-		return false;
+		for (ITaskCollection savedList : data.getAllLists()) {
+			for (ITaskCollection newList : collection) {
+				if (savedList.getName() == newList.getName()) {
+					return false;
+				}
+			}
+		}
+		data.addLists(collection);
+		return true;
 	}
 
 	@Override
@@ -43,8 +55,13 @@ public class LogicController implements ILogicController {
 
 	@Override
 	public boolean addTasks(Collection<ITask> tasks, ITaskCollection collection) {
-		// TODO Auto-generated method stub
-		return false;
+		for (ITask task : tasks) {
+			if (!verifier.verifyTask(task)) {
+				return false;
+			}
+		}
+		data.addTasks(tasks, collection);
+		return true;
 	}
 
 	@Override
@@ -55,21 +72,35 @@ public class LogicController implements ILogicController {
 	@Override
 	public boolean editList(ITaskCollection oldCollection,
 			ITaskCollection newCollection) {
-		// TODO Auto-generated method stub
+		for (ITaskCollection list : data.getAllLists()) {
+			if (newCollection.getName() != list.getName()) {
+				data.editList(oldCollection, newCollection);
+				return true;
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public boolean editTask(ITask oldTask, ITask newTask) {
-		// TODO Auto-generated method stub
+		if (verifier.verifyTask(newTask)) {
+			data.editTask(oldTask, newTask);
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean editTasks(ITaskCollection oldCollection,
 			ITaskCollection newCollection) {
-		// TODO Auto-generated method stub
-		return false;
+		for (ITask task : newCollection.getTasks()) {
+			if (!verifier.verifyTask(task)) {
+				return false;
+			}
+		}
+		//TODO implement a method editTasks in DataCache!?
+		data.editList(oldCollection, newCollection);
+		return true;
 	}
 
 	@Override
