@@ -23,7 +23,7 @@ public class LogicController implements ILogicController {
 	@Override
 	public boolean addList(ITaskCollection taskCollection) {
 		for (ITaskCollection list : data.getAllLists()) {
-			if (list.getName() != taskCollection.getName()) {
+			if (!list.getName().equals(taskCollection.getName())) {
 				data.addList(taskCollection);
 				return true;
 			}
@@ -35,7 +35,7 @@ public class LogicController implements ILogicController {
 	public boolean addLists(Collection<ITaskCollection> collection) {
 		for (ITaskCollection savedList : data.getAllLists()) {
 			for (ITaskCollection newList : collection) {
-				if (savedList.getName() == newList.getName()) {
+				if (savedList.getName().equals(newList.getName())) {
 					return false;
 				}
 			}
@@ -73,7 +73,7 @@ public class LogicController implements ILogicController {
 	public boolean editList(ITaskCollection oldCollection,
 			ITaskCollection newCollection) {
 		for (ITaskCollection list : data.getAllLists()) {
-			if (newCollection.getName() != list.getName()) {
+			if (!newCollection.getName().equals(list.getName())) {
 				data.editList(oldCollection, newCollection);
 				return true;
 			}
