@@ -5,7 +5,6 @@ import java.util.*;
 import se.chalmers.doit.core.*;
 import se.chalmers.doit.core.implementation.TaskCollection;
 import se.chalmers.doit.data.storage.IDataStorage;
-import se.chalmers.doit.data.storage.wrappers.ITaskCollectionWrapper;
 import se.chalmers.doit.data.storage.wrappers.implementation.TaskCollectionWrapper;
 
 /**
@@ -15,44 +14,45 @@ import se.chalmers.doit.data.storage.wrappers.implementation.TaskCollectionWrapp
  * @author Kaufmann
  */
 
-//TODO Add connections to DB
+// TODO Add connections to DB
+// TODO Refactor this to use a private methods internally instead
+
 public class DataStorage implements IDataStorage {
 
 	// TODO: Add hash maps :)
 	private Collection<ITaskCollection> lists = new ArrayList<ITaskCollection>();
 	private static int listIDEnumerator = 0; // TODO: Remove with db connection
 	private static int taskIDEnumerator = 0; // TODO: Remove with db connection
-	
+
 	@Override
 	public void addList(ITaskCollection collection) {
 		lists.add(new TaskCollectionWrapper(listIDEnumerator, collection));
 		listIDEnumerator++;
 	}
-	
+
 	@Override
 	public void addLists(Collection<ITaskCollection> collection) {
-		for(ITaskCollection t : collection){
+		for (ITaskCollection t : collection) {
 			addList(t);
 		}
-		// TODO Refactor this to use a private _addList method instead.
 	}
 
 	@Override
 	public void addTask(ITask task, ITaskCollection collection) {
-		Collection oldTasks = collection.getTasks();
+		Collection<ITask> oldTasks = collection.getTasks();
 		String oldName = collection.getName();
 		oldTasks.add(task);
-		if(lists.remove(collection)){
+		if (lists.remove(collection)) {
 			lists.add(new TaskCollection(oldName, oldTasks));
 		}
 	}
 
 	@Override
 	public void addTasks(Collection<ITask> tasks, ITaskCollection collection) {
-		Collection oldTasks = collection.getTasks();
+		Collection<ITask> oldTasks = collection.getTasks();
 		String oldName = collection.getName();
 		oldTasks.addAll(tasks);
-		if(lists.remove(collection)){
+		if (lists.remove(collection)) {
 			lists.add(new TaskCollection(oldName, oldTasks));
 		}
 	}
@@ -73,15 +73,24 @@ public class DataStorage implements IDataStorage {
 
 	@Override
 	public void editTask(ITask oldTask, ITask newTask) {
-		// TODO Auto-generated method stub
-
+		ITaskCollection tc = null;
+		for(ITaskCollection c : lists){
+			if(c.getTasks().contains(oldTask)){
+				tc = c;
+				break;
+			}
+		}
+		
+		if(tc != null){
+			removeTask(oldTask);
+			addTask(newTask, tc);
+		}
 	}
 
 	@Override
 	public Collection<ITaskCollection> getAllLists() {
 		Collection<ITaskCollection> ret = new ArrayList<ITaskCollection>();
-		for(ITaskCollection w : lists)
-		{
+		for (ITaskCollection w : lists) {
 			ret.add(w);
 		}
 		return ret;
@@ -90,7 +99,7 @@ public class DataStorage implements IDataStorage {
 	@Override
 	public Collection<ITask> getAllTasks() {
 		Collection<ITask> ret = new ArrayList<ITask>();
-		for(ITaskCollection w : lists){
+		for (ITaskCollection w : lists) {
 			ret.addAll(w.getTasks());
 		}
 		return ret;
@@ -98,31 +107,35 @@ public class DataStorage implements IDataStorage {
 
 	@Override
 	public void moveTask(ITask task, ITaskCollection collection) {
-		// TODO Auto-generated method stub
-
+		removeTask(task);
+		addTask(task, collection);
 	}
 
 	@Override
 	public void removeList(ITaskCollection collection) {
-		// TODO Auto-generated method stub
-
+		lists.remove(collection);
 	}
 
 	@Override
 	public void removeLists(Collection<ITaskCollection> collection) {
-		// TODO Auto-generated method stub
-
+		lists.removeAll(collection);
 	}
 
 	@Override
 	public void removeTask(ITask task) {
-		// TODO Auto-generated method stub
-
+		for(ITaskCollection c : lists){
+			if(c.getTasks().contains(task)){
+				Collection<ITask> col = c.getTasks();
+				col.remove(task);
+				editList(c, new TaskCollection(c.getName(), col));
+			}
+		}
 	}
 
 	@Override
 	public void removeTasks(Collection<ITask> listOfTasksToRemove) {
-		// TODO Auto-generated method stub
-
+		for(ITask t : listOfTasksToRemove){
+			removeTask(t);
+		}
 	}
 }
