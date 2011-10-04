@@ -27,7 +27,7 @@ public class DueDateComparatorStrategyTest extends AndroidTestCase {
 		task2 = new Task("Task2", "desc", null, date2, null, 0, false);
 	}
 
-	public void dueDateComparatorStrategyoBoolean() {
+	public void testDueDateComparatorStrategyBoolean() {
 		new DueDateComparatorStrategy(false);
 		new DueDateComparatorStrategy(true);
 	}

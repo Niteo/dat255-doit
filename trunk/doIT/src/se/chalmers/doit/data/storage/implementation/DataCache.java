@@ -4,7 +4,7 @@ import java.util.*;
 
 import se.chalmers.doit.core.*;
 import se.chalmers.doit.core.implementation.TaskCollection;
-import se.chalmers.doit.data.storage.IDataStorage;
+import se.chalmers.doit.data.storage.IDataCache;
 import se.chalmers.doit.data.storage.wrappers.implementation.TaskCollectionWrapper;
 
 /**
@@ -17,7 +17,7 @@ import se.chalmers.doit.data.storage.wrappers.implementation.TaskCollectionWrapp
 // TODO Add connections to DB
 // TODO Refactor this to use a private methods internally instead
 
-public class DataStorage implements IDataStorage {
+public class DataCache implements IDataCache {
 
 	// TODO: Add hash maps :)
 	private Collection<ITaskCollection> lists = new ArrayList<ITaskCollection>();
