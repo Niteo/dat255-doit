@@ -75,10 +75,22 @@ public class SortingComparator implements ISortingComparator {
 
 	}
 
+	private int sortByCompletion(final ITask t1, final ITask t2) {
+		if (t1.isCompleted() && !t2.isCompleted()) {
+			return 1;
+		} else if (!t1.isCompleted() && t2.isCompleted()) {
+			return -1;
+		} else {
+			return sortPrimary(t1, t2);
+		}
+	}
+
 	@Override
 	public int compare(final ITask t1, final ITask t2) {
 
-		return sortPrimary(t1, t2);
+		// Sorts first by completion, then sorts by primary, secondary and
+		// tertiary orders.
+		return sortByCompletion(t1, t2);
 	}
 
 	@Override
