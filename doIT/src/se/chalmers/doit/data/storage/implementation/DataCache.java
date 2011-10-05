@@ -136,7 +136,7 @@ public class DataCache implements IDataCache {
 	}
 
 	private boolean _addList(final ITaskCollection col) {
-		if (_listExists(col)) {
+		if (!_listExists(col)) {
 			return lists.add(col);
 		}
 		return false;
