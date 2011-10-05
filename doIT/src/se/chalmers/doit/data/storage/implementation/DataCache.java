@@ -136,7 +136,7 @@ public class DataCache implements IDataCache {
 	}
 
 	private boolean _addList(final ITaskCollection col) {
-		if (!lists.contains(col)) {
+		if (_listExists(col)) {
 			return lists.add(col);
 		}
 		return false;
@@ -147,7 +147,7 @@ public class DataCache implements IDataCache {
 			Collection<ITask> oldTasks = collection.getTasks();
 			oldTasks.add(task);
 			String oldName = collection.getName();
-			if (_removeList(collection)) {
+			if(!_listExists(collection) || _removeList(collection)){
 				return _addList(new TaskCollection(oldName, oldTasks));
 			}
 		}
@@ -180,5 +180,9 @@ public class DataCache implements IDataCache {
 			}
 		}
 		return false;
+	}
+	
+	private boolean _listExists(final ITaskCollection col) {
+		return lists.contains(col);
 	}
 }
