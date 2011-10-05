@@ -10,12 +10,13 @@ import se.chalmers.doit.logic.controller.ILogicController;
 import se.chalmers.doit.logic.verification.IDataVerifier;
 import se.chalmers.doit.logic.verification.implementation.DataVerifier;
 
-public class LogicController implements ILogicController {
+public final class LogicController implements ILogicController {
 
 	private final IDataVerifier verifier;
 	private final IDataCache data;
+	private static LogicController instance;
 
-	public LogicController() {
+	private LogicController() {
 		verifier = new DataVerifier();
 		data = new DataCache();
 	}
@@ -34,20 +35,18 @@ public class LogicController implements ILogicController {
 	}
 
 	@Override
-	public boolean addLists(Collection<ITaskCollection> collection) {
+	public int addLists(Collection<ITaskCollection> collection) {
 		if (data.getAllLists().size() == 0) {
-			data.addLists(collection);
-			return true;
+			return data.addLists(collection);
 		}
 		for (ITaskCollection savedList : data.getAllLists()) {
 			for (ITaskCollection newList : collection) {
 				if (savedList.getName().equals(newList.getName())) {
-					return false;
+					return 0;
 				}
 			}
 		}
-		data.addLists(collection);
-		return true;
+		return data.addLists(collection);
 	}
 
 	@Override
@@ -59,14 +58,13 @@ public class LogicController implements ILogicController {
 	}
 
 	@Override
-	public boolean addTasks(Collection<ITask> tasks, ITaskCollection collection) {
+	public int addTasks(Collection<ITask> tasks, ITaskCollection collection) {
 		for (ITask task : tasks) {
 			if (!verifier.verifyTask(task)) {
-				return false;
+				return 0;
 			}
 		}
-		data.addTasks(tasks, collection);
-		return true;
+		return data.addTasks(tasks, collection);
 	}
 
 	@Override
@@ -116,29 +114,36 @@ public class LogicController implements ILogicController {
 		return data.getAllTasks();
 	}
 
-	@Override
-	public void moveTask(ITask task, ITaskCollection taskCollection) {
-		data.moveTask(task, taskCollection);
+	public static synchronized ILogicController getInstance() {
+		if (instance == null) {
+			instance = new LogicController();
+		}
+		return instance;
 	}
 
 	@Override
-	public void removeList(ITaskCollection collection) {
-		data.removeList(collection);
+	public boolean moveTask(ITask task, ITaskCollection taskCollection) {
+		return data.moveTask(task, taskCollection);
 	}
 
 	@Override
-	public void removeLists(Collection<ITaskCollection> collection) {
-		data.removeLists(collection);
+	public boolean removeList(ITaskCollection collection) {
+		return data.removeList(collection);
 	}
 
 	@Override
-	public void removeTask(ITask task) {
-		data.removeTask(task);
+	public int removeLists(Collection<ITaskCollection> collection) {
+		return data.removeLists(collection);
 	}
 
 	@Override
-	public void removeTasks(Collection<ITask> listOfTasksToRemove) {
-		data.removeTasks(listOfTasksToRemove);
+	public boolean removeTask(ITask task) {
+		return data.removeTask(task);
+	}
+
+	@Override
+	public int removeTasks(Collection<ITask> listOfTasksToRemove) {
+		return data.removeTasks(listOfTasksToRemove);
 	}
 
 }
