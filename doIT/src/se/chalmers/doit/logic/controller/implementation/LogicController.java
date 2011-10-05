@@ -22,10 +22,12 @@ public class LogicController implements ILogicController {
 
 	@Override
 	public boolean addList(ITaskCollection taskCollection) {
+		if (data.getAllLists().size() == 0) {
+			return data.addList(taskCollection);
+		}
 		for (ITaskCollection list : data.getAllLists()) {
 			if (!list.getName().equals(taskCollection.getName())) {
-				data.addList(taskCollection);
-				return true;
+				return data.addList(taskCollection);
 			}
 		}
 		return false;
@@ -33,6 +35,10 @@ public class LogicController implements ILogicController {
 
 	@Override
 	public boolean addLists(Collection<ITaskCollection> collection) {
+		if (data.getAllLists().size() == 0) {
+			data.addLists(collection);
+			return true;
+		}
 		for (ITaskCollection savedList : data.getAllLists()) {
 			for (ITaskCollection newList : collection) {
 				if (savedList.getName().equals(newList.getName())) {
@@ -47,8 +53,7 @@ public class LogicController implements ILogicController {
 	@Override
 	public boolean addTask(ITask task, ITaskCollection collection) {
 		if (verifier.verifyTask(task)) {
-			data.addTask(task, collection);
-			return true;
+			return data.addTask(task, collection);
 		}
 		return false;
 	}
@@ -74,8 +79,7 @@ public class LogicController implements ILogicController {
 			ITaskCollection newCollection) {
 		for (ITaskCollection list : data.getAllLists()) {
 			if (!newCollection.getName().equals(list.getName())) {
-				data.editList(oldCollection, newCollection);
-				return true;
+				return data.editList(oldCollection, newCollection);
 			}
 		}
 		return false;
@@ -84,8 +88,7 @@ public class LogicController implements ILogicController {
 	@Override
 	public boolean editTask(ITask oldTask, ITask newTask) {
 		if (verifier.verifyTask(newTask)) {
-			data.editTask(oldTask, newTask);
-			return true;
+			return data.editTask(oldTask, newTask);
 		}
 		return false;
 	}
@@ -98,7 +101,7 @@ public class LogicController implements ILogicController {
 				return false;
 			}
 		}
-		//TODO implement a method editTasks in DataCache!?
+		// TODO implement a method editTasks in DataCache!?
 		data.editList(oldCollection, newCollection);
 		return true;
 	}
