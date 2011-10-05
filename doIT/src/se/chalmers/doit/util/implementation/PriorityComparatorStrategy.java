@@ -8,6 +8,10 @@ import se.chalmers.doit.util.IComparatorStrategy;
  * An implementation of IComparatorStrategy that compares the priorities of two
  * ITasks
  * 
+ * Default sorting order for priorities is descending, i.e for a priority p1
+ * with lower priority than another priority p2, (p1 > p2) is true. In layman's
+ * terms; high priorities is considered lower than low priorities.
+ * 
  * @author Karl Bristav
  * 
  */
@@ -31,9 +35,9 @@ public class PriorityComparatorStrategy implements IComparatorStrategy {
 		final IPriority p1 = task1.getPriority();
 		final IPriority p2 = task2.getPriority();
 
-		if (p1.compareTo(p2) > 0) {
+		if (p1.compareTo(p2) < 0) {
 			ret = 1;
-		} else if (p1.compareTo(p2) < 0) {
+		} else if (p1.compareTo(p2) > 0) {
 			ret = -1;
 		}
 

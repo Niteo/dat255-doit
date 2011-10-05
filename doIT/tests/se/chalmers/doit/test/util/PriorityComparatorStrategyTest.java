@@ -43,12 +43,12 @@ public class PriorityComparatorStrategyTest extends AndroidTestCase {
 		final IComparatorStrategy stratInv = new PriorityComparatorStrategy(
 				true);
 
-		assertTrue(strat.compare(t1, t2) == 1);
-		assertTrue(strat.compare(t2, t1) == -1);
+		assertTrue(strat.compare(t1, t2) == -1);
+		assertTrue(strat.compare(t2, t1) == 1);
 		assertTrue(strat.compare(t1, t1) == 0);
 
-		assertTrue(stratInv.compare(t1, t2) == -1);
-		assertTrue(stratInv.compare(t2, t1) == 1);
+		assertTrue(stratInv.compare(t1, t2) == 1);
+		assertTrue(stratInv.compare(t2, t1) == -1);
 		assertTrue(stratInv.compare(t1, t1) == 0);
 	}
 

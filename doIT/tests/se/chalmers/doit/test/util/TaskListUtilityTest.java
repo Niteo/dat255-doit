@@ -59,8 +59,8 @@ public class TaskListUtilityTest extends AndroidTestCase {
 
 		assertTrue(tc.indexOf(t1) == 0);
 		assertTrue(tc.indexOf(t2) == 1);
-		assertTrue(tc.indexOf(t3) == 2);
-		assertTrue(tc.indexOf(t4) == 3);
+		assertTrue(tc.indexOf(t3) == 3);
+		assertTrue(tc.indexOf(t4) == 2);
 		assertTrue(tc.indexOf(t5) == 4);
 
 	}
