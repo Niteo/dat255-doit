@@ -2,14 +2,13 @@ package se.chalmers.doit.data.storage;
 
 import java.util.Collection;
 
-import se.chalmers.doit.core.ITask;
-import se.chalmers.doit.core.ITaskCollection;
+import se.chalmers.doit.core.*;
 
 /**
  * An interface handling the data storage between the application and a generic
  * data storage
  * 
- * @author Karl Bristav
+ * @author Karl Bristav, Robert Kaufmann
  * 
  */
 public interface IDataCache {
@@ -19,16 +18,19 @@ public interface IDataCache {
 	 * 
 	 * @param collection
 	 *            The ITaskCollection to add
+	 * 
+	 * @return true if list was added, else false
 	 */
-	public void addList(ITaskCollection collection);
+	public boolean addList(ITaskCollection collection);
 
 	/**
 	 * Adds several lists to the data storage
 	 * 
 	 * @param collection
 	 *            A Collection containing the ITaskCollections to add
+	 * @return amount of lists added
 	 */
-	public void addLists(Collection<ITaskCollection> collection);
+	public int addLists(Collection<ITaskCollection> collection);
 
 	/**
 	 * Adds a task to a list in the data storage
@@ -37,8 +39,9 @@ public interface IDataCache {
 	 *            The ITask to be added
 	 * @param collection
 	 *            The ITaskCollection to which the ITask is added
+	 * @return true if task was added, else false
 	 */
-	public void addTask(ITask task, ITaskCollection collection);
+	public boolean addTask(ITask task, ITaskCollection collection);
 
 	/**
 	 * Adds several tasks to a list in the data storage
@@ -47,8 +50,9 @@ public interface IDataCache {
 	 *            a Collection of ITasks to be added
 	 * @param collection
 	 *            the ITaskCollection to which the ITasks is added
+	 * @return amount of lists added
 	 */
-	public void addTasks(Collection<ITask> tasks, ITaskCollection collection);
+	public int addTasks(Collection<ITask> tasks, ITaskCollection collection);
 
 	/**
 	 * Clears the data storage of all stored data
@@ -62,8 +66,9 @@ public interface IDataCache {
 	 *            The ITaskCollection to be replaced
 	 * @param newCollection
 	 *            The ITaskCollection to replace the old one
+	 * @return true if list was edited, false if not
 	 */
-	public void editList(ITaskCollection oldCollection,
+	public boolean editList(ITaskCollection oldCollection,
 			ITaskCollection newCollection);
 
 	/**
@@ -73,8 +78,9 @@ public interface IDataCache {
 	 *            The ITask to be replaced
 	 * @param newTask
 	 *            The ITask to replace the old one
+	 * @return true if task was edited, false if not
 	 */
-	public void editTask(ITask oldTask, ITask newTask);
+	public boolean editTask(ITask oldTask, ITask newTask);
 
 	/**
 	 * Returns a Collection of all the existing ITaskCollections
@@ -97,39 +103,43 @@ public interface IDataCache {
 	 *            The ITask to be moved
 	 * @param collection
 	 *            The ITaskCollection to which the ITask shall be moved
+	 * @return true if task was moved, false if not
 	 */
-	public void moveTask(ITask task, ITaskCollection collection);
+	public boolean moveTask(ITask task, ITaskCollection collection);
 
 	/**
 	 * Removes a list from the data storage
 	 * 
 	 * @param collection
 	 *            The ITaskCollection to be removed
+	 * @return true if list was removed, false if not
 	 */
-	public void removeList(ITaskCollection collection);
+	public boolean removeList(ITaskCollection collection);
 
 	/**
 	 * Removes several lists from the data storage
 	 * 
 	 * @param collection
 	 *            A Collection containing the ITaskCollections to be removed
+	 * @return amount of removed lists
 	 */
-	public void removeLists(Collection<ITaskCollection> collection);
+	public int removeLists(Collection<ITaskCollection> collection);
 
 	/**
 	 * Remove a task from the data storage
 	 * 
 	 * @param task
 	 *            The ITask to be removed
+	 * @return true if task was removed, false if not
 	 */
-	public void removeTask(ITask task);
+	public boolean removeTask(ITask task);
 
 	/**
 	 * Remove several tasks from the data storage
 	 * 
 	 * @param listOfTasksToRemove
 	 *            A Collection containing the ITasks to be removed
+	 * @return amount of removed tasks
 	 */
-	public void removeTasks(Collection<ITask> listOfTasksToRemove);
-
+	public int removeTasks(Collection<ITask> listOfTasksToRemove);
 }
