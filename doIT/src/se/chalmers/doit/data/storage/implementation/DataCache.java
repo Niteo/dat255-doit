@@ -5,7 +5,6 @@ import java.util.*;
 import se.chalmers.doit.core.*;
 import se.chalmers.doit.core.implementation.TaskCollection;
 import se.chalmers.doit.data.storage.IDataCache;
-import se.chalmers.doit.data.storage.wrappers.implementation.TaskCollectionWrapper;
 
 /**
  * Class storing cached data and delegating datachanges to ... TODO: Describe
@@ -15,76 +14,70 @@ import se.chalmers.doit.data.storage.wrappers.implementation.TaskCollectionWrapp
  */
 
 // TODO Add connections to DB
-// TODO Refactor this to use a private methods internally instead
 
 public class DataCache implements IDataCache {
 
-	// TODO: Add hash maps :)
-	private Collection<ITaskCollection> lists = new ArrayList<ITaskCollection>();
-	private static int listIDEnumerator = 0; // TODO: Remove with db connection
-	private static int taskIDEnumerator = 0; // TODO: Remove with db connection
+	// TODO: Add hash maps for ID's :)
+	private final Collection<ITaskCollection> lists = new ArrayList<ITaskCollection>();
 
 	@Override
-	public void addList(ITaskCollection collection) {
-		lists.add(new TaskCollectionWrapper(listIDEnumerator, collection));
-		listIDEnumerator++;
+	public boolean addList(final ITaskCollection collection) {
+		return _addList(collection);
 	}
 
 	@Override
-	public void addLists(Collection<ITaskCollection> collection) {
+	public int addLists(final Collection<ITaskCollection> collection) {
+		int nAdded = 0;
 		for (ITaskCollection t : collection) {
-			addList(t);
+			if (_addList(t)) {
+				nAdded++;
+			}
 		}
+		return nAdded;
 	}
 
 	@Override
-	public void addTask(ITask task, ITaskCollection collection) {
-		Collection<ITask> oldTasks = collection.getTasks();
-		String oldName = collection.getName();
-		oldTasks.add(task);
-		if (lists.remove(collection)) {
-			lists.add(new TaskCollection(oldName, oldTasks));
-		}
+	public boolean addTask(final ITask task, final ITaskCollection collection) {
+		return _addTask(task, collection);
 	}
 
 	@Override
-	public void addTasks(Collection<ITask> tasks, ITaskCollection collection) {
-		Collection<ITask> oldTasks = collection.getTasks();
-		String oldName = collection.getName();
-		oldTasks.addAll(tasks);
-		if (lists.remove(collection)) {
-			lists.add(new TaskCollection(oldName, oldTasks));
+	public int addTasks(final Collection<ITask> tasks,
+			final ITaskCollection collection) {
+		int nTasks = 0;
+		for (ITask t : tasks) {
+			if (_addTask(t, collection)) {
+				nTasks++;
+			}
 		}
+		return nTasks;
 	}
 
 	@Override
 	public void clearData() {
 		lists.clear();
-		listIDEnumerator = 0;
-		taskIDEnumerator = 0;
 	}
 
 	@Override
-	public void editList(ITaskCollection oldCollection,
-			ITaskCollection newCollection) {
-		lists.remove(oldCollection);
-		lists.add(newCollection);
+	public boolean editList(final ITaskCollection oldCollection,
+			final ITaskCollection newCollection) {
+		return _editList(oldCollection, newCollection);
 	}
 
 	@Override
-	public void editTask(ITask oldTask, ITask newTask) {
+	public boolean editTask(final ITask oldTask, final ITask newTask) {
 		ITaskCollection tc = null;
-		for(ITaskCollection c : lists){
-			if(c.getTasks().contains(oldTask)){
+		for (ITaskCollection c : lists) {
+			if (c.getTasks().contains(oldTask)) {
 				tc = c;
 				break;
 			}
 		}
-		
-		if(tc != null){
-			removeTask(oldTask);
-			addTask(newTask, tc);
+
+		if (tc != null) {
+			return (_removeTask(oldTask) && _addTask(newTask, tc));
 		}
+		return false;
 	}
 
 	@Override
@@ -106,36 +99,86 @@ public class DataCache implements IDataCache {
 	}
 
 	@Override
-	public void moveTask(ITask task, ITaskCollection collection) {
-		removeTask(task);
-		addTask(task, collection);
+	public boolean moveTask(final ITask task, final ITaskCollection collection) {
+		return (_removeTask(task) && _addTask(task, collection));
 	}
 
 	@Override
-	public void removeList(ITaskCollection collection) {
-		lists.remove(collection);
+	public boolean removeList(final ITaskCollection collection) {
+		return _removeList(collection);
 	}
 
 	@Override
-	public void removeLists(Collection<ITaskCollection> collection) {
-		lists.removeAll(collection);
-	}
-
-	@Override
-	public void removeTask(ITask task) {
-		for(ITaskCollection c : lists){
-			if(c.getTasks().contains(task)){
-				Collection<ITask> col = c.getTasks();
-				col.remove(task);
-				editList(c, new TaskCollection(c.getName(), col));
+	public int removeLists(final Collection<ITaskCollection> collection) {
+		int nLists = 0;
+		for (ITaskCollection c : collection) {
+			if (_removeList(c)) {
+				nLists++;
 			}
 		}
+		return nLists;
 	}
 
 	@Override
-	public void removeTasks(Collection<ITask> listOfTasksToRemove) {
-		for(ITask t : listOfTasksToRemove){
-			removeTask(t);
+	public boolean removeTask(final ITask task) {
+		return _removeTask(task);
+	}
+
+	@Override
+	public int removeTasks(final Collection<ITask> listOfTasksToRemove) {
+		int nTasks = 0;
+		for (ITask t : listOfTasksToRemove) {
+			if (_removeTask(t)) {
+				nTasks++;
+			}
 		}
+		return nTasks;
+	}
+
+	private boolean _addList(final ITaskCollection col) {
+		if (!lists.contains(col)) {
+			return lists.add(col);
+		}
+		return false;
+	}
+
+	private boolean _addTask(final ITask task, final ITaskCollection collection) {
+		if (!_taskExists(task)) {
+			Collection<ITask> oldTasks = collection.getTasks();
+			oldTasks.add(task);
+			String oldName = collection.getName();
+			if (_removeList(collection)) {
+				return _addList(new TaskCollection(oldName, oldTasks));
+			}
+		}
+		return false;
+	}
+
+	private boolean _editList(final ITaskCollection oc, final ITaskCollection nc) {
+		return (_removeList(oc) && _addList(nc));
+	}
+
+	private boolean _removeList(final ITaskCollection collection) {
+		return lists.remove(collection);
+	}
+
+	private boolean _removeTask(final ITask task) {
+		for (ITaskCollection c : lists) {
+			if (c.getTasks().contains(task)) {
+				Collection<ITask> col = c.getTasks();
+				col.remove(task);
+				return _editList(c, new TaskCollection(c.getName(), col));
+			}
+		}
+		return false;
+	}
+
+	private boolean _taskExists(final ITask task) {
+		for (ITaskCollection c : lists) {
+			if (c.getTasks().contains(task)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
