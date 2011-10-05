@@ -3,6 +3,7 @@ package se.chalmers.doit.test.logic.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.junit.After;
 import org.junit.Before;
 
 import se.chalmers.doit.core.ITask;
@@ -13,6 +14,12 @@ import se.chalmers.doit.logic.controller.ILogicController;
 import se.chalmers.doit.logic.controller.implementation.LogicController;
 import android.test.AndroidTestCase;
 
+/**
+ * Test class for LogicController.
+ *
+ * @author Boel
+ *
+ */
 public class LogicControllerTest extends AndroidTestCase {
 
 	private ITask task1;
@@ -29,7 +36,7 @@ public class LogicControllerTest extends AndroidTestCase {
 		task2 = new Task("TooLongTaskName123456789000000000", "I'm too long!",
 				false);
 		tasks = new ArrayList<ITask>();
-		controller = new LogicController();
+		controller = LogicController.getInstance();
 
 		emptyList = new TaskCollection("List2", tasks);
 
@@ -37,6 +44,12 @@ public class LogicControllerTest extends AndroidTestCase {
 
 		list1 = new TaskCollection("List1", tasks);
 
+	}
+
+	@Override
+	@After
+	public void tearDown() throws Exception {
+		controller.clearData();
 	}
 
 	public void testGetAllLists() {
@@ -59,8 +72,8 @@ public class LogicControllerTest extends AndroidTestCase {
 		lists.add(list1);
 		lists.add(emptyList);
 
-		assertTrue(controller.addLists(lists));
-		assertFalse(controller.addLists(lists));
+		assertTrue(controller.addLists(lists) == lists.size());
+		assertTrue(controller.addLists(lists) == 0);
 
 	}
 
@@ -70,9 +83,9 @@ public class LogicControllerTest extends AndroidTestCase {
 	}
 
 	public void testAddTasks() {
-		assertTrue(controller.addTasks(tasks, emptyList));
+		assertTrue(controller.addTasks(tasks, emptyList) == tasks.size());
 		tasks.add(task2);
-		assertFalse(controller.addTasks(tasks, emptyList));
+		assertTrue(controller.addTasks(tasks, emptyList) == 0);
 	}
 
 	public void testClearData() {
@@ -116,7 +129,7 @@ public class LogicControllerTest extends AndroidTestCase {
 
 	public void testEditTasks() {
 		tasks.add(new Task("new", "", false));
-		assertTrue(controller.addTasks(tasks, emptyList));
+		assertTrue(controller.addTasks(tasks, emptyList) == tasks.size());
 
 		Collection<ITask> newTasks = new ArrayList<ITask>();
 		newTasks.add(new Task("One", "", false));
@@ -133,23 +146,41 @@ public class LogicControllerTest extends AndroidTestCase {
 	}
 
 	public void testMoveTask() {
-		fail("Not yet implemented");
+		assertTrue(controller.addList(list1));
+		assertTrue(controller.addList(emptyList));
+
+		assertTrue(controller.moveTask(task1, emptyList));
 	}
 
 	public void testRemoveList() {
-		fail("Not yet implemented");
+		assertTrue(controller.addList(list1));
+		assertTrue(controller.removeList(list1));
 	}
 
 	public void testRemoveLists() {
-		fail("Not yet implemented");
+		Collection<ITaskCollection> lists = new ArrayList<ITaskCollection>();
+		assertTrue(controller.addList(list1));
+		assertTrue(controller.addList(emptyList));
+
+		lists.add(emptyList);
+		lists.add(list1);
+		assertTrue(controller.removeLists(lists) == 2);
 	}
 
 	public void testRemoveTask() {
-		fail("Not yet implemented");
+		assertTrue(controller.addTask(task1, list1));
+		assertTrue(controller.removeTask(task1));
 	}
 
 	public void testRemoveTasks() {
-		fail("Not yet implemented");
+		ITask temp = new Task("new task", "", false);
+		tasks.add(temp);
+
+		assertTrue(controller.addTask(task1, list1));
+		assertTrue(controller.addTask(temp, list1));
+
+		assertTrue(controller.removeTasks(tasks) == 2);
+
 	}
 
 }

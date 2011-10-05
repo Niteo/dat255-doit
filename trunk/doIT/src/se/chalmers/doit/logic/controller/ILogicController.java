@@ -27,9 +27,9 @@ public interface ILogicController {
 	 *
 	 * @param collection
 	 *            The lists to add
-	 * @return true if the lists were successfully added, false if not
+	 * @return the number of lists that were successfully added
 	 */
-	public boolean addLists(Collection<ITaskCollection> collection);
+	public int addLists(Collection<ITaskCollection> collection);
 
 	/**
 	 * Adds a task to the data storage.
@@ -49,9 +49,9 @@ public interface ILogicController {
 	 *            The tasks to add
 	 * @param collection
 	 *            The TaskCollection to add the tasks to
-	 * @return true if the tasks were successfully added, false if not
+	 * @return the number tasks that were successfully added
 	 */
-	public boolean addTasks(Collection<ITask> tasks, ITaskCollection collection);
+	public int addTasks(Collection<ITask> tasks, ITaskCollection collection);
 
 	/**
 	 * Clears all data from the data storage
@@ -114,39 +114,49 @@ public interface ILogicController {
 	 *            The task to move
 	 * @param taskCollection
 	 *            The location to move the task to
+	 *
+	 * @return true if the task was moved successfully, false if not
 	 */
-	public void moveTask(ITask task, ITaskCollection taskCollection);
+	public boolean moveTask(ITask task, ITaskCollection taskCollection);
 
 	/**
 	 * Removes a list from the data storage.
 	 *
 	 * @param collection
 	 *            The list to remove
+	 *
+	 * @return true if the list was removed successfully, false if not
 	 */
-	public void removeList(ITaskCollection collection);
+	public boolean removeList(ITaskCollection collection);
 
 	/**
 	 * Removes several lists from the data storage.
 	 *
 	 * @param collection
 	 *            The lists to remove
+	 *
+	 * @return the number of lists successfully removed
 	 */
-	public void removeLists(Collection<ITaskCollection> collection);
+	public int removeLists(Collection<ITaskCollection> collection);
 
 	/**
 	 * Removes a task from the data storage.
 	 *
 	 * @param task
 	 *            The task to remove
+	 *
+	 * @return true if the task was removed successfully, false if not
 	 */
-	public void removeTask(ITask task);
+	public boolean removeTask(ITask task);
 
 	/**
 	 * Removes several tasks from the data storage.
 	 *
 	 * @param listOfTasksToRemove
 	 *            The tasks to remove
+	 *
+	 * @return the number of tasks successfully removed
 	 */
-	public void removeTasks(Collection<ITask> listOfTasksToRemove);
+	public int removeTasks(Collection<ITask> listOfTasksToRemove);
 
 }
