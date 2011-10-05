@@ -1,21 +1,26 @@
 package se.chalmers.doit.presentation.activities.implementation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import se.chalmers.doit.R;
 import se.chalmers.doit.core.ITask;
+import se.chalmers.doit.core.ITaskCollection;
 import se.chalmers.doit.core.implementation.Task;
+import se.chalmers.doit.core.implementation.TaskCollection;
+import se.chalmers.doit.logic.controller.implementation.LogicController;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -33,21 +38,43 @@ public class DefaultListView extends ListActivity {
 
 	private final HashMap<Integer, Intent> intentMap = new HashMap<Integer, Intent>();
 	private TaskListAdapter adapter;
+	private ITaskCollection activeList;
 
+	private ITaskCollection _getActiveList() {
+		Collection<ITaskCollection> c = LogicController.getInstance().getAllLists();
+		SharedPreferences sp = getPreferences(MODE_PRIVATE);
+		String lastListShown = sp.getString("lastListShown", "Default");
+		for (ITaskCollection list : c) {
+			if (list.getName().equals(lastListShown)) {
+				return list;
+			}
+		}
+		return null;
+	}
+	
+	private void _populateList() {
+		activeList = _getActiveList();
+		if (activeList == null) {
+			LogicController.getInstance().addList(new TaskCollection("Default", new ArrayList<ITask>()));
+			activeList = _getActiveList();
+		}
+		else {
+			adapter.clear();
+			for(ITask task : activeList.getTasks()) {
+				adapter.add(task);
+			}
+		}
+	}
+	
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.defaultlistview);
-		final ArrayList<ITask> tasks = new ArrayList<ITask>();
-		tasks.add(new Task("Wash the dishes", "Use the Yes washing-up liquid",
-				false));
-		tasks.add(new Task("Do homework", "All chapters!", false));
-		adapter = new TaskListAdapter(this, tasks);
-
+		adapter = new TaskListAdapter(this, new ArrayList<ITask>());
+		
+		_populateList();
 		setListAdapter(adapter);
-
 		final ListView list = getListView();
-
 		registerForContextMenu(list);
 		final EditText edittext = (EditText) findViewById(R.id.quickaddedittext);
 		final Button quickAddButton = (Button) findViewById(R.id.quickaddbutton);
@@ -56,7 +83,7 @@ public class DefaultListView extends ListActivity {
 			@Override
 			public void onClick(final View v) {
 				if (edittext.getText().toString().length() > 0) {
-					addTask(new Task(edittext.getText().toString(), "", false));
+					_addTask(new Task(edittext.getText().toString(), "", false));
 				}
 			}
 		});
@@ -69,8 +96,8 @@ public class DefaultListView extends ListActivity {
 				if ((event.getAction() == KeyEvent.ACTION_DOWN)
 						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					// Perform action on key press
-					addTask(new Task(edittext.getText().toString(),
-							"Preset description.", false));
+					_addTask(new Task(edittext.getText().toString(),
+							"", false));
 					return true;
 				}
 				return false;
@@ -115,7 +142,7 @@ public class DefaultListView extends ListActivity {
 		case R.id.context_delete:
 			Toast.makeText(DefaultListView.this, "Deleted", Toast.LENGTH_SHORT)
 					.show();
-			deleteTask(adapter.getItem(info.position));
+			_deleteTask(adapter.getItem(info.position));
 			return true;
 		}
 		return true;
@@ -138,15 +165,19 @@ public class DefaultListView extends ListActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void addTask(final ITask task) {
-		adapter.add(task);
-		Toast.makeText(DefaultListView.this, "Task added!", Toast.LENGTH_SHORT)
-				.show();
-		((EditText) findViewById(R.id.quickaddedittext)).setText("");
+	private void _addTask(final ITask task) {
+		if (LogicController.getInstance().addTask(task, activeList)) {
+			_populateList();
+			Toast.makeText(DefaultListView.this, "Task added!", Toast.LENGTH_SHORT)
+			.show();
+			((EditText) findViewById(R.id.quickaddedittext)).setText("");
+		}
 	}
 
-	public void deleteTask(final ITask task) {
-		adapter.remove(task);
+	private void _deleteTask(final ITask task) {
+		if (LogicController.getInstance().removeTask(task)) {
+			_populateList();
+		}
 	}
 
 	@Override
