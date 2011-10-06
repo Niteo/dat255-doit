@@ -9,6 +9,7 @@ import android.test.AndroidTestCase;
 public class TaskCollectionTest extends AndroidTestCase{
 	
 	public void testTaskCollection() {
+		new TaskCollection("Namezzzzzz");
 		new TaskCollection("Name", new ArrayList<ITask>());
 	}
 

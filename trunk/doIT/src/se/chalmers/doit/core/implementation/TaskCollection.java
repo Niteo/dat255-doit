@@ -11,8 +11,14 @@ public class TaskCollection implements ITaskCollection {
 	private String name;
 	private Collection<ITask> taskCollection;
 
-	public TaskCollection(String name, Collection<ITask> taskCollection) {
+	
+	public TaskCollection (String name){
 		this.name = name;
+		this.taskCollection = new ArrayList<ITask>();
+	}
+	
+	public TaskCollection(String name, Collection<ITask> taskCollection) {
+		this(name);
 		this.taskCollection = new ArrayList<ITask>(taskCollection);
 	}
 
@@ -25,5 +31,4 @@ public class TaskCollection implements ITaskCollection {
 	public Collection<ITask> getTasks() {
 		return new ArrayList<ITask>(taskCollection);
 	}
-
 }
