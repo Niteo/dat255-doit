@@ -75,7 +75,7 @@ public class DataCache implements IDataCache {
 		}
 
 		if (tc != null) {
-			return ( _addTask(newTask, tc) &&_removeTask(oldTask));
+			return (_addTask(newTask, tc) && _removeTask(oldTask));
 		}
 		return false;
 	}
@@ -100,7 +100,10 @@ public class DataCache implements IDataCache {
 
 	@Override
 	public boolean moveTask(final ITask task, final ITaskCollection collection) {
-		return (_removeTask(task) && _addTask(task, collection));
+		if (_taskExists(task) && _removeTask(task)) {
+			return _addTask(task, collection);
+		}
+		return false;
 	}
 
 	@Override
@@ -144,11 +147,16 @@ public class DataCache implements IDataCache {
 
 	private boolean _addTask(final ITask task, final ITaskCollection collection) {
 		if (!_taskExists(task)) {
-			Collection<ITask> oldTasks = collection.getTasks();
-			oldTasks.add(task);
-			String oldName = collection.getName();
-			if(!_listExists(collection) || _removeList(collection)){
-				return _addList(new TaskCollection(oldName, oldTasks));
+			if (_listExists(collection)) {
+				Collection<ITask> oldTasks = collection.getTasks();
+				oldTasks.add(task);
+				return _editList(collection,
+						new TaskCollection(collection.getName(), oldTasks));
+			} else {
+				Collection<ITask> oldTasks = new ArrayList<ITask>();
+				oldTasks.add(task);
+				return _addList(new TaskCollection(collection.getName(),
+						oldTasks));
 			}
 		}
 		return false;
@@ -164,9 +172,8 @@ public class DataCache implements IDataCache {
 
 	private boolean _removeTask(final ITask task) {
 		for (ITaskCollection c : lists) {
-			if (c.getTasks().contains(task)) {
-				Collection<ITask> col = c.getTasks();
-				col.remove(task);
+			Collection<ITask> col = c.getTasks();
+			if (col.remove(task)) {
 				return _editList(c, new TaskCollection(c.getName(), col));
 			}
 		}
@@ -181,7 +188,7 @@ public class DataCache implements IDataCache {
 		}
 		return false;
 	}
-	
+
 	private boolean _listExists(final ITaskCollection col) {
 		return lists.contains(col);
 	}
