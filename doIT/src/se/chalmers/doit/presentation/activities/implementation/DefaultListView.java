@@ -133,8 +133,7 @@ public class DefaultListView extends ListActivity {
 		switch (item.getItemId()) {
 		case R.id.context_complete:
 		case R.id.context_incomplete:
-			adapter.insert(new Task(task, !task.isCompleted()), info.position);
-			adapter.remove(adapter.getItem(info.position + 1));
+			_toggleTaskCompleted(task);
 			return true;
 		case R.id.context_edit:
 			// TODO
@@ -176,6 +175,12 @@ public class DefaultListView extends ListActivity {
 
 	private void _deleteTask(final ITask task) {
 		if (LogicController.getInstance().removeTask(task)) {
+			_populateList();
+		}
+	}
+	
+	private void _toggleTaskCompleted(final ITask task) {
+		if (LogicController.getInstance().editTask(task, new Task(task, !task.isCompleted()))) {
 			_populateList();
 		}
 	}
