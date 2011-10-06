@@ -18,28 +18,29 @@ public final class R {
         public static final int icon=0x7f020004;
     }
     public static final class id {
-        public static final int bottom_control_bar=0x7f070007;
-        public static final int bottomtext=0x7f07000c;
-        public static final int context_complete=0x7f07000e;
-        public static final int context_complete_group=0x7f07000d;
-        public static final int context_delete=0x7f070011;
-        public static final int context_edit=0x7f070010;
-        public static final int context_incomplete=0x7f07000f;
-        public static final int header=0x7f07000a;
+        public static final int bottom_control_bar=0x7f070008;
+        public static final int bottomtext=0x7f07000d;
+        public static final int context_complete=0x7f07000f;
+        public static final int context_complete_group=0x7f07000e;
+        public static final int context_delete=0x7f070012;
+        public static final int context_edit=0x7f070011;
+        public static final int context_incomplete=0x7f070010;
+        public static final int header=0x7f07000b;
         public static final int imageView1=0x7f070001;
         public static final int linearLayout1=0x7f070000;
         public static final int linearLayout2=0x7f070002;
-        public static final int menu_about=0x7f070014;
-        public static final int menu_help=0x7f070015;
-        public static final int menu_settings=0x7f070013;
-        public static final int menu_statistics=0x7f070012;
-        public static final int quickaddbutton=0x7f070009;
-        public static final int quickaddedittext=0x7f070008;
+        public static final int listName=0x7f070007;
+        public static final int menu_about=0x7f070015;
+        public static final int menu_help=0x7f070016;
+        public static final int menu_settings=0x7f070014;
+        public static final int menu_statistics=0x7f070013;
+        public static final int quickaddbutton=0x7f07000a;
+        public static final int quickaddedittext=0x7f070009;
         public static final int textView1=0x7f070003;
         public static final int textView2=0x7f070004;
         public static final int textView4=0x7f070005;
         public static final int top_control_bar=0x7f070006;
-        public static final int toptext=0x7f07000b;
+        public static final int toptext=0x7f07000c;
     }
     public static final class layout {
         public static final int about=0x7f030000;
