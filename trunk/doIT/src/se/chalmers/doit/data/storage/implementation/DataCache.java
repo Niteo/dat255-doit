@@ -75,7 +75,7 @@ public class DataCache implements IDataCache {
 		}
 
 		if (tc != null) {
-			return (_removeTask(oldTask) && _addTask(newTask, tc));
+			return ( _addTask(newTask, tc) &&_removeTask(oldTask));
 		}
 		return false;
 	}
