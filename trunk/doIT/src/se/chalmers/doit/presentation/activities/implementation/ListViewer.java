@@ -14,15 +14,32 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnKeyListener;
 import android.widget.*;
 
-
 /**
  * View for viewing lists
+ * 
  * @author Kaufmann
- *
+ * 
  */
 public class ListViewer extends ListActivity {
 	private ListListAdapter adapter;
 	private final HashMap<Integer, Intent> intentMap = new HashMap<Integer, Intent>();
+
+	@Override
+	public boolean onContextItemSelected(final MenuItem item) {
+		final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
+				.getMenuInfo();
+		final ITaskCollection col = adapter.getItem(info.position);
+
+		switch (item.getItemId()) {
+			case R.id.lv_context_delete:
+				_deleteList(col);
+				return true;
+			case R.id.lv_context_edit:
+				// TODO
+				return true;
+		}
+		return false;
+	}
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -64,23 +81,6 @@ public class ListViewer extends ListActivity {
 	}
 
 	@Override
-	public boolean onContextItemSelected(final MenuItem item) {
-		final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
-				.getMenuInfo();
-		final ITaskCollection col = adapter.getItem(info.position);
-
-		switch (item.getItemId()) {
-			case R.id.lv_context_delete:
-				_deleteList(col);
-				return true;
-			case R.id.lv_context_edit:
-				//TODO
-				return true;
-		}
-		return false;
-	}
-	
-	@Override
 	public void onCreateContextMenu(final ContextMenu menu, final View v,
 			final ContextMenuInfo menuInfo) {
 		if (v.getId() == android.R.id.list) {
@@ -110,11 +110,22 @@ public class ListViewer extends ListActivity {
 	}
 
 	@Override
+	public void onWindowFocusChanged(final boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		_updateView();
+	}
+
+	public void updateView() {
+		_updateView();
+	}
+
+	@Override
 	protected void onListItemClick(final ListView l, final View v,
 			final int position, final long id) {
 		super.onListItemClick(l, v, position, id);
-		TaskCollection o = (TaskCollection)this.getListAdapter().getItem(position);
-		((MainActivity)getParent()).setActiveList(o.getName());
+		TaskCollection o = (TaskCollection) this.getListAdapter().getItem(
+				position);
+		((MainActivity) getParent()).setActiveList(o.getName());
 	}
 
 	private void _addList(final ITaskCollection col) {
@@ -145,10 +156,6 @@ public class ListViewer extends ListActivity {
 		for (ITaskCollection t : LogicController.getInstance().getAllLists()) {
 			adapter.add(t);
 		}
-	}
-	
-	public void updateView() {
-		_updateView();
 	}
 
 	private void _updateView() {

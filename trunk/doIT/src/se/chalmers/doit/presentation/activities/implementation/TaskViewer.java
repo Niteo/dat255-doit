@@ -119,6 +119,12 @@ public class TaskViewer extends ListActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	public void onWindowFocusChanged(final boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		_updateView();
+	}
+
 	public void setActiveList(final String name) {
 		SharedPreferences sp = getPreferences(MODE_PRIVATE);
 		SharedPreferences.Editor edit = sp.edit();
