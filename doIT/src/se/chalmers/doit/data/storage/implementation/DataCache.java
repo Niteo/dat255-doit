@@ -4,7 +4,7 @@ import java.util.*;
 
 import se.chalmers.doit.core.*;
 import se.chalmers.doit.core.implementation.TaskCollection;
-import se.chalmers.doit.data.storage.IDataCache;
+import se.chalmers.doit.data.storage.IDataStorage;
 
 /**
  * Class storing cached data and delegating datachanges to ... TODO: Describe
@@ -15,7 +15,7 @@ import se.chalmers.doit.data.storage.IDataCache;
 
 // TODO Add connections to DB
 
-public class DataCache implements IDataCache {
+public class DataCache implements IDataStorage {
 
 	// TODO: Add hash maps for ID's :)
 	private final Collection<ITaskCollection> lists = new ArrayList<ITaskCollection>();
