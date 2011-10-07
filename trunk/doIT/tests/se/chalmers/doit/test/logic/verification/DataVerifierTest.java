@@ -17,13 +17,16 @@ public class DataVerifierTest extends AndroidTestCase {
 	@Before
 	public void setUp() throws Exception {
 
-		String longString = "";
-		String shortString = "";
+		final StringBuilder sb = new StringBuilder();
+		String longString;
+		String shortString;
 
 		for (int i = 0; i < 32; i++) {
-			longString += "a";
-			shortString += "a";
+			sb.append("a");
 		}
+
+		shortString = sb.toString();
+		longString = sb.toString();
 
 		longString += "a";
 
