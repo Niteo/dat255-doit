@@ -1,11 +1,16 @@
 package se.chalmers.doit.logic.controller.implementation;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
+import se.chalmers.doit.core.IStatisticalData;
 import se.chalmers.doit.core.ITask;
 import se.chalmers.doit.core.ITaskCollection;
 import se.chalmers.doit.data.storage.IDataStorage;
+import se.chalmers.doit.data.storage.IStatisticsDataStorage;
 import se.chalmers.doit.data.storage.implementation.DataCache;
+import se.chalmers.doit.data.storage.implementation.StatisticsDataCache;
 import se.chalmers.doit.logic.controller.ILogicController;
 import se.chalmers.doit.logic.verification.IDataVerifier;
 import se.chalmers.doit.logic.verification.implementation.DataVerifier;
@@ -14,10 +19,12 @@ public final class LogicController implements ILogicController {
 
 	private final IDataVerifier verifier;
 	private final IDataStorage data;
+	private final IStatisticsDataStorage statistics;
 	private static LogicController instance;
 
 	private LogicController() {
 		verifier = new DataVerifier();
+		statistics = new StatisticsDataCache();
 		data = new DataCache();
 	}
 
@@ -28,6 +35,7 @@ public final class LogicController implements ILogicController {
 		}
 		for (final ITaskCollection list : data.getAllLists()) {
 			if (!list.getName().equals(taskCollection.getName())) {
+				incrementNumberOfCreatedLists(1);
 				return data.addList(taskCollection);
 			}
 		}
@@ -46,12 +54,14 @@ public final class LogicController implements ILogicController {
 				}
 			}
 		}
+		incrementNumberOfCreatedLists(collection.size());
 		return data.addLists(collection);
 	}
 
 	@Override
 	public boolean addTask(final ITask task, final ITaskCollection collection) {
 		if (verifier.verifyTask(task)) {
+			incrementNumberOfCreatedTasks(1);
 			return data.addTask(task, collection);
 		}
 		return false;
@@ -65,6 +75,7 @@ public final class LogicController implements ILogicController {
 				return 0;
 			}
 		}
+		incrementNumberOfCreatedTasks(tasks.size());
 		return data.addTasks(tasks, collection);
 	}
 
@@ -130,22 +141,144 @@ public final class LogicController implements ILogicController {
 
 	@Override
 	public boolean removeList(final ITaskCollection collection) {
+		incrementNumberOfDeletedLists(1);
 		return data.removeList(collection);
 	}
 
 	@Override
 	public int removeLists(final Collection<ITaskCollection> collection) {
+		incrementNumberOfDeletedLists(collection.size());
 		return data.removeLists(collection);
 	}
 
 	@Override
 	public boolean removeTask(final ITask task) {
+		incrementNumberOfDeletedTasks(1);
 		return data.removeTask(task);
 	}
 
 	@Override
 	public int removeTasks(final Collection<ITask> listOfTasksToRemove) {
+		incrementNumberOfDeletedTasks(listOfTasksToRemove.size());
 		return data.removeTasks(listOfTasksToRemove);
+	}
+
+	@Override
+	public int getNumberOfCreatedTasks(final int pastDays) {
+		int retVal = 0;
+		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
+			retVal += d.getCreatedTasks();
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public int getNumberOfFinishedTasks(final int pastDays) {
+		int retVal = 0;
+		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
+			retVal += d.getFinishedTasks();
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public int getNumberOfOverdueTasks(final int pastDays) {
+		int retVal = 0;
+		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
+			retVal += d.getOverdueTasks();
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public int getNumberOfDeletedTasks(final int pastDays) {
+		int retVal = 0;
+		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
+			retVal += d.getDeletedTasks();
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public int getNumberOfCreatedLists(final int pastDays) {
+		int retVal = 0;
+		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
+			retVal += d.getCreatedLists();
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public int getNumberOfDeletedLists(final int pastDays) {
+		int retVal = 0;
+		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
+			retVal += d.getDeletedLists();
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public void incrementNumberOfCreatedTasks(final int amount) {
+		statistics.reportCreatedTasks(amount, new Date());
+
+	}
+
+	@Override
+	public void incrementNumberOfFinishedTasks(final int amount) {
+		statistics.reportFinishedTasks(amount, new Date());
+
+	}
+
+	@Override
+	public void incrementNumberOfOverdueTasks(final int amount) {
+		statistics.reportOverdueTasks(amount, new Date());
+
+	}
+
+	@Override
+	public void incrementNumberOfDeletedTasks(final int amount) {
+		statistics.reportDeletedTasks(amount, new Date());
+
+	}
+
+	@Override
+	public void incrementNumberOfCreatedLists(final int amount) {
+		statistics.reportCreatedLists(amount, new Date());
+
+	}
+
+	@Override
+	public void incrementNumberOfDeletedLists(final int amount) {
+		statistics.reportDeletedLists(amount, new Date());
+
+	}
+
+	private Collection<IStatisticalData> _getDataForInterval(final int interval) {
+
+		final Collection<IStatisticalData> retList = new ArrayList<IStatisticalData>();
+
+		final Date tempDate = new Date();
+
+		tempDate.setSeconds(0);
+		tempDate.setMinutes(0);
+		tempDate.setHours(0);
+
+		final Date date = new Date(tempDate.getTime() - 86400000 * interval);
+
+		for (final IStatisticalData d : statistics.getStatisticsData()) {
+			if (d.getDate().compareTo(date) > 0) {
+				retList.add(d);
+			}
+		}
+
+		return retList;
+
 	}
 
 }
