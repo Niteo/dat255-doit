@@ -5,4 +5,13 @@
     <string name="help">doIT Help: </string>
     <string name="quick_add_hint">New task..</string>
     <string name="empty_list">This list is empty.</string>
+    
+    <string name="interval_prompt"> </string>
+    <string-array name="interval_array">
+        <item>all time</item>
+        <item>last 30 days</item>
+        <item>last 7 days</item>
+        <item>today</item>
+    </string-array>
+    
 </resources>
