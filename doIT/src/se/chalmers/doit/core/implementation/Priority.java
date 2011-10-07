@@ -3,14 +3,14 @@ package se.chalmers.doit.core.implementation;
 import se.chalmers.doit.core.IPriority;
 
 public class Priority implements IPriority {
-	private byte value;
+	private final byte value;
 
-	public Priority(byte value) {
+	public Priority(final byte value) {
 		this.value = value;
 	}
 
 	@Override
-	public int compareTo(IPriority priority) {
+	public int compareTo(final IPriority priority) {
 		if (value > priority.getValue()) {
 			return 1;
 		} else if (value < priority.getValue()) {
@@ -21,7 +21,7 @@ public class Priority implements IPriority {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (o instanceof Priority) {
 			return ((Priority) o).getValue() == value;
 		}
@@ -38,5 +38,10 @@ public class Priority implements IPriority {
 		int hash = 101;
 		hash = 500501 * hash + value;
 		return hash;
+	}
+
+	@Override
+	public String toString() {
+		return new String("" + value);
 	}
 }

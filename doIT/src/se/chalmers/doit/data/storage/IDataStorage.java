@@ -2,16 +2,17 @@ package se.chalmers.doit.data.storage;
 
 import java.util.Collection;
 
-import se.chalmers.doit.core.*;
+import se.chalmers.doit.core.ITask;
+import se.chalmers.doit.core.ITaskCollection;
 
 /**
- * An interface handling the data storage between the application and a generic
- * data storage
+ * An interface handling the storage of tasks and lists between the application
+ * and an arbitrary data storage module
  * 
  * @author Karl Bristav, Robert Kaufmann
  * 
  */
-public interface IDataCache {
+public interface IDataStorage {
 
 	/**
 	 * Adds a List to the data storage
