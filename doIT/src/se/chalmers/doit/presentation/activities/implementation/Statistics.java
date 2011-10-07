@@ -3,7 +3,10 @@ package se.chalmers.doit.presentation.activities.implementation;
 import java.util.HashMap;
 
 import se.chalmers.doit.R;
+import se.chalmers.doit.logic.controller.ILogicController;
+import se.chalmers.doit.logic.controller.implementation.LogicController;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,18 +22,30 @@ import android.widget.TextView;
  */
 public class Statistics extends Activity {
 
-	private int daysInterval = -1;
+	private int daysInterval;
 	private Spinner intervalSpinner;
 	private ArrayAdapter<CharSequence> adapter;
-	private HashMap<String, Integer> map = new HashMap<String, Integer>();
+	private HashMap<String, Integer> intervalMap = new HashMap<String, Integer>();
+	private HashMap<Integer, Integer> positionMap = new HashMap<Integer, Integer>();
+	private ILogicController controller;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.statistics);
 
+		_init();
+	}
+
+	private void _init() {
+		controller = LogicController.getInstance();
+
 		_initHashMap();
-		_init(daysInterval);
+
+		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+		daysInterval = preferences.getInt("current", -1);
+
+		_update(daysInterval);
 
 		intervalSpinner = (Spinner) findViewById(R.id.intervalSpinner);
 
@@ -50,7 +65,13 @@ public class Statistics extends Activity {
 							if (item.toString() != null) {
 								String s = item.toString();
 								daysInterval = _findInterval(s);
-								_init(daysInterval);
+								_update(daysInterval);
+
+								SharedPreferences sp = getPreferences(MODE_PRIVATE);
+								SharedPreferences.Editor edit = sp.edit();
+
+								edit.putInt("current", daysInterval);
+								edit.commit();
 							}
 						}
 					}
@@ -60,19 +81,17 @@ public class Statistics extends Activity {
 						// Nothing happens
 					}
 				});
+		intervalSpinner.setSelection(_findPosition(new Integer(daysInterval)));
 	}
 
-	private void _init(int interval) {
-		// TODO: use methods from a controller
+	private void _update(int interval) {
+		_setCompletedTasksNumber(controller.getNumberOfFinishedTasks(interval));
+		_setCreatedTasksNumber(controller.getNumberOfCreatedTasks(interval));
+		_setDeletedTasksNumber(controller.getNumberOfDeletedTasks(interval));
+		_setExpiredTasksNumber(controller.getNumberOfOverdueTasks(interval));
 
-		//Dummy methods for testing the gui, to be removed
-		_setCompletedTasksNumber(interval);
-		_setCreatedTasksNumber(interval);
-		_setDeletedTasksNumber(interval);
-		_setExpiredTasksNumber(interval);
-
-		_setCreatedListsNumber(interval);
-		_setDeletedListsNumber(interval);
+		_setCreatedListsNumber(controller.getNumberOfCreatedLists(interval));
+		_setDeletedListsNumber(controller.getNumberOfDeletedLists(interval));
 	}
 
 	private void _setCreatedTasksNumber(int amount) {
@@ -106,21 +125,33 @@ public class Statistics extends Activity {
 	}
 
 	private void _initHashMap() {
-		map.clear();
+		intervalMap.clear();
+		positionMap.clear();
 
 		String[] array = getResources()
 				.getStringArray((R.array.interval_array));
 
 		// Maps the strings from the spinner to correspond to an interval
-		map.put(array[0], new Integer(-1));
-		map.put(array[1], new Integer(30));
-		map.put(array[2], new Integer(7));
-		map.put(array[3], new Integer(0));
+		intervalMap.put(array[0], new Integer(-1));
+		intervalMap.put(array[1], new Integer(30));
+		intervalMap.put(array[2], new Integer(7));
+		intervalMap.put(array[3], new Integer(0));
+
+		positionMap.put(new Integer(-1), new Integer(0));
+		positionMap.put(new Integer(30), new Integer(1));
+		positionMap.put(new Integer(7), new Integer(2));
+		positionMap.put(new Integer(0), new Integer(3));
+
 
 	}
 
 	@SuppressWarnings("boxing")
 	private int _findInterval(String s) {
-		return map.get(s);
+		return intervalMap.get(s);
+	}
+
+	@SuppressWarnings("boxing")
+	private int _findPosition(Integer value){
+		return positionMap.get(value);
 	}
 }
