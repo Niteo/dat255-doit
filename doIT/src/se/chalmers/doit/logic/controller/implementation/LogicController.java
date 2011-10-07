@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import se.chalmers.doit.core.ITask;
 import se.chalmers.doit.core.ITaskCollection;
-import se.chalmers.doit.data.storage.IDataCache;
+import se.chalmers.doit.data.storage.IDataStorage;
 import se.chalmers.doit.data.storage.implementation.DataCache;
 import se.chalmers.doit.logic.controller.ILogicController;
 import se.chalmers.doit.logic.verification.IDataVerifier;
@@ -13,7 +13,7 @@ import se.chalmers.doit.logic.verification.implementation.DataVerifier;
 public final class LogicController implements ILogicController {
 
 	private final IDataVerifier verifier;
-	private final IDataCache data;
+	private final IDataStorage data;
 	private static LogicController instance;
 
 	private LogicController() {
@@ -22,11 +22,11 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public boolean addList(ITaskCollection taskCollection) {
+	public boolean addList(final ITaskCollection taskCollection) {
 		if (data.getAllLists().size() == 0) {
 			return data.addList(taskCollection);
 		}
-		for (ITaskCollection list : data.getAllLists()) {
+		for (final ITaskCollection list : data.getAllLists()) {
 			if (!list.getName().equals(taskCollection.getName())) {
 				return data.addList(taskCollection);
 			}
@@ -35,12 +35,12 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public int addLists(Collection<ITaskCollection> collection) {
+	public int addLists(final Collection<ITaskCollection> collection) {
 		if (data.getAllLists().size() == 0) {
 			return data.addLists(collection);
 		}
-		for (ITaskCollection savedList : data.getAllLists()) {
-			for (ITaskCollection newList : collection) {
+		for (final ITaskCollection savedList : data.getAllLists()) {
+			for (final ITaskCollection newList : collection) {
 				if (savedList.getName().equals(newList.getName())) {
 					return 0;
 				}
@@ -50,7 +50,7 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public boolean addTask(ITask task, ITaskCollection collection) {
+	public boolean addTask(final ITask task, final ITaskCollection collection) {
 		if (verifier.verifyTask(task)) {
 			return data.addTask(task, collection);
 		}
@@ -58,8 +58,9 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public int addTasks(Collection<ITask> tasks, ITaskCollection collection) {
-		for (ITask task : tasks) {
+	public int addTasks(final Collection<ITask> tasks,
+			final ITaskCollection collection) {
+		for (final ITask task : tasks) {
 			if (!verifier.verifyTask(task)) {
 				return 0;
 			}
@@ -73,9 +74,9 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public boolean editList(ITaskCollection oldCollection,
-			ITaskCollection newCollection) {
-		for (ITaskCollection list : data.getAllLists()) {
+	public boolean editList(final ITaskCollection oldCollection,
+			final ITaskCollection newCollection) {
+		for (final ITaskCollection list : data.getAllLists()) {
 			if (!newCollection.getName().equals(list.getName())) {
 				return data.editList(oldCollection, newCollection);
 			}
@@ -84,7 +85,7 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public boolean editTask(ITask oldTask, ITask newTask) {
+	public boolean editTask(final ITask oldTask, final ITask newTask) {
 		if (verifier.verifyTask(newTask)) {
 			return data.editTask(oldTask, newTask);
 		}
@@ -92,9 +93,9 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public boolean editTasks(ITaskCollection oldCollection,
-			ITaskCollection newCollection) {
-		for (ITask task : newCollection.getTasks()) {
+	public boolean editTasks(final ITaskCollection oldCollection,
+			final ITaskCollection newCollection) {
+		for (final ITask task : newCollection.getTasks()) {
 			if (!verifier.verifyTask(task)) {
 				return false;
 			}
@@ -122,27 +123,28 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public boolean moveTask(ITask task, ITaskCollection taskCollection) {
+	public boolean moveTask(final ITask task,
+			final ITaskCollection taskCollection) {
 		return data.moveTask(task, taskCollection);
 	}
 
 	@Override
-	public boolean removeList(ITaskCollection collection) {
+	public boolean removeList(final ITaskCollection collection) {
 		return data.removeList(collection);
 	}
 
 	@Override
-	public int removeLists(Collection<ITaskCollection> collection) {
+	public int removeLists(final Collection<ITaskCollection> collection) {
 		return data.removeLists(collection);
 	}
 
 	@Override
-	public boolean removeTask(ITask task) {
+	public boolean removeTask(final ITask task) {
 		return data.removeTask(task);
 	}
 
 	@Override
-	public int removeTasks(Collection<ITask> listOfTasksToRemove) {
+	public int removeTasks(final Collection<ITask> listOfTasksToRemove) {
 		return data.removeTasks(listOfTasksToRemove);
 	}
 
