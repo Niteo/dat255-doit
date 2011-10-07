@@ -8,57 +8,96 @@
 package se.chalmers.doit;
 
 public final class R {
+    public static final class array {
+        public static final int interval_array=0x7f060000;
+    }
     public static final class attr {
     }
     public static final class drawable {
-        public static final int ic_menu_gallery=0x7f020000;
-        public static final int ic_menu_help=0x7f020001;
-        public static final int ic_menu_info_details=0x7f020002;
-        public static final int ic_menu_manage=0x7f020003;
-        public static final int icon=0x7f020004;
+        public static final int ic_menu_agenda=0x7f020000;
+        public static final int ic_menu_gallery=0x7f020001;
+        public static final int ic_menu_help=0x7f020002;
+        public static final int ic_menu_info_details=0x7f020003;
+        public static final int ic_menu_manage=0x7f020004;
+        public static final int ic_menu_mark=0x7f020005;
+        public static final int icon=0x7f020006;
     }
     public static final class id {
-        public static final int bottom_control_bar=0x7f070008;
-        public static final int bottomtext=0x7f07000d;
-        public static final int context_complete=0x7f07000f;
-        public static final int context_complete_group=0x7f07000e;
-        public static final int context_delete=0x7f070012;
-        public static final int context_edit=0x7f070011;
-        public static final int context_incomplete=0x7f070010;
-        public static final int header=0x7f07000b;
-        public static final int imageView1=0x7f070001;
-        public static final int linearLayout1=0x7f070000;
-        public static final int linearLayout2=0x7f070002;
-        public static final int listName=0x7f070007;
-        public static final int menu_about=0x7f070015;
-        public static final int menu_help=0x7f070016;
-        public static final int menu_settings=0x7f070014;
-        public static final int menu_statistics=0x7f070013;
-        public static final int quickaddbutton=0x7f07000a;
-        public static final int quickaddedittext=0x7f070009;
-        public static final int textView1=0x7f070003;
-        public static final int textView2=0x7f070004;
-        public static final int textView4=0x7f070005;
-        public static final int top_control_bar=0x7f070006;
-        public static final int toptext=0x7f07000c;
+        public static final int bottom_control_bar=0x7f080027;
+        public static final int bottomtext=0x7f080024;
+        public static final int completedTasks=0x7f080011;
+        public static final int completedTasksNumber=0x7f080012;
+        public static final int context_complete=0x7f08002b;
+        public static final int context_complete_group=0x7f08002a;
+        public static final int context_delete=0x7f08002e;
+        public static final int context_edit=0x7f08002d;
+        public static final int context_incomplete=0x7f08002c;
+        public static final int createdLists=0x7f08001c;
+        public static final int createdListsNumber=0x7f08001d;
+        public static final int createdTasks=0x7f08000e;
+        public static final int createdTasksNumber=0x7f08000f;
+        public static final int deletedLists=0x7f08001f;
+        public static final int deletedListsNumber=0x7f080020;
+        public static final int deletedTasks=0x7f080014;
+        public static final int deletedTasksNumber=0x7f080015;
+        public static final int expiredTasks=0x7f080017;
+        public static final int expiredTasksNumber=0x7f080018;
+        public static final int header=0x7f08000a;
+        public static final int imageView1=0x7f080001;
+        public static final int intervalSpinner=0x7f080022;
+        public static final int linearLayout1=0x7f080000;
+        public static final int linearLayout2=0x7f080002;
+        public static final int listHeader=0x7f08001a;
+        public static final int listName=0x7f080026;
+        public static final int lv_addlistbutton=0x7f080009;
+        public static final int lv_addlistedittext=0x7f080008;
+        public static final int lv_bottom_control_bar=0x7f080007;
+        public static final int lv_context_delete=0x7f080030;
+        public static final int lv_context_edit=0x7f08002f;
+        public static final int lv_top_control_bar=0x7f080006;
+        public static final int menu_about=0x7f080033;
+        public static final int menu_help=0x7f080034;
+        public static final int menu_settings=0x7f080032;
+        public static final int menu_statistics=0x7f080031;
+        public static final int quickaddbutton=0x7f080029;
+        public static final int quickaddedittext=0x7f080028;
+        public static final int showInterval=0x7f080021;
+        public static final int tableLayout1=0x7f08000c;
+        public static final int tableRow1=0x7f08000d;
+        public static final int tableRow2=0x7f080010;
+        public static final int tableRow3=0x7f080013;
+        public static final int tableRow4=0x7f080016;
+        public static final int tableRow5=0x7f080019;
+        public static final int tableRow6=0x7f08001b;
+        public static final int tableRow7=0x7f08001e;
+        public static final int taskHeader=0x7f08000b;
+        public static final int textView1=0x7f080003;
+        public static final int textView2=0x7f080004;
+        public static final int textView4=0x7f080005;
+        public static final int top_control_bar=0x7f080025;
+        public static final int toptext=0x7f080023;
     }
     public static final class layout {
         public static final int about=0x7f030000;
-        public static final int defaultlistview=0x7f030001;
-        public static final int help=0x7f030002;
-        public static final int preferences_layout=0x7f030003;
-        public static final int statistics=0x7f030004;
-        public static final int task_list_item=0x7f030005;
+        public static final int help=0x7f030001;
+        public static final int listview=0x7f030002;
+        public static final int mainview=0x7f030003;
+        public static final int preferences_layout=0x7f030004;
+        public static final int statistics=0x7f030005;
+        public static final int task_list_item=0x7f030006;
+        public static final int taskview=0x7f030007;
     }
     public static final class menu {
-        public static final int context_menu=0x7f060000;
-        public static final int menu=0x7f060001;
+        public static final int context_menu=0x7f070000;
+        public static final int listview_context_menu=0x7f070001;
+        public static final int menu=0x7f070002;
     }
     public static final class string {
         public static final int about=0x7f050001;
         public static final int app_name=0x7f050000;
         public static final int empty_list=0x7f050004;
         public static final int help=0x7f050002;
+        public static final int interval_prompt=0x7f050005;
         public static final int quick_add_hint=0x7f050003;
     }
     public static final class xml {
