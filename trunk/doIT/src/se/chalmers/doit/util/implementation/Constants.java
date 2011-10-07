@@ -15,4 +15,6 @@ public final class Constants {
 	public static final byte PRIORITY_DEFAULT = PRIORITY_MEDIUM;
 
 	public static final int CUSTOMPOSITION_DEFAULT = 0;
+
+	public static final int MILLISECONDS_IN_A_DAY = 86400000;
 }
