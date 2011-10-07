@@ -286,4 +286,10 @@ public final class LogicController implements ILogicController {
 
 	}
 
+	@Override
+	public void clearStatisticsData() {
+		statistics.clearData();
+
+	}
+
 }

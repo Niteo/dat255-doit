@@ -54,7 +54,7 @@ public interface ILogicController {
 	public int addTasks(Collection<ITask> tasks, ITaskCollection collection);
 
 	/**
-	 * Clears all data from the data storage
+	 * Clears all task- and list-related data from the data storage
 	 */
 	public void clearData();
 
@@ -159,28 +159,116 @@ public interface ILogicController {
 	 */
 	public int removeTasks(Collection<ITask> listOfTasksToRemove);
 
+	/**
+	 * Returns the number of created tasks between the current day and a
+	 * specified number of days in the past.
+	 * 
+	 * @param pastDays
+	 *            The number of days in the pasts the interval will reach to
+	 * @return The number of created tasks for the interval
+	 */
 	public int getNumberOfCreatedTasks(int pastDays);
 
+	/**
+	 * Returns the number of finished tasks between the current day and a
+	 * specified number of days in the past.
+	 * 
+	 * @param pastDays
+	 *            The number of days in the pasts the interval will reach to
+	 * @return The number of finished tasks for the interval
+	 */
 	public int getNumberOfFinishedTasks(int pastDays);
 
+	/**
+	 * Returns the number of overdue tasks between the current day and a
+	 * specified number of days in the past.
+	 * 
+	 * @param pastDays
+	 *            The number of days in the pasts the interval will reach to
+	 * @return The number of overdue tasks for the interval
+	 */
 	public int getNumberOfOverdueTasks(int pastDays);
 
+	/**
+	 * Returns the number of deleted tasks between the current day and a
+	 * specified number of days in the past.
+	 * 
+	 * @param pastDays
+	 *            The number of days in the pasts the interval will reach to
+	 * @return The number of deleted tasks for the interval
+	 */
 	public int getNumberOfDeletedTasks(int pastDays);
 
+	/**
+	 * Returns the number of created lists between the current day and a
+	 * specified number of days in the past.
+	 * 
+	 * @param pastDays
+	 *            The number of days in the pasts the interval will reach to
+	 * @return The number of created lists for the interval
+	 */
 	public int getNumberOfCreatedLists(int pastDays);
 
+	/**
+	 * Returns the number of deleted lists between the current day and a
+	 * specified number of days in the past.
+	 * 
+	 * @param pastDays
+	 *            The number of days in the pasts the interval will reach to
+	 * @return The number of deleted lists for the interval
+	 */
 	public int getNumberOfDeletedLists(int pastDays);
 
+	/**
+	 * Increments the number of created tasks by a given amount
+	 * 
+	 * @param amount
+	 *            the amount to increment
+	 */
 	public void incrementNumberOfCreatedTasks(int amount);
 
+	/**
+	 * Increments the number of finished tasks by a given amount
+	 * 
+	 * @param amount
+	 *            the amount to increment
+	 */
 	public void incrementNumberOfFinishedTasks(int amount);
 
+	/**
+	 * Increments the number of overdue tasks by a given amount
+	 * 
+	 * @param amount
+	 *            the amount to increment
+	 */
 	public void incrementNumberOfOverdueTasks(int amount);
 
+	/**
+	 * Increments the number of deleted tasks by a given amount
+	 * 
+	 * @param amount
+	 *            the amount to increment
+	 */
 	public void incrementNumberOfDeletedTasks(int amount);
 
+	/**
+	 * Increments the number of created lists by a given amount
+	 * 
+	 * @param amount
+	 *            the amount to increment
+	 */
 	public void incrementNumberOfCreatedLists(int amount);
 
+	/**
+	 * Increments the number of deleted lists by a given amount
+	 * 
+	 * @param amount
+	 *            the amount to increment
+	 */
 	public void incrementNumberOfDeletedLists(int amount);
 
+	/**
+	 * Clears all statistics-related data from the data storage
+	 */
+	public void clearStatisticsData();
 }
