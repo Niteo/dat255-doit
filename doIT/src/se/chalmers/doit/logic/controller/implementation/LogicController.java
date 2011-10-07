@@ -269,7 +269,12 @@ public final class LogicController implements ILogicController {
 		tempDate.setMinutes(0);
 		tempDate.setHours(0);
 
-		final Date date = new Date(tempDate.getTime() - 86400000 * interval);
+		Date date = new Date(tempDate.getTime() - (long) 86400000
+				* (long) interval);
+
+		if (interval < 0) {
+			date = new Date(0);
+		}
 
 		for (final IStatisticalData d : statistics.getStatisticsData()) {
 			if (d.getDate().compareTo(date) > 0) {
