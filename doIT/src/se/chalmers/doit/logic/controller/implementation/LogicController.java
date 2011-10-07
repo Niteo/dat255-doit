@@ -31,6 +31,7 @@ public final class LogicController implements ILogicController {
 	@Override
 	public boolean addList(final ITaskCollection taskCollection) {
 		if (data.getAllLists().size() == 0) {
+			incrementNumberOfCreatedLists(1);
 			return data.addList(taskCollection);
 		}
 		for (final ITaskCollection list : data.getAllLists()) {
