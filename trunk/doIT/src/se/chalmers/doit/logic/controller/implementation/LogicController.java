@@ -7,6 +7,7 @@ import java.util.Date;
 import se.chalmers.doit.core.IStatisticalData;
 import se.chalmers.doit.core.ITask;
 import se.chalmers.doit.core.ITaskCollection;
+import se.chalmers.doit.core.implementation.Task;
 import se.chalmers.doit.data.storage.IDataStorage;
 import se.chalmers.doit.data.storage.IStatisticsDataStorage;
 import se.chalmers.doit.data.storage.implementation.DataCache;
@@ -83,6 +84,18 @@ public final class LogicController implements ILogicController {
 	@Override
 	public void clearData() {
 		data.clearData();
+	}
+
+	@Override
+	public boolean completeTask(ITask task) {
+		incrementNumberOfFinishedTasks(1);
+		return data.editTask(task, new Task(task, true));
+	}
+
+	@Override
+	public boolean decompleteTask(ITask task) {
+		incrementNumberOfFinishedTasks(-1);
+		return data.editTask(task, new Task(task, false));
 	}
 
 	@Override
