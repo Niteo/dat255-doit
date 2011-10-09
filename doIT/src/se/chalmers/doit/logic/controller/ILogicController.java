@@ -289,4 +289,14 @@ public interface ILogicController {
 	 * Clears all statistics-related data from the data storage
 	 */
 	public void clearStatisticsData();
+
+	/**
+	 * Toggles the completion state of a task.
+	 *
+	 * @param task
+	 *            The task to toggle
+	 * @return task true if the task's completion state was successfully
+	 *         changed, false if not
+	 */
+	public boolean toggleTaskCompleted(ITask task);
 }

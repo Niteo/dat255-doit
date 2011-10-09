@@ -88,14 +88,12 @@ public final class LogicController implements ILogicController {
 
 	@Override
 	public boolean completeTask(ITask task) {
-		incrementNumberOfFinishedTasks(1);
-		return data.editTask(task, new Task(task, true));
+		return _completeTask(task);
 	}
 
 	@Override
 	public boolean decompleteTask(ITask task) {
-		incrementNumberOfFinishedTasks(-1);
-		return data.editTask(task, new Task(task, false));
+		return _decompleteTask(task);
 	}
 
 	@Override
@@ -273,6 +271,20 @@ public final class LogicController implements ILogicController {
 
 	}
 
+	@Override
+	public void clearStatisticsData() {
+		statistics.clearData();
+
+	}
+
+	@Override
+	public boolean toggleTaskCompleted(ITask task) {
+		if (task.isCompleted()) {
+			return _decompleteTask(task);
+		}
+		return _completeTask(task);
+	}
+
 	private Collection<IStatisticalData> _getDataForInterval(final int interval) {
 
 		final Collection<IStatisticalData> retList = new ArrayList<IStatisticalData>();
@@ -300,10 +312,14 @@ public final class LogicController implements ILogicController {
 
 	}
 
-	@Override
-	public void clearStatisticsData() {
-		statistics.clearData();
+	private boolean _completeTask(ITask task) {
+		incrementNumberOfFinishedTasks(1);
+		return data.editTask(task, new Task(task, true));
+	}
 
+	private boolean _decompleteTask(ITask task) {
+		incrementNumberOfFinishedTasks(-1);
+		return data.editTask(task, new Task(task, false));
 	}
 
 }
