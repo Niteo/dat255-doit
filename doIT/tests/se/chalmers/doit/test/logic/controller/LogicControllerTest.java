@@ -75,20 +75,28 @@ public class LogicControllerTest extends AndroidTestCase {
 		lists.add(list1);
 		lists.add(emptyList);
 
+		int size = controller.getAllLists().size();
+
 		assertTrue(controller.addLists(lists) == lists.size());
+		assertTrue(controller.getAllLists().size() == size + 2);
 		assertTrue(controller.addLists(lists) == 0);
+		assertTrue(controller.getAllLists().size() == size + 2);
 
 	}
 
 	public void testAddTask() {
 		assertTrue(controller.addTask(task1, emptyList));
+		int size = controller.getAllTasks().size();
 		assertFalse(controller.addTask(task2, emptyList));
+		assertTrue(controller.getAllTasks().size() == size);
 	}
 
 	public void testAddTasks() {
 		assertTrue(controller.addTasks(tasks, emptyList) == tasks.size());
+		int size = controller.getAllTasks().size();
 		tasks.add(task2);
 		assertTrue(controller.addTasks(tasks, emptyList) == 0);
+		assertTrue(controller.getAllTasks().size() == size);
 	}
 
 	public void testClearData() {
@@ -157,7 +165,9 @@ public class LogicControllerTest extends AndroidTestCase {
 
 	public void testRemoveList() {
 		assertTrue(controller.addList(list1));
+		int size = controller.getAllLists().size();
 		assertTrue(controller.removeList(list1));
+		assertTrue(controller.getAllLists().size() == size - 1);
 	}
 
 	public void testRemoveLists() {
@@ -165,14 +175,20 @@ public class LogicControllerTest extends AndroidTestCase {
 		assertTrue(controller.addList(list1));
 		assertTrue(controller.addList(emptyList));
 
+		int size = controller.getAllLists().size();
+
 		lists.add(emptyList);
 		lists.add(list1);
 		assertTrue(controller.removeLists(lists) == 2);
+		assertTrue(controller.getAllLists().size() == size - 2);
 	}
 
 	public void testRemoveTask() {
 		assertTrue(controller.addTask(task1, list1));
+		int size = controller.getAllTasks().size();
+
 		assertTrue(controller.removeTask(task1));
+		assertTrue(controller.getAllTasks().size() == size - 1);
 	}
 
 	public void testRemoveTasks() {
@@ -182,7 +198,10 @@ public class LogicControllerTest extends AndroidTestCase {
 		assertTrue(controller.addTask(task1, list1));
 		assertTrue(controller.addTask(temp, list1));
 
+		int size = controller.getAllTasks().size();
+
 		assertTrue(controller.removeTasks(tasks) == 2);
+		assertTrue(controller.getAllTasks().size() == size - 2);
 
 	}
 
