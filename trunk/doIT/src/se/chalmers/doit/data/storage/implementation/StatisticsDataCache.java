@@ -49,10 +49,10 @@ public class StatisticsDataCache implements IStatisticsDataStorage {
 			final IStatisticalData newData = _getExistingData(date);
 
 			if (newData != null) {
-				newData.incrementFinishedTasks(numberOfFinishedTasks);
+				newData.addFinishedTasks(numberOfFinishedTasks);
 			} else {
 				final StatisticalData anotherData = new StatisticalData(date);
-				anotherData.incrementFinishedTasks(numberOfFinishedTasks);
+				anotherData.addFinishedTasks(numberOfFinishedTasks);
 
 				data.add(anotherData);
 			}
@@ -68,10 +68,10 @@ public class StatisticsDataCache implements IStatisticsDataStorage {
 			final IStatisticalData newData = _getExistingData(date);
 
 			if (newData != null) {
-				newData.incrementCreatedTasks(numberOfCreatedTasks);
+				newData.addCreatedTasks(numberOfCreatedTasks);
 			} else {
 				final StatisticalData anotherData = new StatisticalData(date);
-				anotherData.incrementCreatedTasks(numberOfCreatedTasks);
+				anotherData.addCreatedTasks(numberOfCreatedTasks);
 
 				data.add(anotherData);
 			}
@@ -87,10 +87,10 @@ public class StatisticsDataCache implements IStatisticsDataStorage {
 			final IStatisticalData newData = _getExistingData(date);
 
 			if (newData != null) {
-				newData.incrementDeletedTasks(numberOfDeletedTasks);
+				newData.addDeletedTasks(numberOfDeletedTasks);
 			} else {
 				final StatisticalData anotherData = new StatisticalData(date);
-				anotherData.incrementDeletedTasks(numberOfDeletedTasks);
+				anotherData.addDeletedTasks(numberOfDeletedTasks);
 
 				data.add(anotherData);
 			}
@@ -106,10 +106,10 @@ public class StatisticsDataCache implements IStatisticsDataStorage {
 			final IStatisticalData newData = _getExistingData(date);
 
 			if (newData != null) {
-				newData.incrementOverdueTasks(numberOfOverdueTasks);
+				newData.addOverdueTasks(numberOfOverdueTasks);
 			} else {
 				final StatisticalData anotherData = new StatisticalData(date);
-				anotherData.incrementOverdueTasks(numberOfOverdueTasks);
+				anotherData.addOverdueTasks(numberOfOverdueTasks);
 
 				data.add(anotherData);
 			}
@@ -125,10 +125,10 @@ public class StatisticsDataCache implements IStatisticsDataStorage {
 			final IStatisticalData newData = _getExistingData(date);
 
 			if (newData != null) {
-				newData.incrementCreatedLists(numberOfCreatedLists);
+				newData.addCreatedLists(numberOfCreatedLists);
 			} else {
 				final StatisticalData anotherData = new StatisticalData(date);
-				anotherData.incrementCreatedLists(numberOfCreatedLists);
+				anotherData.addCreatedLists(numberOfCreatedLists);
 
 				data.add(anotherData);
 			}
@@ -144,10 +144,10 @@ public class StatisticsDataCache implements IStatisticsDataStorage {
 			final IStatisticalData newData = _getExistingData(date);
 
 			if (newData != null) {
-				newData.incrementDeletedLists(numberOfDeletedLists);
+				newData.addDeletedLists(numberOfDeletedLists);
 			} else {
 				final StatisticalData anotherData = new StatisticalData(date);
-				anotherData.incrementDeletedLists(numberOfDeletedLists);
+				anotherData.addDeletedLists(numberOfDeletedLists);
 
 				data.add(anotherData);
 			}

@@ -243,7 +243,7 @@ public interface ILogicController {
 	 * @param amount
 	 *            the amount to increment
 	 */
-	public void incrementNumberOfCreatedTasks(int amount);
+	public void addNumberOfCreatedTasks(int amount);
 
 	/**
 	 * Increments the number of finished tasks by a given amount
@@ -251,7 +251,7 @@ public interface ILogicController {
 	 * @param amount
 	 *            the amount to increment
 	 */
-	public void incrementNumberOfFinishedTasks(int amount);
+	public void addNumberOfFinishedTasks(int amount);
 
 	/**
 	 * Increments the number of overdue tasks by a given amount
@@ -259,7 +259,7 @@ public interface ILogicController {
 	 * @param amount
 	 *            the amount to increment
 	 */
-	public void incrementNumberOfOverdueTasks(int amount);
+	public void addNumberOfOverdueTasks(int amount);
 
 	/**
 	 * Increments the number of deleted tasks by a given amount
@@ -267,7 +267,7 @@ public interface ILogicController {
 	 * @param amount
 	 *            the amount to increment
 	 */
-	public void incrementNumberOfDeletedTasks(int amount);
+	public void addNumberOfDeletedTasks(int amount);
 
 	/**
 	 * Increments the number of created lists by a given amount
@@ -275,7 +275,7 @@ public interface ILogicController {
 	 * @param amount
 	 *            the amount to increment
 	 */
-	public void incrementNumberOfCreatedLists(int amount);
+	public void addNumberOfCreatedLists(int amount);
 
 	/**
 	 * Increments the number of deleted lists by a given amount
@@ -283,7 +283,7 @@ public interface ILogicController {
 	 * @param amount
 	 *            the amount to increment
 	 */
-	public void incrementNumberOfDeletedLists(int amount);
+	public void addNumberOfDeletedLists(int amount);
 
 	/**
 	 * Clears all statistics-related data from the data storage
