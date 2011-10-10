@@ -50,6 +50,7 @@ public class LogicControllerTest extends AndroidTestCase {
 	@After
 	public void tearDown() throws Exception {
 		controller.clearData();
+		controller.clearStatisticsData();
 	}
 
 	public void testGetAllLists() {
@@ -183,4 +184,87 @@ public class LogicControllerTest extends AndroidTestCase {
 
 	}
 
+	public void completeTaskTest() {
+		controller.addList(list1);
+		assertTrue(controller.completeTask(task1));
+	}
+
+	public void decompleteTaskTest() {
+		controller.addList(list1);
+		assertTrue(controller.decompleteTask(task1));
+	}
+
+	public void toggleTaskCompletedTest() {
+		controller.addList(list1);
+		assertTrue(controller.completeTask(task1));
+
+		assertTrue(controller.toggleTaskCompleted(task1));
+		assertFalse(task1.isCompleted());
+
+		assertTrue(controller.toggleTaskCompleted(task1));
+		assertTrue(task1.isCompleted());
+	}
+
+	public void getNumberOfCreatedTasksTest() {
+		assertTrue(controller.getNumberOfCreatedTasks(-1) == 0);
+	}
+
+	public void getNumberOfFinishedTasksTest() {
+		assertTrue(controller.getNumberOfFinishedTasks(-1) == 0);
+	}
+
+	public void getNumberOfOverdueTasksTest() {
+		assertTrue(controller.getNumberOfOverdueTasks(-1) == 0);
+	}
+
+	public void getNumberOfDeletedTasksTest() {
+		assertTrue(controller.getNumberOfDeletedTasks(-1) == 0);
+	}
+
+	public void getNumberOfCreatedListsTest() {
+		assertTrue(controller.getNumberOfCreatedLists(-1)==0);
+	}
+
+	public void getNumberOfDeletedListsTest() {
+		assertTrue(controller.getNumberOfDeletedLists(-1)==0);
+	}
+
+	public void incrementNumberOfCreatedTasksTest() {
+		controller.incrementNumberOfCreatedTasks(1);
+		assertTrue(controller.getNumberOfCreatedTasks(-1)==1);
+	}
+
+	public void incrementNumberOfFinishedTasksTest() {
+		controller.incrementNumberOfFinishedTasks(1);
+		assertTrue(controller.getNumberOfFinishedTasks(-1)==1);
+	}
+
+	public void incrementNumberOfOverdueTasksTest() {
+		controller.incrementNumberOfOverdueTasks(1);
+		assertTrue(controller.getNumberOfOverdueTasks(-1)==1);
+	}
+
+	public void incrementNumberOfDeletedTasksTest() {
+		controller.incrementNumberOfDeletedTasks(1);
+		assertTrue(controller.getNumberOfDeletedTasks(-1)==1);
+	}
+
+	public void incrementNumberOfCreatedListsTest() {
+		controller.incrementNumberOfCreatedLists(1);
+		assertTrue(controller.getNumberOfCreatedLists(-1)==1);
+	}
+
+	public void incrementNumberOfDeletedListsTest() {
+		controller.incrementNumberOfDeletedLists(1);
+		assertTrue(controller.getNumberOfDeletedLists(-1)==1);
+	}
+
+	public void clearStatisticsDataTest() {
+		controller.incrementNumberOfDeletedLists(1);
+
+		controller.clearStatisticsData();
+
+		assertTrue(controller.getNumberOfDeletedLists(-1)==0);
+
+	}
 }

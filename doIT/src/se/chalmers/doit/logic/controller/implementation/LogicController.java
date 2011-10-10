@@ -32,12 +32,12 @@ public final class LogicController implements ILogicController {
 	@Override
 	public boolean addList(final ITaskCollection taskCollection) {
 		if (data.getAllLists().size() == 0) {
-			addNumberOfCreatedLists(1);
+			incrementNumberOfCreatedLists(1);
 			return data.addList(taskCollection);
 		}
 		for (final ITaskCollection list : data.getAllLists()) {
 			if (!list.getName().equals(taskCollection.getName())) {
-				addNumberOfCreatedLists(1);
+				incrementNumberOfCreatedLists(1);
 				return data.addList(taskCollection);
 			}
 		}
@@ -56,14 +56,14 @@ public final class LogicController implements ILogicController {
 				}
 			}
 		}
-		addNumberOfCreatedLists(collection.size());
+		incrementNumberOfCreatedLists(collection.size());
 		return data.addLists(collection);
 	}
 
 	@Override
 	public boolean addTask(final ITask task, final ITaskCollection collection) {
 		if (verifier.verifyTask(task)) {
-			addNumberOfCreatedTasks(1);
+			incrementNumberOfCreatedTasks(1);
 			return data.addTask(task, collection);
 		}
 		return false;
@@ -77,7 +77,7 @@ public final class LogicController implements ILogicController {
 				return 0;
 			}
 		}
-		addNumberOfCreatedTasks(tasks.size());
+		incrementNumberOfCreatedTasks(tasks.size());
 		return data.addTasks(tasks, collection);
 	}
 
@@ -153,25 +153,25 @@ public final class LogicController implements ILogicController {
 
 	@Override
 	public boolean removeList(final ITaskCollection collection) {
-		addNumberOfDeletedLists(1);
+		incrementNumberOfDeletedLists(1);
 		return data.removeList(collection);
 	}
 
 	@Override
 	public int removeLists(final Collection<ITaskCollection> collection) {
-		addNumberOfDeletedLists(collection.size());
+		incrementNumberOfDeletedLists(collection.size());
 		return data.removeLists(collection);
 	}
 
 	@Override
 	public boolean removeTask(final ITask task) {
-		addNumberOfDeletedTasks(1);
+		incrementNumberOfDeletedTasks(1);
 		return data.removeTask(task);
 	}
 
 	@Override
 	public int removeTasks(final Collection<ITask> listOfTasksToRemove) {
-		addNumberOfDeletedTasks(listOfTasksToRemove.size());
+		incrementNumberOfDeletedTasks(listOfTasksToRemove.size());
 		return data.removeTasks(listOfTasksToRemove);
 	}
 
@@ -236,37 +236,37 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public void addNumberOfCreatedTasks(final int amount) {
+	public void incrementNumberOfCreatedTasks(final int amount) {
 		statistics.reportCreatedTasks(amount, new Date());
 
 	}
 
 	@Override
-	public void addNumberOfFinishedTasks(final int amount) {
+	public void incrementNumberOfFinishedTasks(final int amount) {
 		statistics.reportFinishedTasks(amount, new Date());
 
 	}
 
 	@Override
-	public void addNumberOfOverdueTasks(final int amount) {
+	public void incrementNumberOfOverdueTasks(final int amount) {
 		statistics.reportOverdueTasks(amount, new Date());
 
 	}
 
 	@Override
-	public void addNumberOfDeletedTasks(final int amount) {
+	public void incrementNumberOfDeletedTasks(final int amount) {
 		statistics.reportDeletedTasks(amount, new Date());
 
 	}
 
 	@Override
-	public void addNumberOfCreatedLists(final int amount) {
+	public void incrementNumberOfCreatedLists(final int amount) {
 		statistics.reportCreatedLists(amount, new Date());
 
 	}
 
 	@Override
-	public void addNumberOfDeletedLists(final int amount) {
+	public void incrementNumberOfDeletedLists(final int amount) {
 		statistics.reportDeletedLists(amount, new Date());
 
 	}
@@ -313,12 +313,11 @@ public final class LogicController implements ILogicController {
 	}
 
 	private boolean _completeTask(final ITask task) {
-		addNumberOfFinishedTasks(1);
+		incrementNumberOfFinishedTasks(1);
 		return data.editTask(task, new Task(task, true));
 	}
 
 	private boolean _decompleteTask(final ITask task) {
-		addNumberOfFinishedTasks(-1);
 		return data.editTask(task, new Task(task, false));
 	}
 
