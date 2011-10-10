@@ -38,7 +38,7 @@ public class TaskViewer extends ListActivity {
 				_toggleTaskCompleted(task);
 				return true;
 			case R.id.context_edit:
-				// TODO
+				// TODO Add edit ruta :)
 				return true;
 			case R.id.context_delete:
 				_deleteTask(adapter.getItem(info.position));
@@ -184,8 +184,7 @@ public class TaskViewer extends ListActivity {
 	}
 
 	private void _toggleTaskCompleted(final ITask task) {
-		if (LogicController.getInstance().editTask(task,
-				new Task(task, !task.isCompleted()))) {
+		if (LogicController.getInstance().toggleTaskCompleted(task)) {
 			_updateView();
 		}
 	}
