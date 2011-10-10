@@ -1,11 +1,14 @@
 package se.chalmers.doit.test.data.storage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.junit.Before;
 
-import se.chalmers.doit.core.*;
-import se.chalmers.doit.core.implementation.*;
+import se.chalmers.doit.core.ITask;
+import se.chalmers.doit.core.ITaskCollection;
+import se.chalmers.doit.core.implementation.Task;
+import se.chalmers.doit.core.implementation.TaskCollection;
 import se.chalmers.doit.data.storage.implementation.DataCache;
 import android.test.AndroidTestCase;
 
@@ -17,7 +20,8 @@ import android.test.AndroidTestCase;
 public class DataCacheTest extends AndroidTestCase {
 
 	private DataCache cache;
-	
+
+	@Override
 	@Before
 	public void setUp() throws Exception {
 		cache = new DataCache();
@@ -160,14 +164,14 @@ public class DataCacheTest extends AndroidTestCase {
 		TaskCollection tc2 = new TaskCollection("tc2");
 		TaskCollection tc3 = new TaskCollection("tc3");
 		TaskCollection tc4 = new TaskCollection("tc4");
-		
+
 		cache.addList(tc1);
 		cache.addList(tc2);
 		cache.addList(tc3);
 		cache.addList(tc4);
-		
+
 		cache.removeList(tc2);
-		
+
 		assertTrue(cache.getAllLists().contains(tc1));
 		assertFalse(cache.getAllLists().contains(tc2));
 		assertTrue(cache.getAllLists().contains(tc3));
@@ -179,18 +183,18 @@ public class DataCacheTest extends AndroidTestCase {
 		TaskCollection tc2 = new TaskCollection("tc2");
 		TaskCollection tc3 = new TaskCollection("tc3");
 		TaskCollection tc4 = new TaskCollection("tc4");
-		
+
 		cache.addList(tc1);
 		cache.addList(tc2);
 		cache.addList(tc3);
 		cache.addList(tc4);
-		
+
 		ArrayList<ITaskCollection> list = new ArrayList<ITaskCollection>();
 		list.add(tc2);
 		list.add(tc4);
-		
+
 		cache.removeLists(list);
-		
+
 		assertTrue(cache.getAllLists().contains(tc1));
 		assertFalse(cache.getAllLists().contains(tc2));
 		assertTrue(cache.getAllLists().contains(tc3));
@@ -202,17 +206,17 @@ public class DataCacheTest extends AndroidTestCase {
 		Task t2 = new Task("t2", "blubb", false);
 		Task t3 = new Task("t3", "blubb", false);
 		Task t4 = new Task("t4", "blubb", false);
-		
+
 		TaskCollection col = new TaskCollection("Default");
-		
+
 		cache.addList(col);
 		cache.addTask(t1, col);
 		cache.addTask(t2, col);
 		cache.addTask(t3, col);
 		cache.addTask(t4, col);
-		
+
 		cache.removeTask(t2);
-		
+
 		assertTrue(cache.getAllTasks().contains(t1));
 		assertFalse(cache.getAllTasks().contains(t2));
 		assertTrue(cache.getAllTasks().contains(t3));
@@ -224,20 +228,20 @@ public class DataCacheTest extends AndroidTestCase {
 		Task t2 = new Task("t2", "blubb", false);
 		Task t3 = new Task("t3", "blubb", false);
 		Task t4 = new Task("t4", "blubb", false);
-		
+
 		TaskCollection col = new TaskCollection("Default");
-		
+
 		cache.addList(col);
 		cache.addTask(t1, col);
 		cache.addTask(t2, col);
 		cache.addTask(t3, col);
 		cache.addTask(t4, col);
-		
+
 		ArrayList<ITask> list = new ArrayList<ITask>();
 		list.add(t2);
 		list.add(t4);
 		cache.removeTasks(list);
-		
+
 		assertTrue(cache.getAllTasks().contains(t1));
 		assertFalse(cache.getAllTasks().contains(t2));
 		assertTrue(cache.getAllTasks().contains(t3));

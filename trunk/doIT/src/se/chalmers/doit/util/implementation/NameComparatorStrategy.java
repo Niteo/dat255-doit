@@ -6,14 +6,15 @@ import se.chalmers.doit.util.IComparatorStrategy;
 /**
  * An implementation of IComparatorStrategy that compares the names of two
  * ITasks
- * 
+ *
  * Default sorting order for names is ascending.
- * 
+ *
  * @author Karl Bristav
- * 
+ *
  */
 public class NameComparatorStrategy implements IComparatorStrategy {
 
+	private static final long serialVersionUID = -1055558718854705999L;
 	private final boolean invertedSortOrder;
 
 	/**
