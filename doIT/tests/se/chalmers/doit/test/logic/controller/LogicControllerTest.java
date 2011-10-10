@@ -16,9 +16,9 @@ import android.test.AndroidTestCase;
 
 /**
  * Test class for LogicController.
- * 
+ *
  * @author Boel
- * 
+ *
  */
 public class LogicControllerTest extends AndroidTestCase {
 
@@ -64,7 +64,9 @@ public class LogicControllerTest extends AndroidTestCase {
 
 	public void testAddList() {
 		assertTrue(controller.addList(list1));
+		int size = controller.getAllLists().size();
 		assertFalse(controller.addList(list1));
+		assertTrue(controller.getAllLists().size() == size);
 
 	}
 
@@ -199,11 +201,11 @@ public class LogicControllerTest extends AndroidTestCase {
 
 		assertTrue(controller.toggleTaskCompleted(task1));
 
-		final Task task2 = new Task(task1, true);
+		final Task task3 = new Task(task1, true);
 
-		controller.addTask(task2, list1);
+		controller.addTask(task3, list1);
 
-		assertTrue(controller.toggleTaskCompleted(task2));
+		assertTrue(controller.toggleTaskCompleted(task3));
 	}
 
 	public void testGetNumberOfCreatedTasks() {

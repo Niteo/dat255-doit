@@ -32,14 +32,17 @@ public final class LogicController implements ILogicController {
 	@Override
 	public boolean addList(final ITaskCollection taskCollection) {
 		if (data.getAllLists().size() == 0) {
-			incrementNumberOfCreatedLists(1);
 			return data.addList(taskCollection);
 		}
+		boolean canBeAdded = true;
 		for (final ITaskCollection list : data.getAllLists()) {
-			if (!list.getName().equals(taskCollection.getName())) {
-				incrementNumberOfCreatedLists(1);
-				return data.addList(taskCollection);
+			if (list.getName().equals(taskCollection.getName())) {
+				canBeAdded = false;
 			}
+		}
+		if (canBeAdded) {
+			incrementNumberOfCreatedLists(1);
+			return data.addList(taskCollection);
 		}
 		return false;
 	}
