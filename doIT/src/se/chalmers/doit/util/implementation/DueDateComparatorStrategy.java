@@ -8,14 +8,15 @@ import se.chalmers.doit.util.IComparatorStrategy;
 /**
  * An implementation of IComparatorStrategy that compares the due dates of two
  * ITasks
- * 
+ *
  * Default sorting order for due dates is ascending.
- * 
+ *
  * @author Karl Bristav
- * 
+ *
  */
 public class DueDateComparatorStrategy implements IComparatorStrategy {
 
+	private static final long serialVersionUID = 7961359519951096927L;
 	private final boolean invertedSortOrder;
 
 	/**

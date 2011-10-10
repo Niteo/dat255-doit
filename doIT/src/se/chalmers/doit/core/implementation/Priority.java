@@ -42,6 +42,6 @@ public class Priority implements IPriority {
 
 	@Override
 	public String toString() {
-		return new String("" + value);
+		return "" + value;
 	}
 }
