@@ -59,87 +59,87 @@ public class StatisticalDataTest extends AndroidTestCase {
 		assertTrue(data2.getDeletedLists() == 0);
 	}
 
-	public void testIncrementFinishedTasks() {
-		data1.incrementFinishedTasks(0);
+	public void testAddFinishedTasks() {
+		data1.addFinishedTasks(0);
 		assertTrue(data1.getFinishedTasks() == 0);
 
-		data1.incrementFinishedTasks(1);
+		data1.addFinishedTasks(1);
 		assertTrue(data1.getFinishedTasks() == 1);
 
-		data1.incrementFinishedTasks(2);
+		data1.addFinishedTasks(2);
 		assertTrue(data1.getFinishedTasks() == 3);
 
-		data1.incrementFinishedTasks(3);
+		data1.addFinishedTasks(3);
 		assertTrue(data1.getFinishedTasks() == 6);
 	}
 
-	public void testIncrementCreatedTasks() {
-		data1.incrementCreatedTasks(0);
+	public void testAddCreatedTasks() {
+		data1.addCreatedTasks(0);
 		assertTrue(data1.getCreatedTasks() == 0);
 
-		data1.incrementCreatedTasks(1);
+		data1.addCreatedTasks(1);
 		assertTrue(data1.getCreatedTasks() == 1);
 
-		data1.incrementCreatedTasks(2);
+		data1.addCreatedTasks(2);
 		assertTrue(data1.getCreatedTasks() == 3);
 
-		data1.incrementCreatedTasks(3);
+		data1.addCreatedTasks(3);
 		assertTrue(data1.getCreatedTasks() == 6);
 	}
 
-	public void testIncrementDeletedTasks() {
-		data1.incrementDeletedTasks(0);
+	public void testAddDeletedTasks() {
+		data1.addDeletedTasks(0);
 		assertTrue(data1.getDeletedTasks() == 0);
 
-		data1.incrementDeletedTasks(1);
+		data1.addDeletedTasks(1);
 		assertTrue(data1.getDeletedTasks() == 1);
 
-		data1.incrementDeletedTasks(2);
+		data1.addDeletedTasks(2);
 		assertTrue(data1.getDeletedTasks() == 3);
 
-		data1.incrementDeletedTasks(3);
+		data1.addDeletedTasks(3);
 		assertTrue(data1.getDeletedTasks() == 6);
 	}
 
-	public void testIncrementOverdueTasks() {
-		data1.incrementOverdueTasks(0);
+	public void testAddOverdueTasks() {
+		data1.addOverdueTasks(0);
 		assertTrue(data1.getOverdueTasks() == 0);
 
-		data1.incrementOverdueTasks(1);
+		data1.addOverdueTasks(1);
 		assertTrue(data1.getOverdueTasks() == 1);
 
-		data1.incrementOverdueTasks(2);
+		data1.addOverdueTasks(2);
 		assertTrue(data1.getOverdueTasks() == 3);
 
-		data1.incrementOverdueTasks(3);
+		data1.addOverdueTasks(3);
 		assertTrue(data1.getOverdueTasks() == 6);
 	}
 
-	public void testIncrementCreatedLists() {
-		data1.incrementCreatedLists(0);
+	public void testAddCreatedLists() {
+		data1.addCreatedLists(0);
 		assertTrue(data1.getCreatedLists() == 0);
 
-		data1.incrementCreatedLists(1);
+		data1.addCreatedLists(1);
 		assertTrue(data1.getCreatedLists() == 1);
 
-		data1.incrementCreatedLists(2);
+		data1.addCreatedLists(2);
 		assertTrue(data1.getCreatedLists() == 3);
 
-		data1.incrementCreatedLists(3);
+		data1.addCreatedLists(3);
 		assertTrue(data1.getCreatedLists() == 6);
 	}
 
-	public void testIncrementDeletedLists() {
-		data1.incrementDeletedLists(0);
+	public void testAddDeletedLists() {
+		data1.addDeletedLists(0);
 		assertTrue(data1.getDeletedLists() == 0);
 
-		data1.incrementDeletedLists(1);
+		data1.addDeletedLists(1);
 		assertTrue(data1.getDeletedLists() == 1);
 
-		data1.incrementDeletedLists(2);
+		data1.addDeletedLists(2);
 		assertTrue(data1.getDeletedLists() == 3);
 
-		data1.incrementDeletedLists(3);
+		data1.addDeletedLists(3);
 		assertTrue(data1.getDeletedLists() == 6);
 	}
 

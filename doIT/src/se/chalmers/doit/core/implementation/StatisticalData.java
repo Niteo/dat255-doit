@@ -23,36 +23,36 @@ public class StatisticalData implements IStatisticalData {
 	}
 
 	@Override
-	public void incrementFinishedTasks(final int amount) {
+	public void addFinishedTasks(final int amount) {
 		finishedTasks += amount;
 	}
 
 	@Override
-	public void incrementCreatedTasks(final int amount) {
+	public void addCreatedTasks(final int amount) {
 		createdTasks += amount;
 
 	}
 
 	@Override
-	public void incrementDeletedTasks(final int amount) {
+	public void addDeletedTasks(final int amount) {
 		deletedTasks += amount;
 
 	}
 
 	@Override
-	public void incrementOverdueTasks(final int amount) {
+	public void addOverdueTasks(final int amount) {
 		overdueTasks += amount;
 
 	}
 
 	@Override
-	public void incrementCreatedLists(final int amount) {
+	public void addCreatedLists(final int amount) {
 		createdLists += amount;
 
 	}
 
 	@Override
-	public void incrementDeletedLists(final int amount) {
+	public void addDeletedLists(final int amount) {
 		deletedLists += amount;
 
 	}

@@ -12,34 +12,40 @@ import java.util.Date;
 public interface IStatisticalData {
 
 	/**
-	 * Increments the number of finished tasks contained within this object
+	 * Adds a number of finished tasks to the number of finished tasks contained
+	 * within this object
 	 */
-	public void incrementFinishedTasks(int amount);
+	public void addFinishedTasks(int amount);
 
 	/**
-	 * Increments the number of created tasks contained within this object
+	 * Adds a number of created tasks to the number of created tasks contained
+	 * within this object
 	 */
-	public void incrementCreatedTasks(int amount);
+	public void addCreatedTasks(int amount);
 
 	/**
-	 * Increments the number of deleted tasks contained within this object
+	 * Adds a number of deleted tasks to the number of deleted tasks contained
+	 * within this object
 	 */
-	public void incrementDeletedTasks(int amount);
+	public void addDeletedTasks(int amount);
 
 	/**
-	 * Increments the number of overdue tasks contained within this object
+	 * Adds a number of overdue tasks to the number of overdue tasks contained
+	 * within this object
 	 */
-	public void incrementOverdueTasks(int amount);
+	public void addOverdueTasks(int amount);
 
 	/**
-	 * Increments the number of created lists contained within this object
+	 * Adds a number of created lists to the number of created lists contained
+	 * within this object
 	 */
-	public void incrementCreatedLists(int amount);
+	public void addCreatedLists(int amount);
 
 	/**
-	 * Increments the number of created lists contained within this object
+	 * Adds a number of deleted lists to the number of created lists contained
+	 * within this object
 	 */
-	public void incrementDeletedLists(int amount);
+	public void addDeletedLists(int amount);
 
 	/**
 	 * Returns the date of this object
