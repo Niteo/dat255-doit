@@ -10,8 +10,7 @@ import se.chalmers.doit.core.ITaskCollection;
 import se.chalmers.doit.core.implementation.Task;
 import se.chalmers.doit.data.storage.IDataStorage;
 import se.chalmers.doit.data.storage.IStatisticsDataStorage;
-import se.chalmers.doit.data.storage.implementation.DataCache;
-import se.chalmers.doit.data.storage.implementation.StatisticsDataCache;
+import se.chalmers.doit.data.storage.implementation.*;
 import se.chalmers.doit.logic.controller.ILogicController;
 import se.chalmers.doit.logic.verification.IDataVerifier;
 import se.chalmers.doit.logic.verification.implementation.DataVerifier;
@@ -26,7 +25,7 @@ public final class LogicController implements ILogicController {
 	private LogicController() {
 		verifier = new DataVerifier();
 		statistics = new StatisticsDataCache();
-		data = new DataCache();
+		data = new DataStorage();
 	}
 
 	@Override
