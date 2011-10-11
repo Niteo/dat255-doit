@@ -2,101 +2,108 @@ package se.chalmers.doit.data.storage.implementation;
 
 import java.util.Collection;
 
-import se.chalmers.doit.core.*;
-import se.chalmers.doit.data.storage.*;
+import se.chalmers.doit.core.ITask;
+import se.chalmers.doit.core.ITaskCollection;
+import se.chalmers.doit.data.storage.IDataStorage;
+import se.chalmers.doit.data.storage.ISQLData;
 
 public class DataStorage implements IDataStorage {
 
 	IDataStorage cache;
 	ISQLData sql;
+
 	// TODO: Hashmap here
 
 	public DataStorage() {
+		cache = new DataCache();
+		sql = new DataSQL();
 	}
 
 	@Override
-	public boolean addList(ITaskCollection collection) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addList(final ITaskCollection collection) {
+
+		// TODO: Add SQL
+		return cache.addList(collection);
 	}
 
 	@Override
-	public int addLists(Collection<ITaskCollection> collection) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int addLists(final Collection<ITaskCollection> collection) {
+		// TODO: Add SQL
+		return cache.addLists(collection);
 	}
 
 	@Override
-	public boolean addTask(ITask task, ITaskCollection collection) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addTask(final ITask task, final ITaskCollection collection) {
+		// TODO: Add SQL
+		return cache.addTask(task, collection);
 	}
 
 	@Override
-	public int addTasks(Collection<ITask> tasks, ITaskCollection collection) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int addTasks(final Collection<ITask> tasks,
+			final ITaskCollection collection) {
+		// TODO: Add SQL
+		return cache.addTasks(tasks, collection);
 	}
 
 	@Override
 	public void clearData() {
-		// TODO Auto-generated method stub
+
+		// sql.clearData();
+		cache.clearData();
 
 	}
 
 	@Override
-	public boolean editList(ITaskCollection oldCollection,
-			ITaskCollection newCollection) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean editList(final ITaskCollection oldCollection,
+			final ITaskCollection newCollection) {
+		// TODO: Add SQL
+		return cache.editList(oldCollection, newCollection);
 	}
 
 	@Override
-	public boolean editTask(ITask oldTask, ITask newTask) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean editTask(final ITask oldTask, final ITask newTask) {
+		// TODO: Add SQL
+		return cache.editTask(oldTask, newTask);
 	}
 
 	@Override
 	public Collection<ITaskCollection> getAllLists() {
-		// TODO Auto-generated method stub
-		return null;
+		return cache.getAllLists();
 	}
 
 	@Override
 	public Collection<ITask> getAllTasks() {
-		// TODO Auto-generated method stub
-		return null;
+		return cache.getAllTasks();
 	}
 
 	@Override
-	public boolean moveTask(ITask task, ITaskCollection collection) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean moveTask(final ITask task, final ITaskCollection collection) {
+		// TODO: Add SQL
+		return cache.moveTask(task, collection);
 	}
 
 	@Override
-	public boolean removeList(ITaskCollection collection) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean removeList(final ITaskCollection collection) {
+		// TODO: Add SQL
+		return cache.removeList(collection);
 	}
 
 	@Override
-	public int removeLists(Collection<ITaskCollection> collection) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int removeLists(final Collection<ITaskCollection> collection) {
+		// TODO: Add SQL
+		return cache.removeLists(collection);
 	}
 
 	@Override
-	public boolean removeTask(ITask task) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean removeTask(final ITask task) {
+		// TODO: Add SQL
+		return cache.removeTask(task);
 	}
 
 	@Override
-	public int removeTasks(Collection<ITask> listOfTasksToRemove) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int removeTasks(final Collection<ITask> listOfTasksToRemove) {
+		// TODO: Add SQL
+		return cache.removeTasks(listOfTasksToRemove);
 	}
 
 }
