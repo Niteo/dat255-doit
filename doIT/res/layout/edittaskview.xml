@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content" android:layout_height="wrap_content"
+	android:orientation="vertical">
+	<RelativeLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:id="@+id/top_control_bar">
+
+	</RelativeLayout>
+	<LinearLayout android:id="@+id/bottom_control_bar"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true" android:orientation="horizontal">
+		<Button android:id="@+id/cancelbutton" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:text="Cancel"
+			android:layout_weight="1" />
+		<Button android:id="@+id/savebutton" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:text="Save"
+			android:layout_weight="1" />
+	</LinearLayout>
+
+	<ScrollView android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:orientation="vertical">
+		<LinearLayout android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:orientation="vertical">
+			<TextView android:text="@string/enter_name"
+				android:layout_height="wrap_content" android:layout_width="wrap_content"
+				android:gravity="center" />
+			<EditText android:id="@+id/edittaskname"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"
+				android:hint="@string/enter_name_hint" android:layout_weight="1"
+				android:singleLine="true" />
+			<TextView android:text="@string/enter_description"
+				android:layout_height="wrap_content" android:layout_width="wrap_content"
+				android:gravity="center" />
+			<EditText android:id="@+id/edittaskdescription"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"
+				android:hint="@string/enter_description_hint" android:layout_weight="1" />
+			<TextView android:text="Priority:" android:layout_height="wrap_content"
+				android:layout_width="wrap_content" android:gravity="center" />
+			<RadioGroup android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:orientation="horizontal">
+				<RadioButton android:id="@+id/priority_1"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:text="1" android:layout_weight="1" />
+				<RadioButton android:id="@+id/priority_2"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:text="2" android:layout_weight="1" />
+				<RadioButton android:id="@+id/priority_3"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:text="3" android:layout_weight="1" />
+				<RadioButton android:id="@+id/priority_4"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:text="4" android:layout_weight="1" />
+				<RadioButton android:id="@+id/priority_5"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:text="5" android:layout_weight="1" />
+			</RadioGroup>
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:orientation="horizontal">
+				<TextView android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:text="Due Date:" />
+				<Button android:id="@+id/pickDueDate" android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:text="None" />
+			</LinearLayout>
+			<TextView android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:text="Reminder:" />
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:orientation="horizontal">
+				<TextView android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:text="Date:" />
+				<Button android:id="@+id/pickReminderDate"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:text="None" />
+				<TextView android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:text="Time:" />
+				<Button android:id="@+id/pickReminderTime"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:text="None" />
+			</LinearLayout>
+		</LinearLayout>
+	</ScrollView>
+</RelativeLayout>
