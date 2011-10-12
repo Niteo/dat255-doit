@@ -81,7 +81,7 @@ public class Statistics extends Activity {
 						// Nothing happens
 					}
 				});
-		intervalSpinner.setSelection(_findPosition(new Integer(daysInterval)));
+		intervalSpinner.setSelection(_findPosition(Integer.valueOf(daysInterval)));
 	}
 
 	private void _update(int interval) {
@@ -132,15 +132,15 @@ public class Statistics extends Activity {
 				.getStringArray((R.array.interval_array));
 
 		// Maps the strings from the spinner to correspond to an interval
-		intervalMap.put(array[0], new Integer(-1));
-		intervalMap.put(array[1], new Integer(30));
-		intervalMap.put(array[2], new Integer(7));
-		intervalMap.put(array[3], new Integer(0));
+		intervalMap.put(array[0], Integer.valueOf(-1));
+		intervalMap.put(array[1], Integer.valueOf(30));
+		intervalMap.put(array[2], Integer.valueOf(7));
+		intervalMap.put(array[3], Integer.valueOf(0));
 
-		positionMap.put(new Integer(-1), new Integer(0));
-		positionMap.put(new Integer(30), new Integer(1));
-		positionMap.put(new Integer(7), new Integer(2));
-		positionMap.put(new Integer(0), new Integer(3));
+		positionMap.put(Integer.valueOf(-1), Integer.valueOf(0));
+		positionMap.put(Integer.valueOf(30), Integer.valueOf(1));
+		positionMap.put(Integer.valueOf(7), Integer.valueOf(2));
+		positionMap.put(Integer.valueOf(0), Integer.valueOf(3));
 
 
 	}
