@@ -58,12 +58,24 @@ public class TaskViewer extends ListActivity {
 		registerForContextMenu(list);
 		final EditText edittext = (EditText) findViewById(R.id.quickaddedittext);
 		final Button quickAddButton = (Button) findViewById(R.id.quickaddbutton);
+		final Button addNewButton = (Button) findViewById(R.id.addnewbutton);
 		quickAddButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
 				if (edittext.getText().toString().length() > 0) {
 					_addTask(new Task(edittext.getText().toString(), "", false));
 				}
+			}
+		});
+		
+		addNewButton.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				//TODO: send the content of edittext as a Bundle to the Create New Task-activity (EditTaskView) as the name of the new task
+				Intent editTaskIntent = new Intent(TaskViewer.this,
+						EditTaskView.class);
+				startActivity(editTaskIntent);
 			}
 		});
 
@@ -81,7 +93,7 @@ public class TaskViewer extends ListActivity {
 				return false;
 			}
 		});
-
+		
 		_createIntentMap();
 	}
 
