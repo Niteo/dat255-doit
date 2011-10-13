@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
  * @author Kaufmann
  * 
  */
-public interface ISQLData {
+public interface IDataSQL {
 
 	/**
 	 * Adds a List to the SQLite database
@@ -82,7 +82,7 @@ public interface ISQLData {
 	 *            The ITask which properties will be used
 	 * @return true if task was edited, false if not
 	 */
-	public boolean editTask(ITask taskID, ITask newTaskProperties);
+	public boolean editTask(int taskID, ITask newTaskProperties);
 
 	/**
 	 * Returns a Collection of all the existing lists
@@ -143,7 +143,7 @@ public interface ISQLData {
 	 *            A Collection containing the ITasks to be removed
 	 * @return array of boolean indicating if the corresponding list was removed
 	 */
-	public boolean[] removeTasks(boolean[] taskIDs);
+	public boolean[] removeTasks(int[] taskIDs);
 
 	/**
 	 * Sets the database to use for storage. Tables will be created if they
