@@ -24,8 +24,11 @@ public class TaskViewer extends ListActivity {
 
 	private ITaskCollection activeList;
 	private TaskListAdapter adapter;
+	private ITask lastEditedTask;
+	private static final int ADD_NEW_TASK = 0;
+	private static final int EDIT_TASK = 1;
 	private final HashMap<Integer, Intent> intentMap = new HashMap<Integer, Intent>();
-
+	
 	@Override
 	public boolean onContextItemSelected(final MenuItem item) {
 		final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
@@ -38,10 +41,23 @@ public class TaskViewer extends ListActivity {
 				_toggleTaskCompleted(task);
 				return true;
 			case R.id.context_edit:
-				// TODO Add edit ruta :)
+				lastEditedTask = task;
+				String name = task.getName();
+				String description = task.getDescription();
+				IPriority priority = task.getPriority();
+				Date dueDate = task.getDueDate();
+				Date reminderDate = task.getReminderDate();
+				Intent editTaskIntent = new Intent(this,
+						EditTaskView.class);
+				editTaskIntent.putExtra("taskName", name);
+				editTaskIntent.putExtra("taskDescription", description);
+				editTaskIntent.putExtra("taskPriority", priority.getValue());
+				editTaskIntent.putExtra("taskDueDate", dueDate == null ? null : dueDate.getTime());
+				editTaskIntent.putExtra("taskReminderDate", reminderDate == null ? null : reminderDate.getTime());
+				startActivityForResult(editTaskIntent, EDIT_TASK);
 				return true;
 			case R.id.context_delete:
-				_deleteTask(adapter.getItem(info.position));
+				_deleteTask(task);
 				return true;
 		}
 		return false;
@@ -73,9 +89,9 @@ public class TaskViewer extends ListActivity {
 			@Override
 			public void onClick(final View v) {
 				//TODO: send the content of edittext as a Bundle to the Create New Task-activity (EditTaskView) as the name of the new task
-				Intent editTaskIntent = new Intent(TaskViewer.this,
+				Intent addNewTaskIntent = new Intent(TaskViewer.this,
 						EditTaskView.class);
-				startActivity(editTaskIntent);
+				startActivityForResult(addNewTaskIntent, ADD_NEW_TASK);
 			}
 		});
 
@@ -113,7 +129,19 @@ public class TaskViewer extends ListActivity {
 			}
 		}
 	}
-
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == ADD_NEW_TASK && resultCode == RESULT_OK) {
+			_addTask(_createTaskFromBundleData(data));
+		}
+		if (requestCode == EDIT_TASK && resultCode == RESULT_OK) {
+			ITask task = _createTaskFromBundleData(data);
+			_editTask(lastEditedTask, task);
+			lastEditedTask = task;
+		}
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		final MenuInflater inflater = getMenuInflater();
@@ -153,8 +181,8 @@ public class TaskViewer extends ListActivity {
 			final int position, final long id) {
 		super.onListItemClick(l, v, position, id);
 		// Get the item that was clicked
-		final Object o = this.getListAdapter().getItem(position);
-		final String keyword = o.toString();
+		final ITask task = (Task) this.getListAdapter().getItem(position);
+		final String keyword = task.getDueDate().getYear()+"";
 		Toast.makeText(TaskViewer.this, "Clicked on: " + keyword,
 				Toast.LENGTH_SHORT).show();
 	}
@@ -176,8 +204,24 @@ public class TaskViewer extends ListActivity {
 		intentMap.put(R.id.menu_settings, new Intent(this, Preferences.class));
 	}
 
+	private Task _createTaskFromBundleData(Intent data) {
+		String name = data.getExtras().getString("taskName");
+		String description = data.getExtras().getString("taskDescription");
+		IPriority priority = new Priority(data.getExtras().getByte("taskPriority"));
+		Date dueDate = new Date(data.getExtras().getLong("taskDueDate"));
+		Date reminderDate = new Date(data.getExtras().getLong("taskReminderDate"));
+		
+		return new Task(name, description, priority, dueDate, reminderDate, 0, false);
+	}
+	
 	private void _deleteTask(final ITask task) {
 		if (LogicController.getInstance().removeTask(task)) {
+			_updateView();
+		}
+	}
+	
+	private void _editTask(final ITask oldTask, final ITask newTask) {
+		if (LogicController.getInstance().editTask(oldTask, newTask)) {
 			_updateView();
 		}
 	}
