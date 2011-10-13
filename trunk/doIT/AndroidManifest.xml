@@ -32,6 +32,7 @@
 		<activity android:name=".presentation.activities.implementation.TaskViewer" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".presentation.activities.implementation.ListViewer" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".presentation.activities.implementation.EditTaskView" android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name=".presentation.activities.implementation.TaskSorter" android:theme="@android:style/Theme.NoTitleBar"></activity>
 	</application>
 	<uses-sdk android:minSdkVersion="7" />
 
