@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical">
+    <ScrollView android:layout_width="fill_parent" android:id="@+id/scrollView1" android:layout_height="fill_parent" android:layout_weight="1">
+        <LinearLayout android:id="@+id/linearLayout5" android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
+            <TextView android:layout_width="fill_parent" android:layout_gravity="center" android:textAppearance="?android:attr/textAppearanceLarge" android:id="@+id/textView1" android:layout_height="wrap_content" android:text="@string/task_sorter_header"></TextView>
+            <LinearLayout android:paddingTop="10dip" android:orientation="vertical" android:layout_height="wrap_content" android:layout_width="fill_parent" android:paddingBottom="10dip" android:id="@+id/linearLayout1">
+                <TextView android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:id="@+id/textView2" android:layout_height="wrap_content" android:text="@string/primary_spinner_desc"></TextView>
+                <Spinner android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/primarySpinner" android:prompt="@string/sorting_prompt"></Spinner>
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:layout_height="wrap_content" android:layout_width="fill_parent" android:paddingBottom="10dip" android:id="@+id/linearLayout2">
+                <TextView android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:id="@+id/textView3" android:layout_height="wrap_content" android:text="@string/secondary_spinner_desc"></TextView>
+                <Spinner android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/secondarySpinner" android:prompt="@string/sorting_prompt"></Spinner>
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout3">
+                <TextView android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:id="@+id/textView4" android:layout_height="wrap_content" android:text="@string/tertiary_spinner_desc"></TextView>
+                <Spinner android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/tertiarySpinner" android:prompt="@string/sorting_prompt"></Spinner>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout4" android:orientation="horizontal" android:layout_height="wrap_content">
+        <Button android:layout_width="fill_parent" android:text="@string/sort_button" android:id="@+id/sortButton" android:layout_weight="1" android:layout_height="wrap_content"></Button>
+        <Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="@string/cancel_button" android:id="@+id/sortCancelButton"></Button>
+    </LinearLayout>
+
+</LinearLayout>
