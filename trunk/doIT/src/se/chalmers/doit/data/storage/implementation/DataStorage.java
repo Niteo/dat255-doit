@@ -5,12 +5,12 @@ import java.util.Collection;
 import se.chalmers.doit.core.ITask;
 import se.chalmers.doit.core.ITaskCollection;
 import se.chalmers.doit.data.storage.IDataStorage;
-import se.chalmers.doit.data.storage.ISQLData;
+import se.chalmers.doit.data.storage.IDataSQL;
 
 public class DataStorage implements IDataStorage {
 
 	IDataStorage cache;
-	ISQLData sql;
+	IDataSQL sql;
 
 	// TODO: Hashmap here
 
