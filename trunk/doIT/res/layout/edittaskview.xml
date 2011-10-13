@@ -1,77 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="wrap_content" android:layout_height="wrap_content"
-	android:orientation="vertical">
-	<RelativeLayout android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:id="@+id/top_control_bar">
-
-	</RelativeLayout>
-	<LinearLayout android:id="@+id/bottom_control_bar"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true" android:orientation="horizontal">
-		<Button android:id="@+id/cancelbutton" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:text="Cancel"
-			android:layout_weight="1" />
-		<Button android:id="@+id/savebutton" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:text="Save"
-			android:layout_weight="1" />
-	</LinearLayout>
-
-	<ScrollView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:orientation="vertical">
-		<LinearLayout android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:orientation="vertical">
-			<TextView android:text="@string/enter_name"
-				android:layout_height="wrap_content" android:layout_width="wrap_content"
-				android:gravity="center" />
-			<EditText android:id="@+id/edittaskname"
-				android:layout_width="fill_parent" android:layout_height="wrap_content"
-				android:hint="@string/enter_name_hint" android:layout_weight="1"
-				android:singleLine="true" />
-			<TextView android:text="@string/enter_description"
-				android:layout_height="wrap_content" android:layout_width="wrap_content"
-				android:gravity="center" />
-			<EditText android:id="@+id/edittaskdescription"
-				android:layout_width="fill_parent" android:hint="@string/enter_description_hint" android:layout_height="89dp"/>
-			<TextView android:text="Priority:" android:layout_height="wrap_content"
-				android:layout_width="wrap_content" android:gravity="center" />
-			<RadioGroup android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:orientation="horizontal">
-				<RadioButton android:id="@+id/priority_1"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"
-					android:text="1" android:layout_weight="1" />
-				<RadioButton android:id="@+id/priority_2"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"
-					android:text="2" android:layout_weight="1" />
-				<RadioButton android:id="@+id/priority_3"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"
-					android:text="3" android:layout_weight="1" android:checked="true"/>
-				<RadioButton android:id="@+id/priority_4"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"
-					android:text="4" android:layout_weight="1" />
-				<RadioButton android:id="@+id/priority_5"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"
-					android:text="5" android:layout_weight="1" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+	<ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1">
+		<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical">
+			<TextView android:gravity="center" android:layout_width="wrap_content" android:text="@string/enter_name" android:layout_height="wrap_content"></TextView>
+			<EditText android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:singleLine="true" android:hint="@string/enter_name_hint" android:id="@+id/edittaskname">
+				<requestFocus></requestFocus>
+			</EditText>
+			<TextView android:gravity="center" android:layout_width="wrap_content" android:text="@string/enter_description" android:layout_height="wrap_content"></TextView>
+			<EditText android:layout_width="fill_parent" android:layout_height="89dp" android:hint="@string/enter_description_hint" android:id="@+id/edittaskdescription"></EditText>
+			<TextView android:gravity="center" android:layout_width="wrap_content" android:text="Priority:" android:layout_height="wrap_content"></TextView>
+			<RadioGroup android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="horizontal">
+				<RadioButton android:text="1" android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/priority_1"></RadioButton>
+				<RadioButton android:text="2" android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/priority_2"></RadioButton>
+				<RadioButton android:text="3" android:layout_weight="1" android:checked="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/priority_3"></RadioButton>
+				<RadioButton android:text="4" android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/priority_4"></RadioButton>
+				<RadioButton android:text="5" android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/priority_5"></RadioButton>
 			</RadioGroup>
-			<LinearLayout android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:orientation="vertical" android:background="#C0C0C0" android:padding="2dip">
-				<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout3" android:orientation="vertical" android:background="#000000">
+			<LinearLayout android:layout_height="wrap_content" android:background="#C0C0C0" android:padding="2dip" android:layout_width="fill_parent" android:orientation="vertical">
+				<LinearLayout android:layout_height="wrap_content" android:background="#000000" android:id="@+id/linearLayout3" android:layout_width="fill_parent" android:orientation="vertical">
 					<TextView android:layout_width="wrap_content" android:text="Due Date:" android:layout_height="wrap_content"></TextView>
-					<Button android:layout_height="wrap_content" android:text="None" android:id="@+id/pickDueDate" android:layout_width="159dp"></Button>
+					<Button android:id="@+id/pickDueDate" android:layout_width="159dp" android:text="None" android:layout_height="wrap_content"></Button>
 				</LinearLayout>
 			</LinearLayout>
-			<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout4" android:orientation="vertical" android:padding="5dip"></LinearLayout>
-			<LinearLayout android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:orientation="vertical" android:background="#C0C0C0" android:padding="2dip">
-				<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout2" android:orientation="vertical" android:background="#000000">
+			<LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout4" android:padding="5dip" android:layout_width="fill_parent" android:orientation="vertical"></LinearLayout>
+			<LinearLayout android:layout_height="wrap_content" android:background="#C0C0C0" android:padding="2dip" android:layout_width="fill_parent" android:orientation="vertical">
+				<LinearLayout android:layout_height="wrap_content" android:background="#000000" android:id="@+id/linearLayout2" android:layout_width="fill_parent" android:orientation="vertical">
 					<TextView android:layout_width="wrap_content" android:text="Reminder:" android:layout_height="wrap_content"></TextView>
-					<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout1">
-						<Button android:layout_height="wrap_content" android:text="None" android:id="@+id/pickReminderDate" android:layout_width="fill_parent" android:layout_weight="1"> </Button>
-						<Button android:layout_height="wrap_content" android:text="None" android:id="@+id/pickReminderTime" android:layout_width="fill_parent" android:layout_weight="1"></Button>
+					<LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:layout_width="fill_parent">
+						<Button android:layout_weight="1" android:id="@+id/pickReminderDate" android:layout_width="fill_parent" android:text="None" android:layout_height="wrap_content"></Button>
+						<Button android:layout_weight="1" android:id="@+id/pickReminderTime" android:layout_width="fill_parent" android:text="None" android:layout_height="wrap_content"></Button>
 					</LinearLayout>
 				</LinearLayout>
 			</LinearLayout>
 		</LinearLayout>
 	</ScrollView>
-</RelativeLayout>
+	<LinearLayout android:id="@+id/bottom_control_bar" android:layout_width="fill_parent" android:orientation="horizontal" android:layout_height="wrap_content">
+		<Button android:layout_weight="1" android:id="@+id/cancelbutton" android:layout_width="fill_parent" android:text="Cancel" android:layout_height="wrap_content"></Button>
+		<Button android:layout_weight="1" android:id="@+id/savebutton" android:layout_width="fill_parent" android:text="Save" android:layout_height="wrap_content"></Button>
+	</LinearLayout>
+</LinearLayout>
