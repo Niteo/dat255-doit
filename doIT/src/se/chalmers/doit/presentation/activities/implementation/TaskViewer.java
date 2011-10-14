@@ -73,16 +73,18 @@ public class TaskViewer extends ListActivity {
 			IPriority priority = task.getPriority();
 			Date dueDate = task.getDueDate();
 			Date reminderDate = task.getReminderDate();
+			boolean isCompleted = task.isCompleted();
 			Intent editTaskIntent = new Intent(this, EditTaskView.class);
 			editTaskIntent.putExtra("taskName", name);
 			editTaskIntent.putExtra("taskDescription", description);
 			editTaskIntent.putExtra("taskPriority", priority.getValue());
-			editTaskIntent.putExtra("taskDueDate", dueDate == null ? null
+			editTaskIntent.putExtra("taskDueDate", dueDate == null ? -1
 					: Long.valueOf(dueDate.getTime()));
 			editTaskIntent.putExtra(
 					"taskReminderDate",
-					reminderDate == null ? null : Long.valueOf(reminderDate
+					reminderDate == null ? -1 : Long.valueOf(reminderDate
 							.getTime()));
+			editTaskIntent.putExtra("taskIsCompleted", isCompleted);
 			startActivityForResult(editTaskIntent, EDIT_TASK);
 			return true;
 		case R.id.context_delete:
@@ -138,7 +140,9 @@ public class TaskViewer extends ListActivity {
 				if ((event.getAction() == KeyEvent.ACTION_DOWN)
 						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					// Perform action on key press
-					_addTask(new Task(edittext.getText().toString(), "", false));
+					if (edittext.getText().toString().length() > 0) {
+						_addTask(new Task(edittext.getText().toString(), "", false));
+					}
 					return true;
 				}
 				return false;
@@ -225,9 +229,11 @@ public class TaskViewer extends ListActivity {
 		super.onListItemClick(l, v, position, id);
 		// Get the item that was clicked
 		final ITask task = (Task) this.getListAdapter().getItem(position);
-		final String keyword = task.getDueDate().getYear() + "";
-		Toast.makeText(TaskViewer.this, "Clicked on: " + keyword,
-				Toast.LENGTH_SHORT).show();
+		//TODO show more details of the task to the user.
+		if (task.getReminderDate() == null) {
+			Toast.makeText(TaskViewer.this, "Reminder Date is null!", Toast.LENGTH_SHORT)
+			.show();
+		}
 	}
 
 	private void _addTask(final ITask task) {
@@ -274,12 +280,14 @@ public class TaskViewer extends ListActivity {
 		String description = data.getExtras().getString("taskDescription");
 		IPriority priority = new Priority(data.getExtras().getByte(
 				"taskPriority"));
-		Date dueDate = new Date(data.getExtras().getLong("taskDueDate"));
-		Date reminderDate = new Date(data.getExtras().getLong(
-				"taskReminderDate"));
-
+		long dueDateLong = data.getExtras().getLong("taskDueDate");
+		long reminderDateLong = data.getExtras().getLong(
+				"taskReminderDate");
+		Date dueDate = dueDateLong != -1 ? new Date(dueDateLong) : null;
+		Date reminderDate = reminderDateLong != -1 ? new Date(reminderDateLong) : null;
+		boolean isCompleted = data.getBooleanExtra("taskIsCompleted", false);
 		return new Task(name, description, priority, dueDate, reminderDate, 0,
-				false);
+				isCompleted);
 	}
 
 	private void _deleteTask(final ITask task) {

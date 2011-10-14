@@ -5,7 +5,7 @@
 	<string name="help">doIT Help: </string>
 	<string name="quick_add_hint">New task..</string>
 	<string name="empty_list">This list is empty.</string>
-	<string name="enter_name">Name:</string>
+	<string name="enter_name">Name (required):</string>
 	<string name="enter_description">Description:</string>
 	<string name="enter_name_hint">&lt;Enter Name&gt;</string>
 	<string name="enter_description_hint">&lt;Enter Description&gt;</string>

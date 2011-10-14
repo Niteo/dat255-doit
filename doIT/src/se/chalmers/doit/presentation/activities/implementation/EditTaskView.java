@@ -21,6 +21,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 /**
  * Activity for creating new tasks and editing existing tasks.
@@ -99,8 +100,8 @@ public class EditTaskView extends Activity {
 		String name = extras.getString("taskName");
 		String description = extras.getString("taskDescription");
 		IPriority priority = new Priority(extras.getByte("taskPriority"));
-		long dueDateLong =  extras.getLong("taskDueDate");
-		dueDateSet = dueDateLong == 0 ? false : true;
+		long dueDateLong = extras.getLong("taskDueDate");
+		dueDateSet = dueDateLong == -1 ? false : true;
 		if (dueDateSet) {
 			Date dueDate = new Date(dueDateLong);
 			mDueYear = dueDate.getYear();
@@ -108,8 +109,8 @@ public class EditTaskView extends Activity {
 			mDueDay = dueDate.getDate();
 			updateDueDateDisplay();
 		}
-		long reminderDateLong =  extras.getLong("taskReminderDate");
-		reminderDateSet = reminderDateLong == 0 ? false : true;
+		long reminderDateLong = extras.getLong("taskReminderDate");
+		reminderDateSet = reminderDateLong == -1 ? false : true;
 		if (reminderDateSet) {
 			Date reminderDate = new Date(reminderDateLong);
 			mReminderYear = reminderDate.getYear();
@@ -117,15 +118,14 @@ public class EditTaskView extends Activity {
 			mReminderDay = reminderDate.getDate();
 			mReminderHour = reminderDate.getHours();
 			mReminderMinute = reminderDate.getMinutes();
-			reminderTimeSet = true;			
+			reminderTimeSet = true;
 			updateReminderDateDisplay();
 			updateReminderTimeDisplay();
 		}
-		
-		
-		
+
 		((EditText) findViewById(R.id.edittaskname)).setText(name);
-		((EditText) findViewById(R.id.edittaskdescription)).setText(description);
+		((EditText) findViewById(R.id.edittaskdescription))
+				.setText(description);
 		RadioGroup radioGroup = (RadioGroup) findViewById(R.id.priority);
 		switch (priority.getValue()) {
 		case 1:
@@ -147,11 +147,9 @@ public class EditTaskView extends Activity {
 			radioGroup.check(R.id.priority_3);
 			break;
 		}
-		
-		
-		
+
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -190,18 +188,28 @@ public class EditTaskView extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				
 				Task task = _generateTask();
-				data.putExtra("taskName", task.getName());
-				data.putExtra("taskDescription", task.getDescription());
-				data.putExtra("taskPriority", task.getPriority().getValue());
-				if (dueDateSet) 
-					data.putExtra("taskDueDate", task.getDueDate().getTime());
-				if (reminderDateSet && reminderTimeSet)
-					data.putExtra("taskReminderDate", task.getReminderDate()
+				if (task.getName().length() > 0) {
+					data.putExtra("taskName", task.getName());
+					data.putExtra("taskDescription", task.getDescription());
+					data.putExtra("taskPriority", task.getPriority().getValue());
+					if (dueDateSet)
+						data.putExtra("taskDueDate", task.getDueDate().getTime());
+					else
+						data.putExtra("taskDueDate", Long.valueOf(-1));
+					if (reminderDateSet && reminderTimeSet)
+						data.putExtra("taskReminderDate", task.getReminderDate()
 								.getTime());
-				setResult(RESULT_OK, data);
-				finish();
+					else
+						data.putExtra("taskReminderDate", Long.valueOf(-1));
+					data.putExtra("taskIsCompleted", task.isCompleted());
+					setResult(RESULT_OK, data);
+					finish();
+				}
+				else {
+					Toast.makeText(EditTaskView.this, "Enter a name!", Toast.LENGTH_SHORT)
+					.show();
+				}
 			}
 		});
 
@@ -214,8 +222,7 @@ public class EditTaskView extends Activity {
 				finish();
 			}
 		});
-		
-		
+
 		RadioGroup radioGroup = (RadioGroup) findViewById(R.id.priority);
 		radioGroup.check(R.id.priority_3);
 		data = getIntent();
@@ -254,11 +261,14 @@ public class EditTaskView extends Activity {
 			break;
 		}
 		IPriority priority = new Priority(priorityValue);
-		Date dueDate = new Date(mDueYear, mDueMonth, mDueYear);
-		Date reminderDate = new Date(mReminderYear, mReminderMonth,
-				mReminderDay, mReminderHour, mReminderMinute);
+		Date dueDate = dueDateSet ? new Date(mDueYear, mDueMonth, mDueYear)
+				: null;
+		Date reminderDate = (reminderDateSet && reminderTimeSet) ? new Date(
+				mReminderYear, mReminderMonth, mReminderDay, mReminderHour,
+				mReminderMinute) : null;
+		boolean isCompleted = data.getBooleanExtra("taskIsCompleted", false);
 		return new Task(name, description, priority, dueDate, reminderDate, 0,
-				false);
+				isCompleted);
 	}
 
 	@Override
@@ -290,10 +300,9 @@ public class EditTaskView extends Activity {
 		if (dueDateSet) {
 			mPickDueDate.setText(new StringBuilder()
 					// Month is 0 based so add 1
-					.append(mDueYear).append("-").append(mDueMonth + 1).append("-")
-					.append(mDueDay).append(" "));
-		}
-		else {
+					.append(mDueYear).append("-").append(mDueMonth + 1)
+					.append("-").append(mDueDay).append(" "));
+		} else {
 			mPickDueDate.setText("None");
 		}
 	}
@@ -302,21 +311,20 @@ public class EditTaskView extends Activity {
 		if (reminderDateSet) {
 			mPickReminderDate.setText(new StringBuilder()
 					// Month is 0 based so add 1
-					.append(mReminderYear).append("-").append(mReminderMonth + 1)
-					.append("-").append(mReminderDay).append(" "));
-		}
-		else {
+					.append(mReminderYear).append("-")
+					.append(mReminderMonth + 1).append("-")
+					.append(mReminderDay).append(" "));
+		} else {
 			mPickReminderDate.setText("None");
 		}
 	}
 
 	private void updateReminderTimeDisplay() {
-		if (reminderTimeSet) {	
+		if (reminderTimeSet) {
 			mPickReminderTime.setText(new StringBuilder()
-					.append(pad(mReminderHour)).append(":").append(
-							pad(mReminderMinute)));
-		}
-		else {
+					.append(pad(mReminderHour)).append(":")
+					.append(pad(mReminderMinute)));
+		} else {
 			mPickReminderTime.setText("None");
 		}
 	}
