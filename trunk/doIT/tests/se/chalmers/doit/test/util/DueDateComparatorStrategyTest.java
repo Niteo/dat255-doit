@@ -14,6 +14,7 @@ public class DueDateComparatorStrategyTest extends AndroidTestCase {
 
 	private ITask task1;
 	private ITask task2;
+	private ITask task3;
 	private Date date1;
 	private Date date2;
 
@@ -25,6 +26,7 @@ public class DueDateComparatorStrategyTest extends AndroidTestCase {
 
 		task1 = new Task("Task1", "desc", null, date1, null, 0, false);
 		task2 = new Task("Task2", "desc", null, date2, null, 0, false);
+		task3 = new Task("Task3", "desc", null, null, null, 0, false);
 	}
 
 	public void testDueDateComparatorStrategyBoolean() {
@@ -33,8 +35,9 @@ public class DueDateComparatorStrategyTest extends AndroidTestCase {
 	}
 
 	public void testCompare() {
-		IComparatorStrategy comparator = new DueDateComparatorStrategy(false);
-		IComparatorStrategy invertedComparator = new DueDateComparatorStrategy(
+		final IComparatorStrategy comparator = new DueDateComparatorStrategy(
+				false);
+		final IComparatorStrategy invertedComparator = new DueDateComparatorStrategy(
 				true);
 
 		assertTrue(comparator.compare(task1, task2) == -1);
@@ -45,6 +48,12 @@ public class DueDateComparatorStrategyTest extends AndroidTestCase {
 
 		assertTrue(comparator.compare(task2, task1) == 1);
 		assertTrue(invertedComparator.compare(task2, task1) == -1);
+
+		assertTrue(comparator.compare(task1, task3) == -1);
+		assertTrue(invertedComparator.compare(task1, task3) == -1);
+
+		assertTrue(comparator.compare(task3, task2) == 1);
+		assertTrue(invertedComparator.compare(task3, task2) == 1);
 
 	}
 
