@@ -1,6 +1,6 @@
 package se.chalmers.doit.data.storage;
 
-import java.util.Collection;
+import java.util.*;
 
 import se.chalmers.doit.core.*;
 import android.database.sqlite.SQLiteDatabase;
@@ -85,18 +85,18 @@ public interface IDataSQL {
 	public boolean editTask(int taskID, ITask newTaskProperties);
 
 	/**
-	 * Returns a Collection of all the existing lists
+	 * Returns a Map of all the existing lists, mapping them to their corresponding integer-based ID
 	 * 
-	 * @return a containing all existing ITaskCollections
+	 * @return a map containing all existing ITaskCollections with their corresponding ID
 	 */
-	public Collection<ITaskCollection> getAllLists();
+	public Map<ITaskCollection, Integer> getAllLists();
 
 	/**
-	 * Return a Collection of all the existing tasks
+	 * Return a Map of all the existing tasks, mapping them to their corresponding integer-based ID
 	 * 
-	 * @return a containing all existing ITasks
+	 * @return a map containing all existing ITasks with their corresponding ID
 	 */
-	public Collection<ITask> getAllTasks();
+	public Map<ITask, Integer> getAllTasks();
 
 	/**
 	 * Moves a task from one list to another list
