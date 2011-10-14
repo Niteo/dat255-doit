@@ -6,11 +6,11 @@ import se.chalmers.doit.util.IComparatorStrategy;
 /**
  * An implementation of IComparatorStrategy that compares the names of two
  * ITasks
- *
+ * 
  * Default sorting order for names is ascending.
- *
+ * 
  * @author Karl Bristav
- *
+ * 
  */
 public class NameComparatorStrategy implements IComparatorStrategy {
 
@@ -33,9 +33,9 @@ public class NameComparatorStrategy implements IComparatorStrategy {
 		final String n1 = t1.getName();
 		final String n2 = t2.getName();
 
-		if (n1.compareTo(n2) > 0) {
+		if (n1.compareToIgnoreCase(n2) > 0) {
 			ret = 1;
-		} else if (n1.compareTo(n2) < 0) {
+		} else if (n1.compareToIgnoreCase(n2) < 0) {
 			ret = -1;
 		}
 
