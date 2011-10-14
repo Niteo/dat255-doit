@@ -7,17 +7,13 @@ import se.chalmers.doit.core.implementation.TaskCollection;
 import se.chalmers.doit.data.storage.IDataStorage;
 
 /**
- * Class storing cached data and delegating datachanges to ... TODO: Describe
- * better...
+ * Class storing lists and tasks temporarily as a cache.
  * 
  * @author Kaufmann
  */
 
-// TODO Add connections to DB
-
 public class DataCache implements IDataStorage {
 
-	// TODO: Add hash maps for ID's :)
 	private final Collection<ITaskCollection> lists = new ArrayList<ITaskCollection>();
 
 	@Override
@@ -140,6 +136,11 @@ public class DataCache implements IDataStorage {
 
 	private boolean _addList(final ITaskCollection col) {
 		if (!_listExists(col)) {
+			for(ITask t : col.getTasks()){
+				if(_taskExists(t)){
+					return false;
+				}
+			}
 			return lists.add(col);
 		}
 		return false;

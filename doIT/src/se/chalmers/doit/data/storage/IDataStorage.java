@@ -15,7 +15,8 @@ import se.chalmers.doit.core.ITaskCollection;
 public interface IDataStorage {
 
 	/**
-	 * Adds a List to the data storage
+	 * Adds a List to the data storage. List does not get added if it already is
+	 * added or if any of it's tasks are already added.
 	 * 
 	 * @param collection
 	 *            The ITaskCollection to add
@@ -25,7 +26,8 @@ public interface IDataStorage {
 	public boolean addList(ITaskCollection collection);
 
 	/**
-	 * Adds several lists to the data storage
+	 * Adds several lists to the data storage. Lists do not get added if they
+	 * already are added or if any of their tasks already are.
 	 * 
 	 * @param collection
 	 *            A Collection containing the ITaskCollections to add
