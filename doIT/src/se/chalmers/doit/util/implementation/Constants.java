@@ -25,6 +25,8 @@ public final class Constants {
 	public static final String SHARED_PREFERENCES_SECONDARY_SORTING = "current_secondary_sorting";
 	public static final String SHARED_PREFERENCES_TERTIARY_SORTING = "current_tertiary_sorting";
 
+	public static final String DATABASE_NAME = "database";
+
 	public static final String SHARED_PREFERENCES_SORTING = "shared_preferences_sorting";
 
 	public static final int CUSTOMPOSITION_DEFAULT = 0;
