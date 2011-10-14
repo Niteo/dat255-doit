@@ -85,14 +85,17 @@ public interface IDataSQL {
 	public boolean editTask(int taskID, ITask newTaskProperties);
 
 	/**
-	 * Returns a Map of all the existing lists, mapping them to their corresponding integer-based ID
+	 * Returns a Map of all the existing lists, mapping them to their
+	 * corresponding integer-based ID
 	 * 
-	 * @return a map containing all existing ITaskCollections with their corresponding ID
+	 * @return a map containing all existing ITaskCollections with their
+	 *         corresponding ID
 	 */
 	public Map<ITaskCollection, Integer> getAllLists();
 
 	/**
-	 * Return a Map of all the existing tasks, mapping them to their corresponding integer-based ID
+	 * Return a Map of all the existing tasks, mapping them to their
+	 * corresponding integer-based ID
 	 * 
 	 * @return a map containing all existing ITasks with their corresponding ID
 	 */
@@ -135,6 +138,14 @@ public interface IDataSQL {
 	 * @return true if task was removed, false if not
 	 */
 	public boolean removeTask(int taskID);
+
+	/**
+	 * Returns the IDs of all tasks connected to the provided list
+	 * 
+	 * @param listID
+	 * @return array of integers representing task IDs
+	 */
+	public int[] getTaskIDs(int listID);
 
 	/**
 	 * Remove several tasks from the SQLite database

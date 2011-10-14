@@ -284,4 +284,26 @@ public class DataSQL implements IDataSQL {
 
 		return ret;
 	}
+
+	@Override
+	public int[] getTaskIDs(int listID) {
+		Cursor cur = db.rawQuery("SELECT * FROM " + SQLConstants.TASK_TABLE_NAME + 
+				" WHERE " + SQLConstants.TASK_CONNECTED_LIST_ID + "=" + listID, null);
+		
+		ArrayList<Integer> tempList = new ArrayList<Integer>();
+		cur.moveToFirst();
+		int colIndex = cur.getColumnIndex(SQLConstants.TASK_ID);
+		do{
+			tempList.add(cur.getInt(colIndex));
+		}while(cur.moveToNext());
+		
+		int[] ret = new int[tempList.size()];
+		int counter = 0;
+		for(Integer i : tempList){
+			ret[counter] = i.intValue();
+			counter++;
+		}
+		
+		return ret;
+	}
 }
