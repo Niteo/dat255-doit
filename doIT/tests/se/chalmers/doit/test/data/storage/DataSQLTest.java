@@ -262,6 +262,30 @@ public class DataSQLTest extends AndroidTestCase {
 		assertFalse(_containsEqualTask(db.getAllTasks().keySet(), task3));
 		assertTrue(_containsEqualTask(db.getAllTasks().keySet(), task4));
 	}
+	
+	public void testGetTaskIDs(){
+		Task task = new Task("TASK", "DESC", new Priority((byte) 3),
+				new Date(7), new Date(3), 5, false);
+		Task task2 = new Task("TASK2", "DESC2", new Priority((byte) 6),
+				new Date(2), new Date(23), 16, true);
+		Task task3 = new Task("TASK3", "DESC3", new Priority((byte) 3),
+				new Date(7), new Date(3), 5, false);
+		Task task4 = new Task("TASK4", "DESC4", new Priority((byte) 6),
+				new Date(2), new Date(23), 16, true);
+		db.addTasks(new Task[] { task, task2, task4 }, 1);
+		db.addTasks(new Task[] { task3 }, 2);
+		
+		
+		int[] l1 = db.getTaskIDs(1);
+		int[] l2 = db.getTaskIDs(2);
+		assertTrue(l1.length == 3);
+		assertTrue(l1[0] == 1);
+		assertTrue(l1[1] == 2);
+		assertTrue(l1[2] == 3);
+		assertTrue(l2.length == 1);
+		assertTrue(l2[0] == 4);
+		
+	}
 
 	public void testRemoveTasks() {
 		Task task = new Task("TASK", "DESC", new Priority((byte) 3),
@@ -273,7 +297,7 @@ public class DataSQLTest extends AndroidTestCase {
 		Task task4 = new Task("TASK4", "DESC4", new Priority((byte) 6),
 				new Date(2), new Date(23), 16, true);
 
-		db.addTasks(new Task[] { task, task2, task3, task4 }, 1);
+		db.addTasks(new Task[] { task, task2, task3, task4 }, 2);
 
 		db.removeTasks(new int[] { 1, 3 });
 		assertTrue(db.getAllTasks().size() == 2);
