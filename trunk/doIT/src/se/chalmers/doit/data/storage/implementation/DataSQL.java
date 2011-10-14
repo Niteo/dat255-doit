@@ -1,9 +1,15 @@
 package se.chalmers.doit.data.storage.implementation;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-import se.chalmers.doit.core.*;
-import se.chalmers.doit.core.implementation.*;
+import se.chalmers.doit.core.ITask;
+import se.chalmers.doit.core.ITaskCollection;
+import se.chalmers.doit.core.implementation.Priority;
+import se.chalmers.doit.core.implementation.Task;
+import se.chalmers.doit.core.implementation.TaskCollection;
 import se.chalmers.doit.data.storage.IDataSQL;
 import se.chalmers.doit.util.implementation.SQLConstants;
 import android.content.ContentValues;
@@ -13,9 +19,9 @@ import android.database.sqlite.SQLiteDatabase;
 /**
  * Persistent data class, storing and retrieving task/list data from a SQLite
  * database on Android mobile platform.
- * 
+ *
  * @author Kaufmann
- * 
+ *
  */
 public class DataSQL implements IDataSQL {
 
@@ -45,6 +51,7 @@ public class DataSQL implements IDataSQL {
 						.getInt(cur.getColumnIndex(SQLConstants.LIST_ID)));
 			} while (cur.moveToNext());
 		}
+		cur.close();
 		return ret;
 	}
 
@@ -74,13 +81,13 @@ public class DataSQL implements IDataSQL {
 				_getContentValuesList(newListProperties), SQLConstants.LIST_ID
 						+ "=" + listID, null);
 		switch (nAffected) {
-			case 0:
-				return false;
-			case 1:
-				return true;
-			default:
-				throw new IllegalStateException(
-						"More than one line was modified. Database corrupt!");
+		case 0:
+			return false;
+		case 1:
+			return true;
+		default:
+			throw new IllegalStateException(
+					"More than one line was modified. Database corrupt!");
 		}
 	}
 
@@ -90,13 +97,13 @@ public class DataSQL implements IDataSQL {
 				_getContentValuesTask(newTaskProperties), SQLConstants.TASK_ID
 						+ "=" + taskID, null);
 		switch (nAffected) {
-			case 0:
-				return false;
-			case 1:
-				return true;
-			default:
-				throw new IllegalStateException(
-						"More than one line was modified. Database corrupt!");
+		case 0:
+			return false;
+		case 1:
+			return true;
+		default:
+			throw new IllegalStateException(
+					"More than one line was modified. Database corrupt!");
 		}
 	}
 
@@ -129,6 +136,7 @@ public class DataSQL implements IDataSQL {
 				ret.put(key, value);
 			} while (cur.moveToNext());
 		}
+		cur.close();
 		return ret;
 	}
 
@@ -139,13 +147,13 @@ public class DataSQL implements IDataSQL {
 		int nAffected = db.update(SQLConstants.TASK_TABLE_NAME, cv,
 				SQLConstants.TASK_ID + "=" + taskID, null);
 		switch (nAffected) {
-			case 0:
-				return false;
-			case 1:
-				return true;
-			default:
-				throw new IllegalStateException(
-						"More than one line was modified. Database corrupt!");
+		case 0:
+			return false;
+		case 1:
+			return true;
+		default:
+			throw new IllegalStateException(
+					"More than one line was modified. Database corrupt!");
 		}
 	}
 
@@ -181,13 +189,13 @@ public class DataSQL implements IDataSQL {
 		int nAffected = db.delete(SQLConstants.LIST_TABLE_NAME,
 				SQLConstants.LIST_ID + "=" + id, null);
 		switch (nAffected) {
-			case 0:
-				return false;
-			case 1:
-				return true;
-			default:
-				throw new IllegalStateException(
-						"More than one line was modified. Database corrupt!");
+		case 0:
+			return false;
+		case 1:
+			return true;
+		default:
+			throw new IllegalStateException(
+					"More than one line was modified. Database corrupt!");
 		}
 	}
 
@@ -195,13 +203,13 @@ public class DataSQL implements IDataSQL {
 		int nAffected = db.delete(SQLConstants.TASK_TABLE_NAME,
 				SQLConstants.LIST_ID + "=" + id, null);
 		switch (nAffected) {
-			case 0:
-				return false;
-			case 1:
-				return true;
-			default:
-				throw new IllegalStateException(
-						"More than one line was modified. Database corrupt!");
+		case 0:
+			return false;
+		case 1:
+			return true;
+		default:
+			throw new IllegalStateException(
+					"More than one line was modified. Database corrupt!");
 		}
 	}
 
@@ -242,7 +250,7 @@ public class DataSQL implements IDataSQL {
 				idArray[i] = -1;
 			}
 		}
-
+		cur.close();
 		return idArray;
 	}
 
@@ -287,23 +295,24 @@ public class DataSQL implements IDataSQL {
 
 	@Override
 	public int[] getTaskIDs(int listID) {
-		Cursor cur = db.rawQuery("SELECT * FROM " + SQLConstants.TASK_TABLE_NAME + 
-				" WHERE " + SQLConstants.TASK_CONNECTED_LIST_ID + "=" + listID, null);
-		
+		Cursor cur = db.rawQuery("SELECT * FROM "
+				+ SQLConstants.TASK_TABLE_NAME + " WHERE "
+				+ SQLConstants.TASK_CONNECTED_LIST_ID + "=" + listID, null);
+
 		ArrayList<Integer> tempList = new ArrayList<Integer>();
-		cur.moveToFirst();
-		int colIndex = cur.getColumnIndex(SQLConstants.TASK_ID);
-		do{
-			tempList.add(cur.getInt(colIndex));
-		}while(cur.moveToNext());
-		
+		if (cur.moveToFirst()) {
+			int colIndex = cur.getColumnIndex(SQLConstants.TASK_ID);
+			do {
+				tempList.add(Integer.valueOf(cur.getInt(colIndex)));
+			} while (cur.moveToNext());
+		}
 		int[] ret = new int[tempList.size()];
 		int counter = 0;
-		for(Integer i : tempList){
+		for (Integer i : tempList) {
 			ret[counter] = i.intValue();
 			counter++;
 		}
-		
+		cur.close();
 		return ret;
 	}
 }

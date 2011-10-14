@@ -1,11 +1,14 @@
 package se.chalmers.doit.presentation.activities.implementation;
 
 import se.chalmers.doit.R;
+import se.chalmers.doit.data.storage.implementation.DataStorage;
+import se.chalmers.doit.logic.controller.implementation.LogicController;
+import se.chalmers.doit.util.implementation.Constants;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.widget.*;
+import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 
 public class MainActivity extends TabActivity {
@@ -14,6 +17,11 @@ public class MainActivity extends TabActivity {
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mainview);
+
+		LogicController.getInstance().setStorageStrategy(
+				new DataStorage(this.openOrCreateDatabase(
+						Constants.DATABASE_NAME, MODE_PRIVATE, null)));
+
 		Resources res = getResources();
 		TabHost tabHost = getTabHost();
 		TabHost.TabSpec spec;
@@ -39,6 +47,7 @@ public class MainActivity extends TabActivity {
 
 		// Update a tab when changed to
 		OnTabChangeListener tcl = new OnTabChangeListener() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void onTabChanged(final String tabId) {
 				_updateTabs();
