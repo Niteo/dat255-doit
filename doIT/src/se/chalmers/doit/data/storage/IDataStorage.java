@@ -36,7 +36,7 @@ public interface IDataStorage {
 	public int addLists(Collection<ITaskCollection> collection);
 
 	/**
-	 * Adds a task to a list in the data storage
+	 * Adds a task to a list in the data storage if the specified list exists
 	 * 
 	 * @param task
 	 *            The ITask to be added
@@ -47,7 +47,7 @@ public interface IDataStorage {
 	public boolean addTask(ITask task, ITaskCollection collection);
 
 	/**
-	 * Adds several tasks to a list in the data storage
+	 * Adds several tasks to a list in the data storage if the specified list exists
 	 * 
 	 * @param tasks
 	 *            a Collection of ITasks to be added

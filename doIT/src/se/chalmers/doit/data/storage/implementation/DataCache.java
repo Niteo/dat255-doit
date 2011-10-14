@@ -13,7 +13,7 @@ import se.chalmers.doit.data.storage.IDataStorage;
  */
 
 public class DataCache implements IDataStorage {
-
+	
 	private final Collection<ITaskCollection> lists = new ArrayList<ITaskCollection>();
 
 	@Override
@@ -40,13 +40,7 @@ public class DataCache implements IDataStorage {
 	@Override
 	public int addTasks(final Collection<ITask> tasks,
 			final ITaskCollection collection) {
-		int nTasks = 0;
-		for (ITask t : tasks) {
-			if (_addTask(t, collection)) {
-				nTasks++;
-			}
-		}
-		return nTasks;
+		return _addTasks(tasks, collection);
 	}
 
 	@Override
@@ -147,20 +141,35 @@ public class DataCache implements IDataStorage {
 	}
 
 	private boolean _addTask(final ITask task, final ITaskCollection collection) {
-		if (!_taskExists(task)) {
-			if (_listExists(collection)) {
-				Collection<ITask> oldTasks = collection.getTasks();
-				oldTasks.add(task);
-				return _editList(collection,
-						new TaskCollection(collection.getName(), oldTasks));
-			} else {
-				Collection<ITask> oldTasks = new ArrayList<ITask>();
-				oldTasks.add(task);
-				return _addList(new TaskCollection(collection.getName(),
-						oldTasks));
-			}
+		if (_listExists(collection) && !_taskExists(task)) {
+			Collection<ITask> oldTasks = collection.getTasks();
+			oldTasks.add(task);
+			return _editList(collection,
+					new TaskCollection(collection.getName(), oldTasks));
 		}
 		return false;
+	}
+	
+	private int _addTasks(final Collection<ITask> tasks, final ITaskCollection collection) {
+		if (_listExists(collection)) {
+			
+			// Check which tasks should be added
+			Collection<ITask> toAdd = new ArrayList<ITask>();
+			for(ITask t : tasks){
+				if(!_taskExists(t)){
+					toAdd.add(t);
+				}
+			}
+			
+			// Add those tasks
+			Collection<ITask> oldTasks = collection.getTasks();
+			oldTasks.addAll(toAdd);
+			if(_editList(collection,
+					new TaskCollection(collection.getName(), oldTasks))){
+				return toAdd.size();
+			}
+		}
+		return 0;
 	}
 
 	private boolean _editList(final ITaskCollection oc, final ITaskCollection nc) {
