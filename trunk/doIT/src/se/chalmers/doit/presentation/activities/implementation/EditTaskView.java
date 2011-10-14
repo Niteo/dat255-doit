@@ -89,12 +89,17 @@ public class EditTaskView extends Activity {
 		}
 	};
 
-	private void resetReminderTime() {
-		reminderTimeSet = false;
-		mReminderHour = 0;
-		mReminderMinute = 0;
-		updateReminderTimeDisplay();
-	}
+	private DialogInterface.OnCancelListener mOnCancelReminderDateListener = new DialogInterface.OnCancelListener() {
+		public void onCancel(DialogInterface dialog) {
+			resetReminderDate();
+		}
+	};
+
+	private DialogInterface.OnCancelListener mOnCancelDueDateListener = new DialogInterface.OnCancelListener() {
+		public void onCancel(DialogInterface dialog) {
+			resetDueDate();
+		}
+	};
 
 	private void _loadTask(Bundle extras) {
 		String name = extras.getString("taskName");
@@ -194,21 +199,21 @@ public class EditTaskView extends Activity {
 					data.putExtra("taskDescription", task.getDescription());
 					data.putExtra("taskPriority", task.getPriority().getValue());
 					if (dueDateSet)
-						data.putExtra("taskDueDate", task.getDueDate().getTime());
+						data.putExtra("taskDueDate", task.getDueDate()
+								.getTime());
 					else
 						data.putExtra("taskDueDate", Long.valueOf(-1));
 					if (reminderDateSet && reminderTimeSet)
-						data.putExtra("taskReminderDate", task.getReminderDate()
-								.getTime());
+						data.putExtra("taskReminderDate", task
+								.getReminderDate().getTime());
 					else
 						data.putExtra("taskReminderDate", Long.valueOf(-1));
 					data.putExtra("taskIsCompleted", task.isCompleted());
 					setResult(RESULT_OK, data);
 					finish();
-				}
-				else {
-					Toast.makeText(EditTaskView.this, "Enter a name!", Toast.LENGTH_SHORT)
-					.show();
+				} else {
+					Toast.makeText(EditTaskView.this, "Enter a name!",
+							Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
@@ -275,11 +280,28 @@ public class EditTaskView extends Activity {
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case DUE_DATE_DIALOG_ID:
-			return new DatePickerDialog(this, mDueDateSetListener, mDueYear,
-					mDueMonth, mDueDay);
+			DatePickerDialog dueDatePicker = new DatePickerDialog(this,
+					mDueDateSetListener, mDueYear, mDueMonth, mDueDay);
+			dueDatePicker.setButton(DialogInterface.BUTTON_NEGATIVE, "Disable",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							resetDueDate();
+						}
+					});
+			dueDatePicker.setOnCancelListener(mOnCancelDueDateListener);
+			return dueDatePicker;
 		case REMINDER_DATE_DIALOG_ID:
-			return new DatePickerDialog(this, mReminderDateSetListener,
-					mDueYear, mDueMonth, mDueDay);
+			DatePickerDialog reminderDatePicker = new DatePickerDialog(this,
+					mReminderDateSetListener, mDueYear, mDueMonth, mDueDay);
+			reminderDatePicker.setButton(DialogInterface.BUTTON_NEGATIVE,
+					"Disable", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							resetReminderDate();
+						}
+					});
+			reminderDatePicker
+					.setOnCancelListener(mOnCancelReminderDateListener);
+			return reminderDatePicker;
 		case REMINDER_TIME_DIALOG_ID:
 			TimePickerDialog timePicker = new TimePickerDialog(this,
 					mReminderTimeSetListener, mReminderHour, mReminderMinute,
@@ -294,6 +316,29 @@ public class EditTaskView extends Activity {
 			return timePicker;
 		}
 		return null;
+	}
+
+	private void resetDueDate() {
+		dueDateSet = false;
+		mDueYear = 0;
+		mDueMonth = 0;
+		mDueDay = 0;
+		updateDueDateDisplay();
+	}
+
+	private void resetReminderDate() {
+		reminderDateSet = false;
+		mReminderYear = 0;
+		mReminderMonth = 0;
+		mReminderDay = 0;
+		updateReminderDateDisplay();
+	}
+
+	private void resetReminderTime() {
+		reminderTimeSet = false;
+		mReminderHour = 0;
+		mReminderMinute = 0;
+		updateReminderTimeDisplay();
 	}
 
 	private void updateDueDateDisplay() {
