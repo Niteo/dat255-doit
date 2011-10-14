@@ -24,25 +24,25 @@ public class DataSQL implements IDataSQL {
 	@Override
 	public void setDatabase(SQLiteDatabase database) {
 		this.db = database;
-		// Creates tasks and list tables if they do not exist
 		this.db.execSQL(SQLConstants.CREATE_TABLE_TASKS);
 		this.db.execSQL(SQLConstants.CREATE_TABLE_LISTS);
 	}
 
 	@Override
 	public void clearData() {
-		// Deletes all lists and tasks but keeps the tables
 		db.delete(SQLConstants.LIST_TABLE_NAME, null, null);
 		db.delete(SQLConstants.TASK_TABLE_NAME, null, null);
 	}
 
 	@Override
-	public Collection<ITaskCollection> getAllLists() {
-		Collection<ITaskCollection> ret = new ArrayList<ITaskCollection>();
+	public Map<ITaskCollection, Integer> getAllLists() {
+		Map<ITaskCollection, Integer> ret = new HashMap<ITaskCollection, Integer>();
 		Cursor cur = _getListCursor();
 		if (cur.moveToFirst()) {
 			do {
-				ret.add(new TaskCollection(cur.getString(1)));
+				ret.put(new TaskCollection(cur.getString(cur
+						.getColumnIndex(SQLConstants.LIST_NAME))), cur
+						.getInt(cur.getColumnIndex(SQLConstants.LIST_ID)));
 			} while (cur.moveToNext());
 		}
 		return ret;
@@ -101,13 +101,13 @@ public class DataSQL implements IDataSQL {
 	}
 
 	@Override
-	public Collection<ITask> getAllTasks() {
-		ArrayList<ITask> ret = new ArrayList<ITask>();
+	public Map<ITask, Integer> getAllTasks() {
+		Map<ITask, Integer> ret = new HashMap<ITask, Integer>();
 		Cursor cur = _getTaskCursor();
 
 		if (cur.moveToFirst()) {
 			do {
-				ret.add(new Task(
+				Task key = new Task(
 						cur.getString(cur
 								.getColumnIndex(SQLConstants.TASK_NAME)),
 						cur.getString(cur
@@ -122,7 +122,11 @@ public class DataSQL implements IDataSQL {
 						cur.getInt(cur
 								.getColumnIndex(SQLConstants.TASK_CUSTOMPOS)),
 						cur.getInt(cur
-								.getColumnIndex(SQLConstants.TASK_COMPLETED)) == 1));
+								.getColumnIndex(SQLConstants.TASK_COMPLETED)) == 1);
+
+				Integer value = cur.getInt(cur
+						.getColumnIndex(SQLConstants.TASK_ID));
+				ret.put(key, value);
 			} while (cur.moveToNext());
 		}
 		return ret;
@@ -211,7 +215,7 @@ public class DataSQL implements IDataSQL {
 			rowIDs[i] = (int) db.insert(SQLConstants.TASK_TABLE_NAME, null, cv);
 		}
 
-		return _getIDsfromRows(_getTaskCursor(), rowIDs);
+		return _getIDsfromRows(_getTaskCursor(), rowIDs, SQLConstants.LIST_ID);
 	}
 
 	private int[] _addLists(ITaskCollection[] lists) {
@@ -223,17 +227,17 @@ public class DataSQL implements IDataSQL {
 					_getContentValuesList(lists[i]));
 		}
 
-		return _getIDsfromRows(_getListCursor(), rowIDs);
+		return _getIDsfromRows(_getListCursor(), rowIDs, SQLConstants.TASK_ID);
 	}
 
-	private int[] _getIDsfromRows(Cursor cur, int[] row) {
+	private int[] _getIDsfromRows(Cursor cur, int[] row, String idstring) {
 		int[] idArray = new int[row.length];
 
 		cur.moveToFirst();
 		// Move cursor to each specified row and pull the id
 		for (int i = 0; i < row.length; i++) {
-			if (cur.moveToPosition(row[i])) {
-				idArray[i] = cur.getInt(0);
+			if (row[i] != -1 && cur.moveToPosition(row[i] - 1)) {
+				idArray[i] = cur.getInt(cur.getColumnIndex(idstring));
 			} else {
 				idArray[i] = -1;
 			}
@@ -259,22 +263,21 @@ public class DataSQL implements IDataSQL {
 	}
 
 	private ContentValues _getContentValuesTask(ITask task) {
+		// Takes all data in a task and puts it into a ContentValues
 		ContentValues ret = new ContentValues();
 		ret.put(SQLConstants.TASK_DESCRIPTION, task.getDescription());
-		if(task.getDueDate() == null){
+		if (task.getDueDate() == null) {
 			ret.putNull(SQLConstants.TASK_DUEDATE);
-		}
-		else {
+		} else {
 			ret.put(SQLConstants.TASK_DUEDATE, task.getDueDate().getTime());
 		}
 		ret.put(SQLConstants.TASK_NAME, task.getName());
 		ret.put(SQLConstants.TASK_PRIORITY, task.getPriority().getValue());
-		if(task.getReminderDate() == null){
+		if (task.getReminderDate() == null) {
 			ret.putNull(SQLConstants.TASK_REMINDERDATE);
-		}
-		else {
+		} else {
 			ret.put(SQLConstants.TASK_REMINDERDATE, task.getReminderDate()
-					.getTime());	
+					.getTime());
 		}
 		ret.put(SQLConstants.TASK_COMPLETED, task.isCompleted() ? 1 : 0);
 		ret.put(SQLConstants.TASK_CUSTOMPOS, task.getCustomPosition());
