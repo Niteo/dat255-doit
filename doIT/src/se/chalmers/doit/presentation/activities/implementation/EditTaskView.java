@@ -47,9 +47,9 @@ public class EditTaskView extends Activity {
 	private int mReminderHour;
 	private int mReminderMinute;
 
-	static final int DUE_DATE_DIALOG_ID = 0;
-	static final int REMINDER_DATE_DIALOG_ID = 1;
-	static final int REMINDER_TIME_DIALOG_ID = 2;
+	private static final int DUE_DATE_DIALOG_ID = 0;
+	private static final int REMINDER_DATE_DIALOG_ID = 1;
+	private static final int REMINDER_TIME_DIALOG_ID = 2;
 
 	private DatePickerDialog.OnDateSetListener mDueDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
@@ -266,7 +266,7 @@ public class EditTaskView extends Activity {
 			break;
 		}
 		IPriority priority = new Priority(priorityValue);
-		Date dueDate = dueDateSet ? new Date(mDueYear, mDueMonth, mDueYear)
+		Date dueDate = dueDateSet ? new Date(mDueYear, mDueMonth, mDueDay)
 				: null;
 		Date reminderDate = (reminderDateSet && reminderTimeSet) ? new Date(
 				mReminderYear, mReminderMonth, mReminderDay, mReminderHour,
