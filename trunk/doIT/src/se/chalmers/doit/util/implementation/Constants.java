@@ -21,6 +21,12 @@ public final class Constants {
 	//Due date soon-later
 	public static final int GOOD_DEFAULT_TERTIARY = 0;
 
+	public static final String SHARED_PREFERENCES_PRIMARY_SORTING = "current_primary_sorting";
+	public static final String SHARED_PREFERENCES_SECONDARY_SORTING = "current_secondary_sorting";
+	public static final String SHARED_PREFERENCES_TERTIARY_SORTING = "current_tertiary_sorting";
+
+	public static final String SHARED_PREFERENCES_SORTING = "shared_preferences_sorting";
+
 	public static final int CUSTOMPOSITION_DEFAULT = 0;
 
 	public static final int MILLISECONDS_IN_A_DAY = 86400000;

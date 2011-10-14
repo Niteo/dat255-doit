@@ -62,29 +62,32 @@ public class TaskViewer extends ListActivity {
 
 		switch (item.getItemId()) {
 
-			case R.id.context_complete:
-			case R.id.context_incomplete:
-				_toggleTaskCompleted(task);
-				return true;
-			case R.id.context_edit:
-				lastEditedTask = task;
-				String name = task.getName();
-				String description = task.getDescription();
-				IPriority priority = task.getPriority();
-				Date dueDate = task.getDueDate();
-				Date reminderDate = task.getReminderDate();
-				Intent editTaskIntent = new Intent(this,
-						EditTaskView.class);
-				editTaskIntent.putExtra("taskName", name);
-				editTaskIntent.putExtra("taskDescription", description);
-				editTaskIntent.putExtra("taskPriority", priority.getValue());
-				editTaskIntent.putExtra("taskDueDate", dueDate == null ? null : dueDate.getTime());
-				editTaskIntent.putExtra("taskReminderDate", reminderDate == null ? null : reminderDate.getTime());
-				startActivityForResult(editTaskIntent, EDIT_TASK);
-				return true;
-			case R.id.context_delete:
-				_deleteTask(task);
-				return true;
+		case R.id.context_complete:
+		case R.id.context_incomplete:
+			_toggleTaskCompleted(task);
+			return true;
+		case R.id.context_edit:
+			lastEditedTask = task;
+			String name = task.getName();
+			String description = task.getDescription();
+			IPriority priority = task.getPriority();
+			Date dueDate = task.getDueDate();
+			Date reminderDate = task.getReminderDate();
+			Intent editTaskIntent = new Intent(this, EditTaskView.class);
+			editTaskIntent.putExtra("taskName", name);
+			editTaskIntent.putExtra("taskDescription", description);
+			editTaskIntent.putExtra("taskPriority", priority.getValue());
+			editTaskIntent.putExtra("taskDueDate", dueDate == null ? null
+					: Long.valueOf(dueDate.getTime()));
+			editTaskIntent.putExtra(
+					"taskReminderDate",
+					reminderDate == null ? null : Long.valueOf(reminderDate
+							.getTime()));
+			startActivityForResult(editTaskIntent, EDIT_TASK);
+			return true;
+		case R.id.context_delete:
+			_deleteTask(task);
+			return true;
 		}
 		return false;
 	}
@@ -105,6 +108,7 @@ public class TaskViewer extends ListActivity {
 		final Button quickAddButton = (Button) findViewById(R.id.quickaddbutton);
 		final Button addNewButton = (Button) findViewById(R.id.addnewbutton);
 		quickAddButton.setOnClickListener(new View.OnClickListener() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void onClick(final View v) {
 				if (edittext.getText().toString().length() > 0) {
@@ -126,6 +130,7 @@ public class TaskViewer extends ListActivity {
 		});
 
 		edittext.setOnKeyListener(new OnKeyListener() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public boolean onKey(final View v, final int keyCode,
 					final KeyEvent event) {
@@ -189,7 +194,7 @@ public class TaskViewer extends ListActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
-		final Intent intent = intentMap.get(item.getItemId());
+		final Intent intent = intentMap.get(Integer.valueOf(item.getItemId()));
 		if (intent != null) {
 			startActivity(intent);
 			return true;
@@ -220,7 +225,7 @@ public class TaskViewer extends ListActivity {
 		super.onListItemClick(l, v, position, id);
 		// Get the item that was clicked
 		final ITask task = (Task) this.getListAdapter().getItem(position);
-		final String keyword = task.getDueDate().getYear()+"";
+		final String keyword = task.getDueDate().getYear() + "";
 		Toast.makeText(TaskViewer.this, "Clicked on: " + keyword,
 				Toast.LENGTH_SHORT).show();
 	}
@@ -236,17 +241,19 @@ public class TaskViewer extends ListActivity {
 
 	private void _initIntentMap() {
 		intentMap.clear();
-		intentMap.put(R.id.taskviewmenu_sort,
-				new Intent(this, TaskSorter.class));
-		intentMap.put(R.id.taskviewmenu_about, new Intent(this, About.class));
-		intentMap.put(R.id.taskviewmenu_help, new Intent(this, Help.class));
-		intentMap.put(R.id.taskviewmenu_statistics, new Intent(this,
-				Statistics.class));
-		intentMap.put(R.id.taskviewmenu_settings, new Intent(this,
-				Preferences.class));
+		intentMap.put(Integer.valueOf(R.id.taskviewmenu_sort), new Intent(this,
+				TaskSorter.class));
+		intentMap.put(Integer.valueOf(R.id.taskviewmenu_about), new Intent(
+				this, About.class));
+		intentMap.put(Integer.valueOf(R.id.taskviewmenu_help), new Intent(this,
+				Help.class));
+		intentMap.put(Integer.valueOf(R.id.taskviewmenu_statistics),
+				new Intent(this, Statistics.class));
+		intentMap.put(Integer.valueOf(R.id.taskviewmenu_settings), new Intent(
+				this, Preferences.class));
 	}
 
-	private void _initStrategyMap(){
+	private void _initStrategyMap() {
 
 		// Maps the index to a IComparatorStrategy
 		strategyMap.clear();
@@ -265,11 +272,14 @@ public class TaskViewer extends ListActivity {
 	private Task _createTaskFromBundleData(Intent data) {
 		String name = data.getExtras().getString("taskName");
 		String description = data.getExtras().getString("taskDescription");
-		IPriority priority = new Priority(data.getExtras().getByte("taskPriority"));
+		IPriority priority = new Priority(data.getExtras().getByte(
+				"taskPriority"));
 		Date dueDate = new Date(data.getExtras().getLong("taskDueDate"));
-		Date reminderDate = new Date(data.getExtras().getLong("taskReminderDate"));
+		Date reminderDate = new Date(data.getExtras().getLong(
+				"taskReminderDate"));
 
-		return new Task(name, description, priority, dueDate, reminderDate, 0, false);
+		return new Task(name, description, priority, dueDate, reminderDate, 0,
+				false);
 	}
 
 	private void _deleteTask(final ITask task) {
@@ -334,41 +344,40 @@ public class TaskViewer extends ListActivity {
 			setActiveList("Default");
 		}
 
-
 		_populateList();
 		_updateHeader();
 	}
 
 	private ITaskCollection _sortList() {
 
-		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-		int primarySortingStrategyIndex = preferences.getInt(
-				"current_primary_sorting", Constants.GOOD_DEFAULT_PRIMARY);
-		int secondarySortingStrategyIndex = preferences.getInt(
-				"current_secondary_sorting", Constants.GOOD_DEFAULT_SECONDARY);
-		int tertiarySortingStrategyIndex = preferences.getInt(
-				"current_tertiary_sorting", Constants.GOOD_DEFAULT_TERTIARY);
+		SharedPreferences preferences = getSharedPreferences(
+				Constants.SHARED_PREFERENCES_SORTING, MODE_PRIVATE);
 
-		IComparatorStrategy primary = strategyMap
-				.get(primarySortingStrategyIndex);
-		IComparatorStrategy secondary = strategyMap
-				.get(secondarySortingStrategyIndex);
-		IComparatorStrategy tertiary = strategyMap
-				.get(tertiarySortingStrategyIndex);
+		int primarySortingStrategyIndex = preferences.getInt(
+				Constants.SHARED_PREFERENCES_PRIMARY_SORTING,
+				Constants.GOOD_DEFAULT_PRIMARY);
+		int secondarySortingStrategyIndex = preferences.getInt(
+				Constants.SHARED_PREFERENCES_SECONDARY_SORTING,
+				Constants.GOOD_DEFAULT_SECONDARY);
+		int tertiarySortingStrategyIndex = preferences.getInt(
+				Constants.SHARED_PREFERENCES_TERTIARY_SORTING,
+				Constants.GOOD_DEFAULT_TERTIARY);
+
+		IComparatorStrategy primary = strategyMap.get(Integer
+				.valueOf(primarySortingStrategyIndex));
+		IComparatorStrategy secondary = strategyMap.get(Integer
+				.valueOf(secondarySortingStrategyIndex));
+		IComparatorStrategy tertiary = strategyMap.get(Integer
+				.valueOf(tertiarySortingStrategyIndex));
 
 		TaskListUtility taskListUtil = new TaskListUtility();
 
 		ITaskCollection tempList = null;
 
-		if(activeList != null){
-
+		if (activeList != null) {
 			ArrayList<ITask> tasks = new ArrayList<ITask>(activeList.getTasks());
 			taskListUtil.sortTasks(tasks, primary, secondary, tertiary);
 			tempList = new TaskCollection(activeList.getName(), tasks);
-			//activeList = new TaskCollection(activeList.getName(), tasks);
-
-			//LogicController.getInstance().editList(activeList, tempList);
-
 		}
 
 		return tempList;
