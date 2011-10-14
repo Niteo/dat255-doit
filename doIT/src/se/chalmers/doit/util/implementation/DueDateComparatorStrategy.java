@@ -8,11 +8,11 @@ import se.chalmers.doit.util.IComparatorStrategy;
 /**
  * An implementation of IComparatorStrategy that compares the due dates of two
  * ITasks
- *
+ * 
  * Default sorting order for due dates is ascending.
- *
+ * 
  * @author Karl Bristav
- *
+ * 
  */
 public class DueDateComparatorStrategy implements IComparatorStrategy {
 
@@ -35,15 +35,29 @@ public class DueDateComparatorStrategy implements IComparatorStrategy {
 		final Date d1 = t1.getDueDate();
 		final Date d2 = t2.getDueDate();
 
-		if (d1.compareTo(d2) > 0) {
+		// If none of the dates are null, compare them the usual way.
+		if (d1 != null && d2 != null) {
+			if (d1.compareTo(d2) > 0) {
+				ret = 1;
+			} else if (d1.compareTo(d2) < 0) {
+				ret = -1;
+			}
+
+			if (invertedSortOrder) {
+				ret *= -1;
+			}
+		}
+		// If d1 is null, but d2 isn't, ret is set to 1 (d1 > d2)
+		else if (d1 == null && d2 != null) {
+
 			ret = 1;
-		} else if (d1.compareTo(d2) < 0) {
+		}
+		// If d1 isn't null, but d2 is, ret is set to -1 (d1 < d2)
+		else if (d1 != null && d2 == null) {
 			ret = -1;
 		}
 
-		if (invertedSortOrder) {
-			ret *= -1;
-		}
+		// If both dates are null, ret is still 0 (d1 = d2)
 
 		return ret;
 	}
