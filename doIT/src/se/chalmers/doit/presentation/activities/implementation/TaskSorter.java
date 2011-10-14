@@ -3,6 +3,7 @@ package se.chalmers.doit.presentation.activities.implementation;
 import java.util.HashMap;
 
 import se.chalmers.doit.R;
+import se.chalmers.doit.util.implementation.Constants;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -43,7 +44,8 @@ public class TaskSorter extends Activity {
 
 		// Sets selected indices to the ones saved in shared preferences, if no
 		// data is found, the index is set to 0
-		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+		SharedPreferences preferences = getSharedPreferences(
+				Constants.SHARED_PREFERENCES_SORTING, MODE_PRIVATE);
 		primarySelectedIndex = preferences.getInt("current_primary_sorting", 0);
 		secondarySelectedIndex = preferences.getInt(
 				"current_secondary_sorting", 0);
@@ -95,22 +97,26 @@ public class TaskSorter extends Activity {
 
 	private void _sort() {
 
-		SharedPreferences sp = getPreferences(MODE_PRIVATE);
+		SharedPreferences sp = getSharedPreferences(
+				Constants.SHARED_PREFERENCES_SORTING, MODE_PRIVATE);
 		SharedPreferences.Editor edit = sp.edit();
 
 		// Save index of primary sort in shared preferences
 		primarySelectedIndex = tempPrimary;
-		edit.putInt("current_primary_sorting", primarySelectedIndex);
+		edit.putInt(Constants.SHARED_PREFERENCES_PRIMARY_SORTING,
+				primarySelectedIndex);
 		edit.commit();
 
 		// Save index of secondary sort in shared preferences
 		secondarySelectedIndex = tempSecondary;
-		edit.putInt("current_secondary_sorting", secondarySelectedIndex);
+		edit.putInt(Constants.SHARED_PREFERENCES_SECONDARY_SORTING,
+				secondarySelectedIndex);
 		edit.commit();
 
 		// Save index of tertiary sort in shared preferences
 		tertiarySelectedIndex = tempTertiary;
-		edit.putInt("current_tertiary_sorting", tertiarySelectedIndex);
+		edit.putInt(Constants.SHARED_PREFERENCES_TERTIARY_SORTING,
+				tertiarySelectedIndex);
 		edit.commit();
 
 		this.finish();

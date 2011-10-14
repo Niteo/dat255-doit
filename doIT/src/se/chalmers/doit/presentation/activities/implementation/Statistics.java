@@ -42,6 +42,7 @@ public class Statistics extends Activity {
 
 		_initHashMap();
 
+		// Get the saved interval
 		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
 		daysInterval = preferences.getInt("current", -1);
 
@@ -49,6 +50,7 @@ public class Statistics extends Activity {
 
 		intervalSpinner = (Spinner) findViewById(R.id.intervalSpinner);
 
+		// Init adapter
 		adapter = ArrayAdapter.createFromResource(this, R.array.interval_array,
 				android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -81,7 +83,9 @@ public class Statistics extends Activity {
 						// Nothing happens
 					}
 				});
-		intervalSpinner.setSelection(_findPosition(Integer.valueOf(daysInterval)));
+
+		intervalSpinner.setSelection(_findPosition(Integer
+				.valueOf(daysInterval)));
 	}
 
 	private void _update(int interval) {
@@ -137,21 +141,21 @@ public class Statistics extends Activity {
 		intervalMap.put(array[2], Integer.valueOf(7));
 		intervalMap.put(array[3], Integer.valueOf(0));
 
+		// Maps the intervals to correspond to an index
 		positionMap.put(Integer.valueOf(-1), Integer.valueOf(0));
 		positionMap.put(Integer.valueOf(30), Integer.valueOf(1));
 		positionMap.put(Integer.valueOf(7), Integer.valueOf(2));
 		positionMap.put(Integer.valueOf(0), Integer.valueOf(3));
 
-
 	}
 
-	@SuppressWarnings("boxing")
 	private int _findInterval(String s) {
-		return intervalMap.get(s);
+		Integer ret = intervalMap.get(s);
+		return ret.intValue();
 	}
 
-	@SuppressWarnings("boxing")
-	private int _findPosition(Integer value){
-		return positionMap.get(value);
+	private int _findPosition(Integer value) {
+		Integer ret = positionMap.get(value);
+		return ret.intValue();
 	}
 }
