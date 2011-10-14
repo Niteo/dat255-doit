@@ -1,5 +1,7 @@
 package se.chalmers.doit.logic.verification;
 
+import java.util.Collection;
+
 import se.chalmers.doit.core.ITask;
 import se.chalmers.doit.core.ITaskCollection;
 
@@ -15,11 +17,14 @@ public interface IDataVerifier {
 	/**
 	 * Verifies the contents of a list
 	 *
-	 * @param collection
+	 * @param newCollection
 	 *            The ITaskCollection to be verified
+	 * @param verifiedCollections
+	 *            The ITaskCollections that already are verified
 	 * @return A boolean stating if the list passed the verification or not
 	 */
-	public boolean verifyList(ITaskCollection collection);
+	public boolean verifyList(ITaskCollection newCollection,
+			Collection<ITaskCollection> verifiedCollections);
 
 	/**
 	 * Verifies the contents of a task

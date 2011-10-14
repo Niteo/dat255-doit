@@ -31,16 +31,8 @@ public final class LogicController implements ILogicController {
 
 	@Override
 	public boolean addList(final ITaskCollection taskCollection) {
-		if (data.getAllLists().size() == 0) {
-			return data.addList(taskCollection);
-		}
-		boolean canBeAdded = true;
-		for (final ITaskCollection list : data.getAllLists()) {
-			if (list.getName().equals(taskCollection.getName())) {
-				canBeAdded = false;
-			}
-		}
-		if (canBeAdded) {
+
+		if (verifier.verifyList(taskCollection, data.getAllLists())) {
 			incrementNumberOfCreatedLists(1);
 			return data.addList(taskCollection);
 		}
@@ -52,15 +44,19 @@ public final class LogicController implements ILogicController {
 		if (data.getAllLists().size() == 0) {
 			return data.addLists(collection);
 		}
-		for (final ITaskCollection savedList : data.getAllLists()) {
-			for (final ITaskCollection newList : collection) {
-				if (savedList.getName().equals(newList.getName())) {
-					return 0;
-				}
+
+		boolean canBeAdded = true;
+		for (ITaskCollection newCollection : collection) {
+			if (!verifier.verifyList(newCollection, data.getAllLists())) {
+				canBeAdded = false;
 			}
 		}
-		incrementNumberOfCreatedLists(collection.size());
-		return data.addLists(collection);
+
+		if (canBeAdded) {
+			incrementNumberOfCreatedLists(collection.size());
+			return data.addLists(collection);
+		}
+		return 0;
 	}
 
 	@Override
@@ -126,7 +122,6 @@ public final class LogicController implements ILogicController {
 				return false;
 			}
 		}
-		// TODO implement a method editTasks in DataCache!?
 		data.editList(oldCollection, newCollection);
 		return true;
 	}
