@@ -1,9 +1,14 @@
 package se.chalmers.doit.test.logic.verification;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.junit.Before;
 
 import se.chalmers.doit.core.ITask;
+import se.chalmers.doit.core.ITaskCollection;
 import se.chalmers.doit.core.implementation.Task;
+import se.chalmers.doit.core.implementation.TaskCollection;
 import se.chalmers.doit.logic.verification.IDataVerifier;
 import se.chalmers.doit.logic.verification.implementation.DataVerifier;
 import android.test.AndroidTestCase;
@@ -39,7 +44,16 @@ public class DataVerifierTest extends AndroidTestCase {
 	}
 
 	public void testVerifyList() {
-		// TODO: implement after the proper method is implemented
+		final IDataVerifier dataVerifier = new DataVerifier();
+		Collection<ITaskCollection> verifiedCollections = new ArrayList<ITaskCollection>();
+		final ITaskCollection verifiedCollection = new TaskCollection("Verified");
+		final ITaskCollection newCollection = new TaskCollection("New");
+
+		verifiedCollections.add(verifiedCollection);
+
+		assertTrue(dataVerifier.verifyList(newCollection, verifiedCollections));
+		assertFalse(dataVerifier.verifyList(verifiedCollection, verifiedCollections));
+
 	}
 
 	public void testVerifyTask() {
