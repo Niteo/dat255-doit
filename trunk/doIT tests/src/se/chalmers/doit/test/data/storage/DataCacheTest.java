@@ -12,8 +12,9 @@ import android.test.AndroidTestCase;
 
 /**
  * Test class for testing DataCache.java
+ * 
  * @author Kaufmann
- *
+ * 
  */
 public class DataCacheTest extends AndroidTestCase {
 
@@ -26,9 +27,12 @@ public class DataCacheTest extends AndroidTestCase {
 
 	public void testAddList() {
 		assertTrue(cache.getAllLists().size() == 0);
-		TaskCollection t1 = new TaskCollection("TaskCol1", new ArrayList<ITask>());
-		TaskCollection t2 = new TaskCollection("TaskCol2", new ArrayList<ITask>());
-		TaskCollection t3 = new TaskCollection("TaskCol3", new ArrayList<ITask>());
+		final TaskCollection t1 = new TaskCollection("TaskCol1",
+				new ArrayList<ITask>());
+		final TaskCollection t2 = new TaskCollection("TaskCol2",
+				new ArrayList<ITask>());
+		final TaskCollection t3 = new TaskCollection("TaskCol3",
+				new ArrayList<ITask>());
 		assertTrue(cache.addList(t1));
 		assertTrue(cache.addList(t2));
 		assertTrue(cache.addList(t3));
@@ -40,10 +44,13 @@ public class DataCacheTest extends AndroidTestCase {
 
 	public void testAddLists() {
 		assertTrue(cache.getAllLists().size() == 0);
-		TaskCollection t1 = new TaskCollection("TaskCol1", new ArrayList<ITask>());
-		TaskCollection t2 = new TaskCollection("TaskCol2", new ArrayList<ITask>());
-		TaskCollection t3 = new TaskCollection("TaskCol3", new ArrayList<ITask>());
-		ArrayList<ITaskCollection> colList = new ArrayList<ITaskCollection>();
+		final TaskCollection t1 = new TaskCollection("TaskCol1",
+				new ArrayList<ITask>());
+		final TaskCollection t2 = new TaskCollection("TaskCol2",
+				new ArrayList<ITask>());
+		final TaskCollection t3 = new TaskCollection("TaskCol3",
+				new ArrayList<ITask>());
+		final ArrayList<ITaskCollection> colList = new ArrayList<ITaskCollection>();
 		assertTrue(colList.add(t1));
 		assertTrue(colList.add(t2));
 		assertTrue(colList.add(t3));
@@ -56,28 +63,26 @@ public class DataCacheTest extends AndroidTestCase {
 	}
 
 	public void testAddTask() {
-		ITask task = new Task("Name", "Description", false);
-		ITask task2 = new Task("Name2", "Description2", true);
-		Collection<ITask> taskList = new ArrayList<ITask>();
-		taskList.add(task);
-		ITaskCollection col = new TaskCollection("Collection", taskList);
+		final ITask task = new Task("Name", "Description", false);
+		final Collection<ITask> taskList = new ArrayList<ITask>();
+		final ITaskCollection col = new TaskCollection("Collection", taskList);
+		cache.addList(col);
 		assertTrue(cache.getAllTasks().size() == 0);
 		assertTrue(cache.addTask(task, col));
 		assertFalse(cache.addTask(task, col));
 		assertTrue(cache.getAllTasks().size() == 1);
-		assertTrue(cache.addTask(task2, col));
-		assertTrue(cache.getAllTasks().size() == 2);
 		assertTrue(cache.getAllTasks().contains(task));
-		assertTrue(cache.getAllTasks().contains(task2));
 	}
 
 	public void testAddTasks() {
-		ITask task = new Task("Name", "Description", false);
-		ITask task2 = new Task("Name2", "Description2", true);
-		Collection<ITask> taskList = new ArrayList<ITask>();
+		final ITask task = new Task("Name", "Description", false);
+		final ITask task2 = new Task("Name2", "Description2", true);
+		final Collection<ITask> taskList = new ArrayList<ITask>();
 		taskList.add(task);
 		taskList.add(task2);
-		ITaskCollection col = new TaskCollection("Collection", new ArrayList<ITask>());
+		final ITaskCollection col = new TaskCollection("Collection",
+				new ArrayList<ITask>());
+		cache.addList(col);
 		assertTrue(cache.getAllTasks().size() == 0);
 		assertTrue(cache.addTasks(taskList, col) == 2);
 		assertTrue(cache.addTasks(taskList, col) == 0);
@@ -87,12 +92,14 @@ public class DataCacheTest extends AndroidTestCase {
 	}
 
 	public void testClearData() {
-		ITask task = new Task("Name", "Description", false);
-		ITask task2 = new Task("Name2", "Description2", true);
-		Collection<ITask> taskList = new ArrayList<ITask>();
+		final ITask task = new Task("Name", "Description", false);
+		final ITask task2 = new Task("Name2", "Description2", true);
+		final Collection<ITask> taskList = new ArrayList<ITask>();
 		taskList.add(task);
 		taskList.add(task2);
-		ITaskCollection col = new TaskCollection("Collection", new ArrayList<ITask>());
+		final ITaskCollection col = new TaskCollection("Collection",
+				new ArrayList<ITask>());
+		cache.addList(col);
 		cache.addTasks(taskList, col);
 		assertTrue(cache.getAllLists().size() != 0);
 		assertTrue(cache.getAllTasks().size() != 0);
@@ -102,8 +109,8 @@ public class DataCacheTest extends AndroidTestCase {
 	}
 
 	public void testEditList() {
-		TaskCollection tc1 = new TaskCollection("Name");
-		TaskCollection tc2 = new TaskCollection("Name2");
+		final TaskCollection tc1 = new TaskCollection("Name");
+		final TaskCollection tc2 = new TaskCollection("Name2");
 		cache.addList(tc1);
 		assertTrue(cache.getAllLists().contains(tc1));
 		cache.editList(tc1, tc2);
@@ -111,9 +118,10 @@ public class DataCacheTest extends AndroidTestCase {
 	}
 
 	public void testEditTask() {
-		ITask task = new Task("Name", "Description", false);
-		ITask task2 = new Task("Name2", "Description2", true);
-		TaskCollection tc1 = new TaskCollection("Name");
+		final ITask task = new Task("Name", "Description", false);
+		final ITask task2 = new Task("Name2", "Description2", true);
+		final TaskCollection tc1 = new TaskCollection("Name");
+		cache.addList(tc1);
 		cache.addTask(task, tc1);
 		assertTrue(cache.getAllTasks().contains(task));
 		assertFalse(cache.getAllTasks().contains(task2));
@@ -132,35 +140,41 @@ public class DataCacheTest extends AndroidTestCase {
 
 	public void testGetAllTasks() {
 		assertTrue(cache.getAllTasks().size() == 0);
-		TaskCollection tc = new TaskCollection("TC");
+		final TaskCollection tc = new TaskCollection("TC");
+		final TaskCollection tc2 = new TaskCollection("TC");
+		final TaskCollection tc3 = new TaskCollection("TC");
+		cache.addList(tc);
+		cache.addList(tc2);
+		cache.addList(tc3);
 		cache.addTask(new Task("Task", "Krabba", false), tc);
-		cache.addTask(new Task("Task2", "Krabba2", true), tc);
-		cache.addTask(new Task("Task3", "Krabba3", false), tc);
+		cache.addTask(new Task("Task2", "Krabba2", true), tc2);
+		cache.addTask(new Task("Task3", "Krabba3", false), tc3);
 		assertTrue(cache.getAllTasks().size() == 3);
 	}
 
 	public void testMoveTask() {
-		TaskCollection tc = new TaskCollection("TC");
-		TaskCollection tc2 = new TaskCollection("TC2");
-		Task t = new Task("Task", "Krabba", false);
+		final TaskCollection tc = new TaskCollection("TC");
+		final TaskCollection tc2 = new TaskCollection("TC2");
+		final Task t = new Task("Task", "Krabba", false);
+		cache.addList(tc);
 		cache.addTask(t, tc);
 		cache.addList(tc2);
 		cache.moveTask(t, tc2);
-		for(ITaskCollection c : cache.getAllLists()){
-			if(c.getName().equals("TC")){
+		for (final ITaskCollection c : cache.getAllLists()) {
+			if (c.getName().equals("TC")) {
 				assertFalse(c.getTasks().contains(t));
 			}
-			if(c.getName().equals("TC2")){
+			if (c.getName().equals("TC2")) {
 				assertTrue(c.getTasks().contains(t));
 			}
 		}
 	}
 
 	public void testRemoveList() {
-		TaskCollection tc1 = new TaskCollection("tc1");
-		TaskCollection tc2 = new TaskCollection("tc2");
-		TaskCollection tc3 = new TaskCollection("tc3");
-		TaskCollection tc4 = new TaskCollection("tc4");
+		final TaskCollection tc1 = new TaskCollection("tc1");
+		final TaskCollection tc2 = new TaskCollection("tc2");
+		final TaskCollection tc3 = new TaskCollection("tc3");
+		final TaskCollection tc4 = new TaskCollection("tc4");
 
 		cache.addList(tc1);
 		cache.addList(tc2);
@@ -176,17 +190,17 @@ public class DataCacheTest extends AndroidTestCase {
 	}
 
 	public void testRemoveLists() {
-		TaskCollection tc1 = new TaskCollection("tc1");
-		TaskCollection tc2 = new TaskCollection("tc2");
-		TaskCollection tc3 = new TaskCollection("tc3");
-		TaskCollection tc4 = new TaskCollection("tc4");
+		final TaskCollection tc1 = new TaskCollection("tc1");
+		final TaskCollection tc2 = new TaskCollection("tc2");
+		final TaskCollection tc3 = new TaskCollection("tc3");
+		final TaskCollection tc4 = new TaskCollection("tc4");
 
 		cache.addList(tc1);
 		cache.addList(tc2);
 		cache.addList(tc3);
 		cache.addList(tc4);
 
-		ArrayList<ITaskCollection> list = new ArrayList<ITaskCollection>();
+		final ArrayList<ITaskCollection> list = new ArrayList<ITaskCollection>();
 		list.add(tc2);
 		list.add(tc4);
 
@@ -199,20 +213,22 @@ public class DataCacheTest extends AndroidTestCase {
 	}
 
 	public void testRemoveTask() {
-		Task t1 = new Task("t1", "blubb", false);
-		Task t2 = new Task("t2", "blubb", false);
-		Task t3 = new Task("t3", "blubb", false);
-		Task t4 = new Task("t4", "blubb", false);
+		final Task t1 = new Task("t1", "blubb", false);
+		final Task t2 = new Task("t2", "blubb", false);
+		final Task t3 = new Task("t3", "blubb", false);
+		final Task t4 = new Task("t4", "blubb", false);
 
-		TaskCollection col = new TaskCollection("Default");
+		final TaskCollection col = new TaskCollection("Default");
+		final ArrayList<ITask> taskList = new ArrayList<ITask>();
+		taskList.add(t1);
+		taskList.add(t2);
+		taskList.add(t3);
+		taskList.add(t4);
 
 		cache.addList(col);
-		cache.addTask(t1, col);
-		cache.addTask(t2, col);
-		cache.addTask(t3, col);
-		cache.addTask(t4, col);
+		cache.addTasks(taskList, col);
 
-		cache.removeTask(t2);
+		assertTrue(cache.removeTask(t2));
 
 		assertTrue(cache.getAllTasks().contains(t1));
 		assertFalse(cache.getAllTasks().contains(t2));
@@ -221,23 +237,25 @@ public class DataCacheTest extends AndroidTestCase {
 	}
 
 	public void testRemoveTasks() {
-		Task t1 = new Task("t1", "blubb", false);
-		Task t2 = new Task("t2", "blubb", false);
-		Task t3 = new Task("t3", "blubb", false);
-		Task t4 = new Task("t4", "blubb", false);
+		final Task t1 = new Task("t1", "blubb", false);
+		final Task t2 = new Task("t2", "blubb", false);
+		final Task t3 = new Task("t3", "blubb", false);
+		final Task t4 = new Task("t4", "blubb", false);
 
-		TaskCollection col = new TaskCollection("Default");
+		final TaskCollection col = new TaskCollection("Default");
+		final ArrayList<ITask> taskList = new ArrayList<ITask>();
+		taskList.add(t1);
+		taskList.add(t2);
+		taskList.add(t3);
+		taskList.add(t4);
 
 		cache.addList(col);
-		cache.addTask(t1, col);
-		cache.addTask(t2, col);
-		cache.addTask(t3, col);
-		cache.addTask(t4, col);
+		cache.addTasks(taskList, col);
 
-		ArrayList<ITask> list = new ArrayList<ITask>();
+		final ArrayList<ITask> list = new ArrayList<ITask>();
 		list.add(t2);
 		list.add(t4);
-		cache.removeTasks(list);
+		assertTrue(cache.removeTasks(list) == 2);
 
 		assertTrue(cache.getAllTasks().contains(t1));
 		assertFalse(cache.getAllTasks().contains(t2));
