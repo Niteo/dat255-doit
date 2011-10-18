@@ -3,6 +3,6 @@
 	<item android:id="@+id/taskviewmenu.sort" android:title="Sort tasks" android:icon="@drawable/ic_menu_sort_by_size"/>
 	<item android:id="@+id/taskviewmenu.statistics" android:title="Statistics" android:icon="@drawable/ic_menu_gallery"/>
 	<item android:id="@+id/taskviewmenu.settings" android:title="Settings" android:icon="@drawable/ic_menu_manage"/>
-	<item android:id="@+id/taskviewmenu.about" android:title="About" android:icon="@drawable/ic_menu_info_details"/>
-	<item android:id="@+id/taskviewmenu.help" android:title="Help" android:icon="@drawable/ic_menu_help"/>
+	
+	<item android:id="@+id/taskviewmenu.help" android:title="Help" android:icon="@drawable/ic_menu_help"/><item android:id="@+id/taskviewmenu.about" android:title="About" android:icon="@drawable/ic_menu_info_details" />
 </menu>
