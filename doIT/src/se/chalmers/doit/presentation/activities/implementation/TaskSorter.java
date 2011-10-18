@@ -71,9 +71,21 @@ public class TaskSorter extends Activity {
 
 		_initListeners();
 
-		primarySpinner.setSelection(primarySelectedIndex);
-		secondarySpinner.setSelection(secondarySelectedIndex);
-		tertiarySpinner.setSelection(tertiarySelectedIndex);
+		if (primarySelectedIndex != 0) {
+			primarySpinner.setSelection(primarySelectedIndex);
+		} else {
+			primarySpinner.setSelection(Constants.GOOD_DEFAULT_PRIMARY);
+		}
+		if (secondarySelectedIndex != 0) {
+			secondarySpinner.setSelection(secondarySelectedIndex);
+		} else {
+			secondarySpinner.setSelection(Constants.GOOD_DEFAULT_SECONDARY);
+		}
+		if (tertiarySelectedIndex != 0) {
+			tertiarySpinner.setSelection(tertiarySelectedIndex);
+		} else {
+			tertiarySpinner.setSelection(Constants.GOOD_DEFAULT_TERTIARY);
+		}
 	}
 
 	private void _initHashMaps() {
