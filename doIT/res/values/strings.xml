@@ -2,7 +2,18 @@
 <resources>
 	<string name="app_name">doIT</string>
 	<string name="about">doIt is a FLOSS application </string>
-	<string name="help">BOEL IS... MONGOLOID?</string>
+	<string name="help">&lt;h4&gt;Navigation&lt;/h4&gt;The main view consists of two tabs, tasks and lists.
+	 By pressing the menu button you can bring up a menu to navigate to special functionality.
+	&lt;h4&gt;Tasks&lt;/h4&gt;From the task view you can quickly create tasks by entering a name in the bottom field
+	 and pressing ´Add´.
+	 &lt;br&gt;&lt;br&gt;Pressing ´New...´ will take you to the advanced task adding view where you have more
+	  options, such as priority.&lt;br&gt;&lt;br&gt;
+	  
+	  Longpressing a task gives you options to delete, edit and complete a task.
+	  While in the task tab you can also, by pressing the menu button and selecting sort, choose to sort tasks.
+	&lt;h4&gt;Lists&lt;/h4&gt;
+	 In list view you can add task lists with the bottom edit bar. Press a list to go into it and make it active.
+	  Longpress a list to be able to edit it and delete it (which will delete all related tasks)</string>
 	<string name="quick_add_hint">New task..</string>
 	<string name="empty_list">This list is empty.</string>
 	<string name="enter_name">Name (required):</string>
