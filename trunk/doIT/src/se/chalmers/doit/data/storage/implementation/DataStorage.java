@@ -40,12 +40,7 @@ public class DataStorage implements IDataStorage {
 
 	@Override
 	public boolean addList(final ITaskCollection collection) {
-		int id = sql.addList(collection);
-		if (id != -1) {
-			_rebuildCache();
-			return true;
-		}
-		return false;
+		return _addList(collection);
 
 	}
 
@@ -54,7 +49,7 @@ public class DataStorage implements IDataStorage {
 
 		int count = 0;
 		for (ITaskCollection list : collection) {
-			if (addList(list)) {
+			if (_addList(list)) {
 				count++;
 			}
 		}
@@ -65,14 +60,7 @@ public class DataStorage implements IDataStorage {
 	@Override
 	public boolean addTask(final ITask task, final ITaskCollection collection) {
 
-		int id = sql.addTask(task, listMap.get(collection).intValue());
-
-		if (id != -1) {
-			_rebuildCache();
-			return true;
-		}
-
-		return false;
+		return _addTask(task, collection);
 	}
 
 	@Override
@@ -81,7 +69,7 @@ public class DataStorage implements IDataStorage {
 		int count = 0;
 
 		for (ITask t : tasks) {
-			if (addTask(t, collection)) {
+			if (_addTask(t, collection)) {
 				count++;
 			}
 
@@ -258,6 +246,37 @@ public class DataStorage implements IDataStorage {
 		}
 
 		return false;
+	}
+
+	public boolean _addList(final ITaskCollection collection) {
+		if (!cache.getAllLists().contains(collection)) {
+			int id = sql.addList(collection);
+			if (id != -1) {
+				_rebuildCache();
+				return true;
+			}
+		}
+		return false;
+
+	}
+
+	public boolean _addTask(final ITask task, final ITaskCollection collection) {
+
+		for (ITask t : cache.getAllTasks()) {
+			if (t == task) {
+				return false;
+			} else {
+
+				int id = sql.addTask(task, listMap.get(collection).intValue());
+
+				if (id != -1) {
+					_rebuildCache();
+					break;
+				}
+			}
+		}
+		return true;
+
 	}
 
 }

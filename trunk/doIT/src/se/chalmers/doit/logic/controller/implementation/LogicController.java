@@ -123,14 +123,19 @@ public final class LogicController implements ILogicController {
 	@Override
 	public boolean editList(final ITaskCollection oldCollection,
 			final ITaskCollection newCollection)throws IllegalStateException {
+		boolean canBeAdded = true;
+
 		if(data==null){
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
 		for (final ITaskCollection list : data.getAllLists()) {
-			if (!newCollection.getName().equals(list.getName())) {
-				return data.editList(oldCollection, newCollection);
+			if (newCollection.getName().equals(list.getName())) {
+				canBeAdded = false;
 			}
+		}
+		if(canBeAdded){
+			return data.editList(oldCollection, newCollection);
 		}
 		return false;
 	}

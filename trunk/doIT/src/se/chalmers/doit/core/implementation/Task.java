@@ -8,9 +8,9 @@ import se.chalmers.doit.util.implementation.Constants;
 
 /**
  * Immutable class carrying properties of a task.
- * 
+ *
  * @author Marco Baxemyr, Robert Kaufmann
- * 
+ *
  */
 
 public final class Task implements ITask {
@@ -120,12 +120,34 @@ public final class Task implements ITask {
 			if (this.getCustomPosition() == t.getCustomPosition()
 					&& this.isCompleted() == t.isCompleted()
 					&& this.getDescription().equals(t.getDescription())
-					&& this.getDueDate().equals(t.getDueDate())
 					&& this.getName().equals(t.getName())
 					&& this.getPriority().getValue() == t.getPriority()
-							.getValue()
-					&& this.getReminderDate().equals(t.getReminderDate())) {
-				return true;
+							.getValue()) {
+
+				if (t.getDueDate() != null) {
+					this.getDueDate().equals(t.getDueDate());
+
+					if (t.getReminderDate() != null) {
+						this.getReminderDate().equals(t.getReminderDate());
+					} else {
+						if (this.dueDate == null) {
+							return true;
+						}
+					}
+
+				} else {
+					if (this.dueDate == null) {
+
+						if (t.getReminderDate() != null) {
+							this.getReminderDate().equals(t.getReminderDate());
+						} else {
+							if (this.dueDate == null) {
+								return true;
+							}
+						}
+
+					}
+				}
 			}
 			return false;
 		} else {
