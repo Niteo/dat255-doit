@@ -221,12 +221,12 @@ public class EditTaskView extends Activity {
 				} else if (reminderDateSet && !reminderTimeSet) {
 					Toast.makeText(
 							EditTaskView.this,
-							"You must enter a reminder time if you enter a due date!",
+							"You must enter a reminder time if you enter a reminder date!",
 							Toast.LENGTH_SHORT).show();
 				} else if (!reminderDateSet && reminderTimeSet) {
 					Toast.makeText(
 							EditTaskView.this,
-							"You must enter a reminder date if you enter a due time!",
+							"You must enter a reminder date if you enter a reminder time!",
 							Toast.LENGTH_SHORT).show();
 				}
 
