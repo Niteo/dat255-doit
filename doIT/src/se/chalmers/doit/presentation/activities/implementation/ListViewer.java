@@ -7,7 +7,9 @@ import se.chalmers.doit.R;
 import se.chalmers.doit.core.ITaskCollection;
 import se.chalmers.doit.core.implementation.TaskCollection;
 import se.chalmers.doit.logic.controller.implementation.LogicController;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -18,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,7 +48,52 @@ public class ListViewer extends ListActivity {
 			_deleteList(col);
 			return true;
 		case R.id.lv_context_edit:
-			// TODO
+			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+			alert.setMessage("List name:");
+
+			// Set an EditText view to get user input
+			final EditText input = new EditText(this);
+			input.setText(col.getName());
+			input.setSingleLine(true);
+			input.selectAll();
+			alert.setView(input);
+
+			alert.setPositiveButton("Change",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,
+								int whichButton) {
+							String value = input.getText().toString();
+							if (!LogicController.getInstance().editList(col,
+									new TaskCollection(value, col.getTasks()))) {
+								Toast.makeText(ListViewer.this,
+										"Something went wrong!",
+										Toast.LENGTH_SHORT).show();
+							}
+
+						}
+					});
+
+			alert.setNegativeButton("Cancel",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,
+								int whichButton) {
+							// Canceled
+						}
+					});
+			final AlertDialog dialog = alert.create();
+			input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+				@Override
+				public void onFocusChange(View v, boolean hasFocus) {
+					if (hasFocus) {
+						dialog.getWindow()
+								.setSoftInputMode(
+										WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+					}
+				}
+			});
+			dialog.show();
+			input.requestFocus();
 			return true;
 		}
 		return false;
