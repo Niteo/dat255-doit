@@ -19,9 +19,9 @@ import android.database.sqlite.SQLiteDatabase;
 /**
  * Persistent data class, storing and retrieving task/list data from a SQLite
  * database on Android mobile platform.
- * 
+ *
  * @author Kaufmann
- * 
+ *
  */
 public class DataSQL implements IDataSQL {
 
@@ -114,6 +114,19 @@ public class DataSQL implements IDataSQL {
 
 		if (cur.moveToFirst()) {
 			do {
+
+				Date dueDate = null;
+				Date reminderDate = null;
+
+				if (!cur.isNull(cur.getColumnIndex(SQLConstants.TASK_DUEDATE))) {
+					dueDate = new Date(cur.getLong(
+							cur.getColumnIndex(SQLConstants.TASK_DUEDATE)));
+				}
+				if (!cur.isNull(cur.getColumnIndex(SQLConstants.TASK_REMINDERDATE))) {
+					reminderDate = new Date(cur.getLong(cur
+							.getColumnIndex(SQLConstants.TASK_REMINDERDATE)));
+				}
+
 				Task key = new Task(
 						cur.getString(cur
 								.getColumnIndex(SQLConstants.TASK_NAME)),
@@ -121,11 +134,8 @@ public class DataSQL implements IDataSQL {
 								.getColumnIndex(SQLConstants.TASK_DESCRIPTION)),
 						new Priority((byte) cur.getInt(cur
 								.getColumnIndex(SQLConstants.TASK_PRIORITY))),
-						new Date(cur.getInt(cur
-								.getColumnIndex(SQLConstants.TASK_DUEDATE))),
-						new Date(
-								cur.getInt(cur
-										.getColumnIndex(SQLConstants.TASK_REMINDERDATE))),
+						dueDate,
+						reminderDate,
 						cur.getInt(cur
 								.getColumnIndex(SQLConstants.TASK_CUSTOMPOS)),
 						cur.getInt(cur
@@ -235,7 +245,7 @@ public class DataSQL implements IDataSQL {
 
 	private int[] _addTasks(ITask[] tasks, int listID) {
 		boolean[] rowAdded = new boolean[tasks.length];
-		
+
 		// Add each task to the database and retrieve it's row's value
 		for (int i = 0; i < tasks.length; i++) {
 			ContentValues cv = _getContentValuesTask(tasks[i]);
