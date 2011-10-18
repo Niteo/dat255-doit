@@ -21,13 +21,13 @@ cd tmpTests
 android update project -p ./doIT
 if [ $? -ne 0 ] ;
 then
-  echo 'Failed "android update project".'
+  echo 'Failed "android update project". Are you sure that the Android SDK is in your PATH?'
   exit $?
 fi
 android update test-project -m ../doIT -p ./doIT\ tests/
 if [ $? -ne 0 ] ;
 then
-  echo 'Failed "android update test-project".'
+  echo 'Failed "android update test-project". Are you sure that the Android SDK is in your PATH?'
   exit $?
 fi
 cd doIT\ tests
@@ -38,6 +38,6 @@ else
 fi
 if [ $? -ne 0 ] ;
 then
-  echo '"Failed ant coverage" or "ant run-tests"!'
+  echo '"Failed ant coverage" or "ant run-tests"! Is ant installed?'
   exit $?
 fi
