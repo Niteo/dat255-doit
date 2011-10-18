@@ -19,9 +19,9 @@ import android.database.sqlite.SQLiteDatabase;
 /**
  * Persistent data class, storing and retrieving task/list data from a SQLite
  * database on Android mobile platform.
- *
+ * 
  * @author Kaufmann
- *
+ * 
  */
 public class DataSQL implements IDataSQL {
 
@@ -81,13 +81,13 @@ public class DataSQL implements IDataSQL {
 				_getContentValuesList(newListProperties), SQLConstants.LIST_ID
 						+ "=" + listID, null);
 		switch (nAffected) {
-		case 0:
-			return false;
-		case 1:
-			return true;
-		default:
-			throw new IllegalStateException(
-					"More than one line was modified. Database corrupt!");
+			case 0:
+				return false;
+			case 1:
+				return true;
+			default:
+				throw new IllegalStateException(
+						"More than one line was modified. Database corrupt!");
 		}
 	}
 
@@ -97,13 +97,13 @@ public class DataSQL implements IDataSQL {
 				_getContentValuesTask(newTaskProperties), SQLConstants.TASK_ID
 						+ "=" + taskID, null);
 		switch (nAffected) {
-		case 0:
-			return false;
-		case 1:
-			return true;
-		default:
-			throw new IllegalStateException(
-					"More than one line was modified. Database corrupt!");
+			case 0:
+				return false;
+			case 1:
+				return true;
+			default:
+				throw new IllegalStateException(
+						"More than one line was modified. Database corrupt!");
 		}
 	}
 
@@ -147,13 +147,13 @@ public class DataSQL implements IDataSQL {
 		int nAffected = db.update(SQLConstants.TASK_TABLE_NAME, cv,
 				SQLConstants.TASK_ID + "=" + taskID, null);
 		switch (nAffected) {
-		case 0:
-			return false;
-		case 1:
-			return true;
-		default:
-			throw new IllegalStateException(
-					"More than one line was modified. Database corrupt!");
+			case 0:
+				return false;
+			case 1:
+				return true;
+			default:
+				throw new IllegalStateException(
+						"More than one line was modified. Database corrupt!");
 		}
 	}
 
@@ -189,13 +189,13 @@ public class DataSQL implements IDataSQL {
 		int nAffected = db.delete(SQLConstants.LIST_TABLE_NAME,
 				SQLConstants.LIST_ID + "=" + id, null);
 		switch (nAffected) {
-		case 0:
-			return false;
-		case 1:
-			return true;
-		default:
-			throw new IllegalStateException(
-					"More than one line was modified. Database corrupt!");
+			case 0:
+				return false;
+			case 1:
+				return true;
+			default:
+				throw new IllegalStateException(
+						"More than one line was modified. Database corrupt!");
 		}
 	}
 
@@ -203,55 +203,61 @@ public class DataSQL implements IDataSQL {
 		int nAffected = db.delete(SQLConstants.TASK_TABLE_NAME,
 				SQLConstants.LIST_ID + "=" + id, null);
 		switch (nAffected) {
-		case 0:
-			return false;
-		case 1:
-			return true;
-		default:
-			throw new IllegalStateException(
-					"More than one line was modified. Database corrupt!");
+			case 0:
+				return false;
+			case 1:
+				return true;
+			default:
+				throw new IllegalStateException(
+						"More than one line was modified. Database corrupt!");
 		}
 	}
 
-	private int[] _addTasks(ITask[] tasks, int listID) {
-		int[] rowIDs = new int[tasks.length];
-
-		// Add each task to the database and retrieve it's row's value
-		for (int i = 0; i < tasks.length; i++) {
-			ContentValues cv = _getContentValuesTask(tasks[i]);
-			cv.put(SQLConstants.TASK_CONNECTED_LIST_ID, listID);
-			rowIDs[i] = (int) db.insert(SQLConstants.TASK_TABLE_NAME, null, cv);
-		}
-
-		return _getIDsfromRows(_getTaskCursor(), rowIDs, SQLConstants.LIST_ID);
-	}
-
-	private int[] _addLists(ITaskCollection[] lists) {
-		int[] rowIDs = new int[lists.length];
-
-		// Add each list to the database and retrieve it's row's value
-		for (int i = 0; i < lists.length; i++) {
-			rowIDs[i] = (int) db.insert(SQLConstants.LIST_TABLE_NAME, null,
-					_getContentValuesList(lists[i]));
-		}
-
-		return _getIDsfromRows(_getListCursor(), rowIDs, SQLConstants.TASK_ID);
-	}
-
-	private int[] _getIDsfromRows(Cursor cur, int[] row, String idstring) {
-		int[] idArray = new int[row.length];
-
-		cur.moveToFirst();
-		// Move cursor to each specified row and pull the id
-		for (int i = 0; i < row.length; i++) {
-			if (row[i] != -1 && cur.moveToPosition(row[i] - 1)) {
-				idArray[i] = cur.getInt(cur.getColumnIndex(idstring));
+	private int[] _getLastAddedIDs(String tableName, boolean[] idsToGet,
+			String idName) {
+		int[] idArray = new int[idsToGet.length];
+		Cursor cur = db.rawQuery("SELECT * FROM " + tableName + " ORDER BY "
+				+ idName, null);
+		cur.moveToLast();
+		for (int i = 0, j = idArray.length - 1; i < idArray.length; i++, j--) {
+			if (idsToGet[j]) {
+				idArray[i] = cur.getInt(cur.getColumnIndex(idName));
 			} else {
 				idArray[i] = -1;
+			}
+			if (!cur.moveToPrevious()) {
+				break;
 			}
 		}
 		cur.close();
 		return idArray;
+	}
+
+	private int[] _addTasks(ITask[] tasks, int listID) {
+		boolean[] rowAdded = new boolean[tasks.length];
+		
+		// Add each task to the database and retrieve it's row's value
+		for (int i = 0; i < tasks.length; i++) {
+			ContentValues cv = _getContentValuesTask(tasks[i]);
+			cv.put(SQLConstants.TASK_CONNECTED_LIST_ID, listID);
+			rowAdded[i] = db.insert(SQLConstants.TASK_TABLE_NAME, null, cv) != -1;
+		}
+
+		return _getLastAddedIDs(SQLConstants.TASK_TABLE_NAME, rowAdded,
+				SQLConstants.TASK_ID);
+	}
+
+	private int[] _addLists(ITaskCollection[] lists) {
+		boolean[] rowAdded = new boolean[lists.length];
+
+		// Add each list to the database and retrieve it's row's value
+		for (int i = 0; i < lists.length; i++) {
+			rowAdded[i] = db.insert(SQLConstants.LIST_TABLE_NAME, null,
+					_getContentValuesList(lists[i])) != -1;
+		}
+
+		return _getLastAddedIDs(SQLConstants.LIST_TABLE_NAME, rowAdded,
+				SQLConstants.LIST_ID);
 	}
 
 	private Cursor _getListCursor() {
