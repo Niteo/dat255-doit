@@ -95,6 +95,7 @@ public class DataSQLTest extends AndroidTestCase {
 				new Date(7), new Date(3), 5, false);
 		final Task task2 = new Task("TASK2", "DESC2", new Priority((byte) 6),
 				new Date(2), new Date(23), 16, true);
+		
 		assertTrue(db.addTask(task, 0) == 1);
 		assertTrue(db.getAllTasks().size() == 1);
 		assertTrue(_containsEqualTask(db.getAllTasks().keySet(), task));
@@ -103,6 +104,18 @@ public class DataSQLTest extends AndroidTestCase {
 		assertTrue(db.getAllTasks().size() == 2);
 		assertTrue(_containsEqualTask(db.getAllTasks().keySet(), task));
 		assertTrue(_containsEqualTask(db.getAllTasks().keySet(), task2));
+	}
+	
+	public void testAddAndRemoveTask(){
+		final Task task = new Task("TASK", "DESC", new Priority((byte) 3),
+				new Date(7), new Date(3), 5, false);
+		final Task task2 = new Task("TASK2", "DESC2", new Priority((byte) 6),
+				new Date(2), new Date(23), 16, true);
+		
+		assertTrue(db.addTask(task, 0) == 1);
+		assertTrue(db.removeTask(1));
+		assertFalse(db.removeTask(1));
+		assertFalse(db.addTask(task2, 0) == -1);
 	}
 
 	public void testAddTasks() {
