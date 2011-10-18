@@ -1,6 +1,7 @@
 package se.chalmers.doit.presentation.activities.implementation;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import se.chalmers.doit.R;
 import se.chalmers.doit.core.ITaskCollection;
@@ -9,10 +10,19 @@ import se.chalmers.doit.logic.controller.implementation.LogicController;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.*;
+import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnKeyListener;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * View for viewing lists
@@ -31,12 +41,12 @@ public class ListViewer extends ListActivity {
 		final ITaskCollection col = adapter.getItem(info.position);
 
 		switch (item.getItemId()) {
-			case R.id.lv_context_delete:
-				_deleteList(col);
-				return true;
-			case R.id.lv_context_edit:
-				// TODO
-				return true;
+		case R.id.lv_context_delete:
+			_deleteList(col);
+			return true;
+		case R.id.lv_context_edit:
+			// TODO
+			return true;
 		}
 		return false;
 	}
@@ -58,6 +68,9 @@ public class ListViewer extends ListActivity {
 			public void onClick(final View v) {
 				if (edittext.getText().toString().length() > 0) {
 					_addList(new TaskCollection(edittext.getText().toString()));
+				} else {
+					Toast.makeText(ListViewer.this, "You must enter a name!",
+							Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
@@ -123,8 +136,8 @@ public class ListViewer extends ListActivity {
 	protected void onListItemClick(final ListView l, final View v,
 			final int position, final long id) {
 		super.onListItemClick(l, v, position, id);
-		TaskCollection o = (TaskCollection) this.getListAdapter().getItem(
-				position);
+		final TaskCollection o = (TaskCollection) this.getListAdapter()
+				.getItem(position);
 		((MainActivity) getParent()).setActiveList(o.getName());
 	}
 
@@ -134,6 +147,10 @@ public class ListViewer extends ListActivity {
 			Toast.makeText(ListViewer.this, "List added!", Toast.LENGTH_SHORT)
 					.show();
 			((EditText) findViewById(R.id.lv_addlistedittext)).setText("");
+		} else {
+			Toast.makeText(ListViewer.this,
+					"Two lists cannot have the same name!", Toast.LENGTH_SHORT)
+					.show();
 		}
 	}
 
@@ -153,7 +170,8 @@ public class ListViewer extends ListActivity {
 
 	private void _populateList() {
 		adapter.clear();
-		for (ITaskCollection t : LogicController.getInstance().getAllLists()) {
+		for (final ITaskCollection t : LogicController.getInstance()
+				.getAllLists()) {
 			adapter.add(t);
 		}
 	}
