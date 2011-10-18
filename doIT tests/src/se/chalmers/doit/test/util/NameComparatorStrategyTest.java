@@ -35,11 +35,11 @@ public class NameComparatorStrategyTest extends AndroidTestCase {
 		assertTrue(strat.compare(t1, t1) == 0);
 
 		assertTrue(strat.compare(t3, t4) == -1);
-		assertTrue(strat.compare(t5, t1) == -1);
-		assertTrue(strat.compare(t6, t2) == -1);
+		assertTrue(strat.compare(t5, t1) == 0);
+		assertTrue(strat.compare(t6, t2) == 0);
 
 		assertTrue(strat.compare(t1, t3) == -1);
-		assertTrue(strat.compare(t7, t1) == -1);
+		assertTrue(strat.compare(t7, t1) == 1);
 
 		// Test with inverted strategy
 		assertTrue(stratInv.compare(t1, t2) == 1);
@@ -47,11 +47,11 @@ public class NameComparatorStrategyTest extends AndroidTestCase {
 		assertTrue(stratInv.compare(t1, t1) == 0);
 
 		assertTrue(stratInv.compare(t3, t4) == 1);
-		assertTrue(stratInv.compare(t5, t1) == 1);
-		assertTrue(stratInv.compare(t6, t2) == 1);
+		assertTrue(stratInv.compare(t5, t1) == 0);
+		assertTrue(stratInv.compare(t6, t2) == 0);
 
 		assertTrue(stratInv.compare(t1, t3) == 1);
-		assertTrue(stratInv.compare(t7, t1) == 1);
+		assertTrue(stratInv.compare(t7, t1) == -1);
 	}
 
 }
