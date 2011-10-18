@@ -67,8 +67,8 @@ public final class R {
         public static final int lv_context_delete=0x7f08004b;
         public static final int lv_context_edit=0x7f08004a;
         public static final int lv_top_control_bar=0x7f080017;
-        public static final int menu_about=0x7f08004e;
-        public static final int menu_help=0x7f08004f;
+        public static final int menu_about=0x7f08004f;
+        public static final int menu_help=0x7f08004e;
         public static final int menu_settings=0x7f08004d;
         public static final int menu_statistics=0x7f08004c;
         public static final int pickDueDate=0x7f08000f;
@@ -98,8 +98,8 @@ public final class R {
         public static final int tableRow6=0x7f08002e;
         public static final int tableRow7=0x7f080031;
         public static final int taskHeader=0x7f08001e;
-        public static final int taskviewmenu_about=0x7f080053;
-        public static final int taskviewmenu_help=0x7f080054;
+        public static final int taskviewmenu_about=0x7f080054;
+        public static final int taskviewmenu_help=0x7f080053;
         public static final int taskviewmenu_settings=0x7f080052;
         public static final int taskviewmenu_sort=0x7f080050;
         public static final int taskviewmenu_statistics=0x7f080051;
