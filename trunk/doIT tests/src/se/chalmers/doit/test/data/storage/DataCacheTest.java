@@ -12,9 +12,9 @@ import android.test.AndroidTestCase;
 
 /**
  * Test class for testing DataCache.java
- * 
+ *
  * @author Kaufmann
- * 
+ *
  */
 public class DataCacheTest extends AndroidTestCase {
 
@@ -140,9 +140,9 @@ public class DataCacheTest extends AndroidTestCase {
 
 	public void testGetAllTasks() {
 		assertTrue(cache.getAllTasks().size() == 0);
-		final TaskCollection tc = new TaskCollection("TC");
-		final TaskCollection tc2 = new TaskCollection("TC");
-		final TaskCollection tc3 = new TaskCollection("TC");
+		final TaskCollection tc = new TaskCollection("TC1");
+		final TaskCollection tc2 = new TaskCollection("TC2");
+		final TaskCollection tc3 = new TaskCollection("TC3");
 		cache.addList(tc);
 		cache.addList(tc2);
 		cache.addList(tc3);
