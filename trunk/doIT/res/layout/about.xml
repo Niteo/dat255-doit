@@ -6,7 +6,7 @@
         <ImageView android:id="@+id/imageView1" android:src="@drawable/icon" android:layout_height="199dp" android:layout_width="90dp"></ImageView>
         <LinearLayout android:layout_width="wrap_content" android:id="@+id/linearLayout2" android:layout_height="fill_parent" android:orientation="vertical" android:layout_weight="0.55">
             <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="doIT" android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-            <TextView android:textAppearance="?android:attr/textAppearanceMedium" android:text="Version: 0.1" android:id="@+id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+            <TextView android:textAppearance="?android:attr/textAppearanceMedium" android:text="Version: 0.6" android:id="@+id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
             <TextView android:textAppearance="?android:attr/textAppearanceSmall" android:text="Copyleft 2011. This application is distributed under the GNU GPL v3 license." android:id="@+id/textView4" android:layout_height="wrap_content" android:layout_width="229dp"></TextView>
         </LinearLayout>
     </LinearLayout>

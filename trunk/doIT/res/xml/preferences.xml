@@ -1,14 +1,14 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
- 
- <PreferenceCategory android:title="Settings"
- 
- android:summary="">
- 
-  
- <CheckBoxPreference android:key="settingName"
- android:title="Easter Eggs"
- android:summary="This enables easter eggs in the app." />
- 
- </PreferenceCategory>
- 
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:summary=""
+        android:title="Settings" >
+
+        <CheckBoxPreference
+            android:enabled="false"
+            android:key="settingName"
+            android:summary="Settings are coming."
+            android:title="Placeholder Setting" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

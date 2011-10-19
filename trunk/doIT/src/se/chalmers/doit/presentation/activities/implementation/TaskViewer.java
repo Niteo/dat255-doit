@@ -246,10 +246,6 @@ public class TaskViewer extends ListActivity {
 		// Get the item that was clicked
 		final ITask task = (Task) this.getListAdapter().getItem(position);
 		// TODO show more details of the task to the user.
-		if (task.getReminderDate() == null) {
-			Toast.makeText(TaskViewer.this, "Reminder Date is null!",
-					Toast.LENGTH_SHORT).show();
-		}
 	}
 
 	private void _addTask(final ITask task) {
