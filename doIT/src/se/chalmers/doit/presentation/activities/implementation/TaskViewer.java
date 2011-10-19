@@ -29,6 +29,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
@@ -41,7 +42,7 @@ import android.widget.Toast;
 /**
  * Activity displaying the default list.
  * 
- * @author phelerox
+ * @author Marco Baxemyr
  * 
  */
 public class TaskViewer extends ListActivity {
@@ -51,15 +52,20 @@ public class TaskViewer extends ListActivity {
 	private ITask lastEditedTask;
 	private static final int ADD_NEW_TASK = 0;
 	private static final int EDIT_TASK = 1;
+	private static final int CONTEXT_SUBMENU = 14432;
 	private final HashMap<Integer, Intent> intentMap = new HashMap<Integer, Intent>();
 	private final HashMap<Integer, IComparatorStrategy> strategyMap = new HashMap<Integer, IComparatorStrategy>();
+	private int mParentContextMenuListIndex; // workaround to allow submenus in
+												// a ListACtivity's ContextMenu
 
 	@Override
 	public boolean onContextItemSelected(final MenuItem item) {
 		final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
-		final ITask task = adapter.getItem(info.position);
-
+		// if info == null, the user is in the submenu
+		int idxOfList = (info != null) ? info.position
+				: this.mParentContextMenuListIndex;
+		final ITask task = adapter.getItem(idxOfList);
 		switch (item.getItemId()) {
 
 		case R.id.context_complete:
@@ -90,6 +96,18 @@ public class TaskViewer extends ListActivity {
 		case R.id.context_delete:
 			_deleteTask(task);
 			return true;
+		case CONTEXT_SUBMENU:
+			String listName = item.getTitle().toString();
+			Collection<ITaskCollection> lists = LogicController.getInstance()
+					.getAllLists();
+			for (ITaskCollection list : lists) {
+				if (list.getName().equals(listName)) {
+					LogicController.getInstance().moveTask(task, list);
+				}
+			}
+
+		default: // can handle submenus if we save off info.position
+			this.mParentContextMenuListIndex = idxOfList;
 		}
 		return false;
 	}
@@ -178,6 +196,21 @@ public class TaskViewer extends ListActivity {
 				menu.removeItem(R.id.context_complete);
 			} else {
 				menu.removeItem(R.id.context_incomplete);
+			}
+			if (LogicController.getInstance().getAllLists().size() > 1) {
+				SubMenu move = menu.addSubMenu("Move");
+				Collection<ITaskCollection> lists = LogicController
+						.getInstance().getAllLists();
+				for (ITaskCollection list : lists) {
+					if (!(list.getName() == activeList.getName())) {
+						move.add(Menu.NONE, CONTEXT_SUBMENU, Menu.NONE,
+								list.getName());
+					}
+				}
+				// workaround to make Move appear between Edit and Delete
+				// instead of at the bottom.
+				menu.removeItem(R.id.context_delete);
+				menu.add(Menu.NONE, R.id.context_delete, Menu.NONE, "Delete");
 			}
 		}
 	}
