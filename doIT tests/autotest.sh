@@ -8,17 +8,17 @@ fi
 if [[ "$1" == "--coverage" || "$1" == "-c" ]]; then
 	echo 'Running "ant coverage" after fetching newest source and updating project with android SDK-tool'
 else
-	echo 'Running "ant run-tests" after fetching newest source and updating project with android SDK-tool'
+	echo 'Running "ant run-tests" after fetching newest source and updating project with android SDK-tool (make sure you have revision 13, not revision 14!)'
 fi
 
-svn checkout http://dat255-doit.googlecode.com/svn/trunk/ tmpTests
+svn checkout http://dat255-doit.googlecode.com/svn/trunk/ tmpTests/
 if [ $? -ne 0 ] ;
 then
   echo "Failed checkout!"
   exit $?
 fi
 cd tmpTests
-android update project -p ./doIT
+android update project -t 3 -p ./doIT
 if [ $? -ne 0 ] ;
 then
   echo 'Failed "android update project". Are you sure that the Android SDK is in your PATH?'
@@ -33,6 +33,7 @@ fi
 cd doIT\ tests
 if [[ "$1" == "--coverage" || "$1" == "-c" ]]; then
 	ant coverage
+	gnome-open coverage/coverage.html
 else
 	ant run-tests
 fi
