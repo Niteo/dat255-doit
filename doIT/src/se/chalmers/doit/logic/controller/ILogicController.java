@@ -125,20 +125,6 @@ public interface ILogicController {
 			throws IllegalStateException;
 
 	/**
-	 * Edits several tasks.
-	 *
-	 * @param oldCollection
-	 *            The old ITaskCollection
-	 * @param newCollection
-	 *            The new ITaskCollection
-	 * @return true if the tasks were successfully edited, false if not
-	 * @throws IllegalStateException
-	 *             if storage strategy is not set
-	 */
-	public boolean editTasks(ITaskCollection oldCollection,
-			ITaskCollection newCollection) throws IllegalStateException;
-
-	/**
 	 * Returns all lists.
 	 *
 	 * @return all ITaskCollections in the data storage

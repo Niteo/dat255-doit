@@ -123,7 +123,6 @@ public final class LogicController implements ILogicController {
 	@Override
 	public boolean editList(final ITaskCollection oldCollection,
 			final ITaskCollection newCollection)throws IllegalStateException {
-		boolean canBeAdded = true;
 
 		if(data==null){
 			throw new IllegalStateException("No storage strategy has been set!");
@@ -131,13 +130,17 @@ public final class LogicController implements ILogicController {
 
 		for (final ITaskCollection list : data.getAllLists()) {
 			if (newCollection.getName().equals(list.getName())) {
-				canBeAdded = false;
+				return false;
 			}
 		}
-		if(canBeAdded){
-			return data.editList(oldCollection, newCollection);
+		for(ITask t :newCollection.getTasks()){
+			if(!verifier.verifyTask(t)){
+				return false;
+			}
 		}
-		return false;
+
+		return data.editList(oldCollection, newCollection);
+
 	}
 
 	@Override
@@ -152,21 +155,7 @@ public final class LogicController implements ILogicController {
 		return false;
 	}
 
-	@Override
-	public boolean editTasks(final ITaskCollection oldCollection,
-			final ITaskCollection newCollection) throws IllegalStateException{
-		if(data==null){
-			throw new IllegalStateException("No storage strategy has been set!");
-		}
 
-		for (final ITask task : newCollection.getTasks()) {
-			if (!verifier.verifyTask(task)) {
-				return false;
-			}
-		}
-		data.editList(oldCollection, newCollection);
-		return true;
-	}
 
 	@Override
 	public Collection<ITaskCollection> getAllLists()throws IllegalStateException {
