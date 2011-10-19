@@ -7,6 +7,8 @@ if [[ "$1" == "--help" || "$1" == "-h" ]]; then
 fi
 if [[ "$1" == "--coverage" || "$1" == "-c" ]]; then
 	echo 'Running "ant coverage" after fetching newest source and updating project with android SDK-tool'
+elif [[ "$1" == "--build" || "$1" == "-b" ]]; then
+	echo "Building a debug-.apk"
 else
 	echo 'Running "ant run-tests" after fetching newest source and updating project with android SDK-tool (make sure you have revision 13, not revision 14!)'
 fi
@@ -34,11 +36,15 @@ cd doIT\ tests
 if [[ "$1" == "--coverage" || "$1" == "-c" ]]; then
 	ant coverage
 	gnome-open coverage/coverage.html
+elif [[ "$1" == "--build" || "$1" == "-b" ]]; then
+	cd ../doIT/
+	ant release
+	echo ".apk located in tmpTests/doIT/bin/"
 else
 	ant run-tests
 fi
 if [ $? -ne 0 ] ;
 then
-  echo '"Failed ant coverage" or "ant run-tests"! Is ant installed?'
+  echo 'Failed "ant coverage", "ant release" or "ant run-tests"! Is ant installed?'
   exit $?
 fi
