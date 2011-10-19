@@ -7,12 +7,12 @@ import android.text.Html;
 import android.widget.TextView;
 
 public class Help extends Activity {
-	
+
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.help);
-		TextView tv = (TextView)findViewById(R.id.helpTextView);
+		TextView tv = (TextView) findViewById(R.id.helpTextView);
 		tv.setText(Html.fromHtml(getString(R.string.help)));
 	}
 }

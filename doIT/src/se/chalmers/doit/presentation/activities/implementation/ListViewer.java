@@ -1,37 +1,24 @@
 package se.chalmers.doit.presentation.activities.implementation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 import se.chalmers.doit.R;
 import se.chalmers.doit.core.ITaskCollection;
 import se.chalmers.doit.core.implementation.TaskCollection;
 import se.chalmers.doit.logic.controller.implementation.LogicController;
-import android.app.AlertDialog;
-import android.app.ListActivity;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.app.*;
+import android.content.*;
 import android.os.Bundle;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.View.OnKeyListener;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.*;
 
 /**
  * View for viewing lists
- *
+ * 
  * @author Kaufmann
- *
+ * 
  */
 public class ListViewer extends ListActivity {
 	private ListListAdapter adapter;
@@ -44,64 +31,66 @@ public class ListViewer extends ListActivity {
 		final ITaskCollection col = adapter.getItem(info.position);
 
 		switch (item.getItemId()) {
-		case R.id.lv_context_delete:
-			_deleteList(col);
-			return true;
-		case R.id.lv_context_edit:
-			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+			case R.id.lv_context_delete:
+				_deleteList(col);
+				return true;
+			case R.id.lv_context_edit:
+				AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-			alert.setMessage("List name:");
+				alert.setMessage("List name:");
 
-			// Set an EditText view to get user input
-			final EditText input = new EditText(this);
-			input.setText(col.getName());
-			input.setSingleLine(true);
-			input.selectAll();
-			alert.setView(input);
+				// Set an EditText view to get user input
+				final EditText input = new EditText(this);
+				input.setText(col.getName());
+				input.setSingleLine(true);
+				input.selectAll();
+				alert.setView(input);
 
-			alert.setPositiveButton("Change",
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog,
-								int whichButton) {
-							String value = input.getText().toString();
-							if (!col.getName().equals(value)) {
-								if (!LogicController.getInstance().editList(
-										col,
-										new TaskCollection(value, col
-												.getTasks()))) {
-									Toast.makeText(
-											ListViewer.this,
-											"List named " + value
-													+ " already exists.",
-											Toast.LENGTH_SHORT).show();
+				alert.setPositiveButton("Change",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(final DialogInterface dialog,
+									final int whichButton) {
+								String value = input.getText().toString();
+								if (!col.getName().equals(value)) {
+									if (!LogicController.getInstance()
+											.editList(
+													col,
+													new TaskCollection(value,
+															col.getTasks()))) {
+										Toast.makeText(
+												ListViewer.this,
+												"List named " + value
+														+ " already exists.",
+												Toast.LENGTH_SHORT).show();
+									}
 								}
 							}
-						}
-					});
+						});
 
-			alert.setNegativeButton("Cancel",
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog,
-								int whichButton) {
-							// Canceled
+				alert.setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(final DialogInterface dialog,
+									final int whichButton) {
+								// Canceled
+							}
+						});
+				final AlertDialog dialog = alert.create();
+				input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+					@Override
+					public void onFocusChange(final View v,
+							final boolean hasFocus) {
+						if (hasFocus) {
+							dialog.getWindow()
+									.setSoftInputMode(
+											WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 						}
-					});
-			final AlertDialog dialog = alert.create();
-			input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-				@Override
-				public void onFocusChange(View v, boolean hasFocus) {
-					if (hasFocus) {
-						dialog.getWindow()
-								.setSoftInputMode(
-										WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 					}
-				}
-			});
-			dialog.show();
-			input.requestFocus();
-			return true;
+				});
+				dialog.show();
+				input.requestFocus();
+				return true;
 		}
 		return false;
 	}
@@ -213,10 +202,14 @@ public class ListViewer extends ListActivity {
 
 	private void _createIntentMap() {
 		intentMap.clear();
-		intentMap.put(Integer.valueOf(R.id.menu_about), new Intent(this, About.class));
-		intentMap.put(Integer.valueOf(R.id.menu_help), new Intent(this, Help.class));
-		intentMap.put(Integer.valueOf(R.id.menu_statistics), new Intent(this, Statistics.class));
-		intentMap.put(Integer.valueOf(R.id.menu_settings), new Intent(this, Preferences.class));
+		intentMap.put(Integer.valueOf(R.id.menu_about), new Intent(this,
+				About.class));
+		intentMap.put(Integer.valueOf(R.id.menu_help), new Intent(this,
+				Help.class));
+		intentMap.put(Integer.valueOf(R.id.menu_statistics), new Intent(this,
+				Statistics.class));
+		intentMap.put(Integer.valueOf(R.id.menu_settings), new Intent(this,
+				Preferences.class));
 	}
 
 	private void _deleteList(final ITaskCollection list) {

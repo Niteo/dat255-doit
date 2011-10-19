@@ -7,7 +7,7 @@ import se.chalmers.doit.core.ITask;
 
 /**
  * Strategy for comparing classes implementing ITask.
- *
+ * 
  * @author Robert Kaufmann, Karl Bristav
  */
 public interface IComparatorStrategy extends Comparator<ITask>, Serializable {

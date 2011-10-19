@@ -9,46 +9,26 @@ import android.content.SharedPreferences;
 
 public class StatisticsDataStorage implements IStatisticsDataStorage {
 
-	private SharedPreferences pref;
-	private final String TASKS_FINISHED = "FINISHEDTASKS";
-	private final String TASKS_CREATED = "CREATEDTASKS";
-	private final String TASKS_DELETED = "DELETEDTASKS";
-	private final String TASKS_OVERDUE = "OVERDUETASKS";
 	private final String LISTS_CREATED = "CREATEDLISTS";
 	private final String LISTS_DELETED = "DELETELISTS";
-	
-	public StatisticsDataStorage(SharedPreferences pref){
+	private SharedPreferences pref;
+	private final String TASKS_CREATED = "CREATEDTASKS";
+	private final String TASKS_DELETED = "DELETEDTASKS";
+	private final String TASKS_FINISHED = "FINISHEDTASKS";
+	private final String TASKS_OVERDUE = "OVERDUETASKS";
+
+	public StatisticsDataStorage(final SharedPreferences pref) {
 		this.pref = pref;
 	}
-	
-	@Override
-	public void reportFinishedTasks(int numberOfFinishedTasks, Date date) {
-		_addToVariable(TASKS_FINISHED, numberOfFinishedTasks);
-	}
 
 	@Override
-	public void reportCreatedTasks(int numberOFCreatedTasks, Date date) {
-		_addToVariable(TASKS_CREATED, numberOFCreatedTasks);
-	}
-
-	@Override
-	public void reportDeletedTasks(int numberOfDeletedTasks, Date date) {
-		_addToVariable(TASKS_DELETED, numberOfDeletedTasks);
-	}
-
-	@Override
-	public void reportOverdueTasks(int numberOfOverdueTasks, Date date) {
-		_addToVariable(TASKS_OVERDUE, numberOfOverdueTasks);
-	}
-
-	@Override
-	public void reportCreatedLists(int numberOfCreatedLists, Date date) {
-		_addToVariable(LISTS_CREATED, numberOfCreatedLists);
-	}
-
-	@Override
-	public void reportDeletedLists(int numberOfDeletedLists, Date date) {
-		_addToVariable(LISTS_DELETED, numberOfDeletedLists);
+	public void clearData() {
+		_clearVariable(LISTS_CREATED);
+		_clearVariable(LISTS_DELETED);
+		_clearVariable(TASKS_CREATED);
+		_clearVariable(TASKS_DELETED);
+		_clearVariable(TASKS_FINISHED);
+		_clearVariable(TASKS_OVERDUE);
 	}
 
 	@Override
@@ -66,23 +46,49 @@ public class StatisticsDataStorage implements IStatisticsDataStorage {
 	}
 
 	@Override
-	public void clearData() {
-		_clearVariable(LISTS_CREATED);
-		_clearVariable(LISTS_DELETED);
-		_clearVariable(TASKS_CREATED);
-		_clearVariable(TASKS_DELETED);
-		_clearVariable(TASKS_FINISHED);
-		_clearVariable(TASKS_OVERDUE);
+	public void reportCreatedLists(final int numberOfCreatedLists,
+			final Date date) {
+		_addToVariable(LISTS_CREATED, numberOfCreatedLists);
 	}
-	
-	private void _addToVariable(String name, int value){
+
+	@Override
+	public void reportCreatedTasks(final int numberOFCreatedTasks,
+			final Date date) {
+		_addToVariable(TASKS_CREATED, numberOFCreatedTasks);
+	}
+
+	@Override
+	public void reportDeletedLists(final int numberOfDeletedLists,
+			final Date date) {
+		_addToVariable(LISTS_DELETED, numberOfDeletedLists);
+	}
+
+	@Override
+	public void reportDeletedTasks(final int numberOfDeletedTasks,
+			final Date date) {
+		_addToVariable(TASKS_DELETED, numberOfDeletedTasks);
+	}
+
+	@Override
+	public void reportFinishedTasks(final int numberOfFinishedTasks,
+			final Date date) {
+		_addToVariable(TASKS_FINISHED, numberOfFinishedTasks);
+	}
+
+	@Override
+	public void reportOverdueTasks(final int numberOfOverdueTasks,
+			final Date date) {
+		_addToVariable(TASKS_OVERDUE, numberOfOverdueTasks);
+	}
+
+	private void _addToVariable(final String name, final int value) {
 		int toSet = pref.getInt(name, 0) + value;
 		SharedPreferences.Editor ed = pref.edit();
 		ed.putInt(name, toSet);
 		ed.commit();
 	}
-	
-	private void _clearVariable(String name){
+
+	private void _clearVariable(final String name) {
 		SharedPreferences.Editor ed = pref.edit();
 		ed.putInt(name, 0);
 		ed.commit();

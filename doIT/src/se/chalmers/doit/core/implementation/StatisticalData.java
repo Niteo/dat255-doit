@@ -6,14 +6,14 @@ import se.chalmers.doit.core.IStatisticalData;
 
 public class StatisticalData implements IStatisticalData {
 
-	private final Date date;
-
-	private int finishedTasks;
-	private int createdTasks;
-	private int deletedTasks;
-	private int overdueTasks;
 	private int createdLists;
+
+	private int createdTasks;
+	private final Date date;
 	private int deletedLists;
+	private int deletedTasks;
+	private int finishedTasks;
+	private int overdueTasks;
 
 	public StatisticalData(final Date date) {
 
@@ -23,31 +23,14 @@ public class StatisticalData implements IStatisticalData {
 	}
 
 	@Override
-	public void addFinishedTasks(final int amount) {
-		finishedTasks += amount;
+	public void addCreatedLists(final int amount) {
+		createdLists += amount;
+
 	}
 
 	@Override
 	public void addCreatedTasks(final int amount) {
 		createdTasks += amount;
-
-	}
-
-	@Override
-	public void addDeletedTasks(final int amount) {
-		deletedTasks += amount;
-
-	}
-
-	@Override
-	public void addOverdueTasks(final int amount) {
-		overdueTasks += amount;
-
-	}
-
-	@Override
-	public void addCreatedLists(final int amount) {
-		createdLists += amount;
 
 	}
 
@@ -58,28 +41,20 @@ public class StatisticalData implements IStatisticalData {
 	}
 
 	@Override
-	public Date getDate() {
-		return (Date) date.clone();
+	public void addDeletedTasks(final int amount) {
+		deletedTasks += amount;
+
 	}
 
 	@Override
-	public int getFinishedTasks() {
-		return finishedTasks;
+	public void addFinishedTasks(final int amount) {
+		finishedTasks += amount;
 	}
 
 	@Override
-	public int getCreatedTasks() {
-		return createdTasks;
-	}
+	public void addOverdueTasks(final int amount) {
+		overdueTasks += amount;
 
-	@Override
-	public int getDeletedTasks() {
-		return deletedTasks;
-	}
-
-	@Override
-	public int getOverdueTasks() {
-		return overdueTasks;
 	}
 
 	@Override
@@ -88,8 +63,33 @@ public class StatisticalData implements IStatisticalData {
 	}
 
 	@Override
+	public int getCreatedTasks() {
+		return createdTasks;
+	}
+
+	@Override
+	public Date getDate() {
+		return (Date) date.clone();
+	}
+
+	@Override
 	public int getDeletedLists() {
 		return deletedLists;
+	}
+
+	@Override
+	public int getDeletedTasks() {
+		return deletedTasks;
+	}
+
+	@Override
+	public int getFinishedTasks() {
+		return finishedTasks;
+	}
+
+	@Override
+	public int getOverdueTasks() {
+		return overdueTasks;
 	}
 
 	@Override

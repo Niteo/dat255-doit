@@ -13,7 +13,7 @@ import se.chalmers.doit.data.storage.IDataStorage;
  */
 
 public class DataCache implements IDataStorage {
-	
+
 	private final Collection<ITaskCollection> lists = new ArrayList<ITaskCollection>();
 
 	@Override
@@ -130,8 +130,8 @@ public class DataCache implements IDataStorage {
 
 	private boolean _addList(final ITaskCollection col) {
 		if (!_listExists(col)) {
-			for(ITask t : col.getTasks()){
-				if(_taskExists(t)){
+			for (ITask t : col.getTasks()) {
+				if (_taskExists(t)) {
 					return false;
 				}
 			}
@@ -149,23 +149,24 @@ public class DataCache implements IDataStorage {
 		}
 		return false;
 	}
-	
-	private int _addTasks(final Collection<ITask> tasks, final ITaskCollection collection) {
+
+	private int _addTasks(final Collection<ITask> tasks,
+			final ITaskCollection collection) {
 		if (_listExists(collection)) {
-			
+
 			// Check which tasks should be added
 			Collection<ITask> toAdd = new ArrayList<ITask>();
-			for(ITask t : tasks){
-				if(!_taskExists(t)){
+			for (ITask t : tasks) {
+				if (!_taskExists(t)) {
 					toAdd.add(t);
 				}
 			}
-			
+
 			// Add those tasks
 			Collection<ITask> oldTasks = collection.getTasks();
 			oldTasks.addAll(toAdd);
-			if(_editList(collection,
-					new TaskCollection(collection.getName(), oldTasks))){
+			if (_editList(collection, new TaskCollection(collection.getName(),
+					oldTasks))) {
 				return toAdd.size();
 			}
 		}
@@ -174,6 +175,10 @@ public class DataCache implements IDataStorage {
 
 	private boolean _editList(final ITaskCollection oc, final ITaskCollection nc) {
 		return (_removeList(oc) && _addList(nc));
+	}
+
+	private boolean _listExists(final ITaskCollection col) {
+		return lists.contains(col);
 	}
 
 	private boolean _removeList(final ITaskCollection collection) {
@@ -197,9 +202,5 @@ public class DataCache implements IDataStorage {
 			}
 		}
 		return false;
-	}
-
-	private boolean _listExists(final ITaskCollection col) {
-		return lists.contains(col);
 	}
 }

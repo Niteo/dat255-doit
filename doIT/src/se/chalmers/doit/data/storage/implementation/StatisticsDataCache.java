@@ -1,8 +1,6 @@
 package se.chalmers.doit.data.storage.implementation;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 import se.chalmers.doit.core.IStatisticalData;
 import se.chalmers.doit.core.implementation.StatisticalData;
@@ -18,41 +16,34 @@ public class StatisticsDataCache implements IStatisticsDataStorage {
 
 	private final Collection<IStatisticalData> data = new ArrayList<IStatisticalData>();
 
-	/**
-	 * Checks if there already exists an IStatisticalData object with the
-	 * current date in the data cache
-	 * 
-	 * @param date
-	 *            The current date
-	 * @return The IStatisticalData object with the current date, null if there
-	 *         exists no IStatisticalData with the current date
-	 */
-	private IStatisticalData _getExistingData(final Date date) {
+	@Override
+	public void clearData() {
+		data.clear();
 
-		IStatisticalData retData = null;
-
-		for (final IStatisticalData d : data) {
-			if (d.sameDay(date)) {
-				retData = d;
-			}
-		}
-
-		return retData;
 	}
 
 	@Override
-	public void reportFinishedTasks(final int numberOfFinishedTasks,
+	public Collection<IStatisticalData> getStatisticsData() {
+		final Collection<IStatisticalData> ret = new ArrayList<IStatisticalData>();
+		for (final IStatisticalData d : data) {
+			ret.add(d);
+		}
+		return ret;
+	}
+
+	@Override
+	public void reportCreatedLists(final int numberOfCreatedLists,
 			final Date date) {
 
-		if (numberOfFinishedTasks > 0) {
+		if (numberOfCreatedLists > 0) {
 
 			final IStatisticalData newData = _getExistingData(date);
 
 			if (newData != null) {
-				newData.addFinishedTasks(numberOfFinishedTasks);
+				newData.addCreatedLists(numberOfCreatedLists);
 			} else {
 				final StatisticalData anotherData = new StatisticalData(date);
-				anotherData.addFinishedTasks(numberOfFinishedTasks);
+				anotherData.addCreatedLists(numberOfCreatedLists);
 
 				data.add(anotherData);
 			}
@@ -79,6 +70,25 @@ public class StatisticsDataCache implements IStatisticsDataStorage {
 	}
 
 	@Override
+	public void reportDeletedLists(final int numberOfDeletedLists,
+			final Date date) {
+
+		if (numberOfDeletedLists > 0) {
+
+			final IStatisticalData newData = _getExistingData(date);
+
+			if (newData != null) {
+				newData.addDeletedLists(numberOfDeletedLists);
+			} else {
+				final StatisticalData anotherData = new StatisticalData(date);
+				anotherData.addDeletedLists(numberOfDeletedLists);
+
+				data.add(anotherData);
+			}
+		}
+	}
+
+	@Override
 	public void reportDeletedTasks(final int numberOfDeletedTasks,
 			final Date date) {
 
@@ -91,6 +101,25 @@ public class StatisticsDataCache implements IStatisticsDataStorage {
 			} else {
 				final StatisticalData anotherData = new StatisticalData(date);
 				anotherData.addDeletedTasks(numberOfDeletedTasks);
+
+				data.add(anotherData);
+			}
+		}
+	}
+
+	@Override
+	public void reportFinishedTasks(final int numberOfFinishedTasks,
+			final Date date) {
+
+		if (numberOfFinishedTasks > 0) {
+
+			final IStatisticalData newData = _getExistingData(date);
+
+			if (newData != null) {
+				newData.addFinishedTasks(numberOfFinishedTasks);
+			} else {
+				final StatisticalData anotherData = new StatisticalData(date);
+				anotherData.addFinishedTasks(numberOfFinishedTasks);
 
 				data.add(anotherData);
 			}
@@ -116,57 +145,26 @@ public class StatisticsDataCache implements IStatisticsDataStorage {
 		}
 	}
 
-	@Override
-	public void reportCreatedLists(final int numberOfCreatedLists,
-			final Date date) {
+	/**
+	 * Checks if there already exists an IStatisticalData object with the
+	 * current date in the data cache
+	 * 
+	 * @param date
+	 *            The current date
+	 * @return The IStatisticalData object with the current date, null if there
+	 *         exists no IStatisticalData with the current date
+	 */
+	private IStatisticalData _getExistingData(final Date date) {
 
-		if (numberOfCreatedLists > 0) {
+		IStatisticalData retData = null;
 
-			final IStatisticalData newData = _getExistingData(date);
-
-			if (newData != null) {
-				newData.addCreatedLists(numberOfCreatedLists);
-			} else {
-				final StatisticalData anotherData = new StatisticalData(date);
-				anotherData.addCreatedLists(numberOfCreatedLists);
-
-				data.add(anotherData);
-			}
-		}
-	}
-
-	@Override
-	public void reportDeletedLists(final int numberOfDeletedLists,
-			final Date date) {
-
-		if (numberOfDeletedLists > 0) {
-
-			final IStatisticalData newData = _getExistingData(date);
-
-			if (newData != null) {
-				newData.addDeletedLists(numberOfDeletedLists);
-			} else {
-				final StatisticalData anotherData = new StatisticalData(date);
-				anotherData.addDeletedLists(numberOfDeletedLists);
-
-				data.add(anotherData);
-			}
-		}
-	}
-
-	@Override
-	public Collection<IStatisticalData> getStatisticsData() {
-		final Collection<IStatisticalData> ret = new ArrayList<IStatisticalData>();
 		for (final IStatisticalData d : data) {
-			ret.add(d);
+			if (d.sameDay(date)) {
+				retData = d;
+			}
 		}
-		return ret;
-	}
 
-	@Override
-	public void clearData() {
-		data.clear();
-
+		return retData;
 	}
 
 }

@@ -2,21 +2,20 @@ package se.chalmers.doit.logic.verification;
 
 import java.util.Collection;
 
-import se.chalmers.doit.core.ITask;
-import se.chalmers.doit.core.ITaskCollection;
+import se.chalmers.doit.core.*;
 
 /**
  * An interface verifying that a list or a task is correctly filled in, and
  * fixes errors if any are discovered
- *
+ * 
  * @author Karl
- *
+ * 
  */
 public interface IDataVerifier {
 
 	/**
 	 * Verifies the contents of a list
-	 *
+	 * 
 	 * @param newCollection
 	 *            The ITaskCollection to be verified
 	 * @param verifiedCollections
@@ -28,7 +27,7 @@ public interface IDataVerifier {
 
 	/**
 	 * Verifies the contents of a task
-	 *
+	 * 
 	 * @param task
 	 *            The ITask to be verified
 	 * @return A boolean stating if the task passed the verification or not
