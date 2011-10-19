@@ -2,7 +2,7 @@
 
 #This script will fetch the most recent source code from Google Code, build it, install it on an android device and either run tests or run coverage.
 if [[ "$1" == "--help" || "$1" == "-h" ]]; then
-	echo "This script fetches the latest source and runs the tests. Use the --coverage (or -c) parameter to run coverage instead of tests!"
+	echo "This script fetches the latest source and runs the tests. Use the --coverage (or -c) parameter to run coverage instead of tests! The --build (or -b) parameter builds an .apk"
 	exit 0
 fi
 if [[ "$1" == "--coverage" || "$1" == "-c" ]]; then
