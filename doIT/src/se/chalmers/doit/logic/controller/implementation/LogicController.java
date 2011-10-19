@@ -316,7 +316,6 @@ public final class LogicController implements ILogicController {
 		}
 
 		statistics.reportCreatedTasks(amount, new Date());
-
 	}
 
 	@Override
