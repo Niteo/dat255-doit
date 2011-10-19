@@ -40,39 +40,65 @@ public class DataStorage implements IDataStorage {
 
 	@Override
 	public boolean addList(final ITaskCollection collection) {
-		return _addList(collection);
+		if (cache.addList(collection)) {
+			int id = sql.addList(collection);
+			if (id != -1) {
+				_addTasksSQL(collection.getTasks(), id);
+			}
+			_rebuildCache();
+			return true;
+		}
+		return false;
 
 	}
 
 	@Override
 	public int addLists(final Collection<ITaskCollection> collection) {
-
+		int[] listIDs;
 		int count = 0;
-		for (ITaskCollection list : collection) {
-			if (_addList(list)) {
-				count++;
+
+		ITaskCollection[] listArray = new ITaskCollection[collection.size()];
+		listArray = collection.toArray(listArray);
+
+		if (cache.addLists(collection) == collection.size()) {
+			listIDs = sql.addLists(listArray);
+
+			for (int i = 0; i < listIDs.length; i++) {
+				if (listIDs[i] != -1) {
+					_addTasksSQL(listArray[i].getTasks(), listIDs[i]);
+					count++;
+				}
 			}
 		}
 
+		_rebuildCache();
 		return count;
 	}
 
 	@Override
 	public boolean addTask(final ITask task, final ITaskCollection collection) {
-
-		return _addTask(task, collection);
+		int id = -1;
+		if (cache.addTask(task, collection)) {
+			id = sql.addTask(task, listMap.get(collection).intValue());
+			_rebuildCache();
+		}
+		return id != -1;
 	}
 
 	@Override
 	public int addTasks(final Collection<ITask> tasks,
 			final ITaskCollection collection) {
-		int count = 0;
+		int[] ids = new int[0];
+		if (cache.addTasks(tasks, collection) == tasks.size()) {
+			ids = _addTasksSQL(tasks, listMap.get(collection).intValue());
+		}
+		_rebuildCache();
 
-		for (ITask t : tasks) {
-			if (_addTask(t, collection)) {
+		int count = 0;
+		for (int i : ids) {
+			if (i != -1) {
 				count++;
 			}
-
 		}
 		return count;
 	}
@@ -141,16 +167,16 @@ public class DataStorage implements IDataStorage {
 	@Override
 	public boolean removeList(final ITaskCollection collection) {
 
-		int listID = listMap.get(collection).intValue();
+		if (cache.removeList(collection)) {
+			if (sql.removeList(listMap.get(collection).intValue())) {
 
-		if (sql.removeList(listID)) {
-			// Remove the tasks in the list from the database too!
-			for (ITask task : collection.getTasks()) {
-				int taskID = taskMap.get(task).intValue();
-				sql.removeTask(taskID);
+				int[] ids = sql.getTaskIDs(listMap.get(collection).intValue());
+
+				sql.removeTasks(ids);
+
+				_rebuildCache();
+				return true;
 			}
-			_rebuildCache();
-			return true;
 		}
 
 		return false;
@@ -158,38 +184,61 @@ public class DataStorage implements IDataStorage {
 
 	@Override
 	public int removeLists(final Collection<ITaskCollection> collection) {
+		if (cache.removeLists(collection)==collection.size()) {
+			int[] ids = new int[collection.size()];
+			int index = 0;
+			for(ITaskCollection c : collection){
+				ids[index++] = listMap.get(c).intValue();
+			}
 
-		int count = 0;
-		for (ITaskCollection l : collection) {
-			removeList(l);
-			count++;
+			int count = 0;
+			for (int id : ids) {
+				int[] taskIds = sql.getTaskIDs(id);
+				if(sql.removeList(id)){
+					sql.removeTasks(taskIds);
+					count++;
+				}
+			}
+
+			return count;
 		}
 
-		return count;
+		return 0;
 	}
 
 	@Override
 	public boolean removeTask(final ITask task) {
-		if (_removeTask(task)) {
+		boolean canBeRemoved = false;
+		if (cache.removeTask(task)) {
+			canBeRemoved = sql.removeTask(taskMap.get(task).intValue());
 			_rebuildCache();
-			return true;
 		}
 
-		return false;
+		return canBeRemoved;
 	}
 
 	@Override
 	public int removeTasks(final Collection<ITask> listOfTasksToRemove) {
+		int[] array = new int[listOfTasksToRemove.size()];
 
-		int count = 0;
-
+		int loopCount = 0;
 		for (ITask t : listOfTasksToRemove) {
-			if (_removeTask(t)) {
-				count++;
-			}
+			array[loopCount++] = taskMap.get(t).intValue();
 		}
-		_rebuildCache();
-		return count;
+
+		if (cache.removeTasks(listOfTasksToRemove) == listOfTasksToRemove
+				.size()) {
+			boolean[] boolArray = sql.removeTasks(array);
+
+			int count = 0;
+			for (boolean i : boolArray) {
+				count += i ? 1 : 0;
+			}
+			_rebuildCache();
+			return count;
+		}
+
+		return 0;
 	}
 
 	private void _populateCache() {
@@ -198,20 +247,20 @@ public class DataStorage implements IDataStorage {
 				.size()];
 		collection = listMap.keySet().toArray(collection);
 
-		int[] taskIDs = new int[collection.length];
-
+		// Loop through each list and add it
 		for (ITaskCollection c : collection) {
-
-			taskIDs = sql.getTaskIDs(listMap.get(c).intValue());
+			// Get all ITasks
+			int[] taskIDs = sql.getTaskIDs(listMap.get(c).intValue());
 			ITaskCollection taskCollection = new TaskCollection(c.getName(),
 					_getTasksFromIDs(taskIDs));
 			cache.addList(taskCollection);
 
-			listMap.put(taskCollection, listMap.get(c));
+			// TODO: check this out
+			Integer id = listMap.get(c);
 			listMap.remove(c);
+			listMap.put(taskCollection, id);
 
 		}
-
 	}
 
 	private Collection<ITask> _getTasksFromIDs(int[] taskIDs) {
@@ -236,47 +285,11 @@ public class DataStorage implements IDataStorage {
 		_populateCache();
 	}
 
-	private boolean _removeTask(final ITask task) {
+	private int[] _addTasksSQL(final Collection<ITask> tasks, final int listID) {
+		ITask[] array = new ITask[tasks.size()];
+		array = tasks.toArray(array);
 
-		int taskID = taskMap.get(task).intValue();
-
-		if (sql.removeTask(taskID)) {
-			_rebuildCache();
-			return true;
-		}
-
-		return false;
-	}
-
-	public boolean _addList(final ITaskCollection collection) {
-		if (!cache.getAllLists().contains(collection)) {
-			int id = sql.addList(collection);
-			if (id != -1) {
-				_rebuildCache();
-				return true;
-			}
-		}
-		return false;
-
-	}
-
-	public boolean _addTask(final ITask task, final ITaskCollection collection) {
-
-		for (ITask t : cache.getAllTasks()) {
-			if (t == task) {
-				return false;
-			} else {
-
-				int id = sql.addTask(task, listMap.get(collection).intValue());
-
-				if (id != -1) {
-					_rebuildCache();
-					break;
-				}
-			}
-		}
-		return true;
-
+		return sql.addTasks(array, listID);
 	}
 
 }
