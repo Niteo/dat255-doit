@@ -8,9 +8,9 @@ import se.chalmers.doit.util.implementation.Constants;
 
 /**
  * Immutable class carrying properties of a task.
- *
+ * 
  * @author Marco Baxemyr, Robert Kaufmann
- *
+ * 
  */
 
 public final class Task implements ITask {
@@ -112,61 +112,40 @@ public final class Task implements ITask {
 		return name;
 	}
 
-	@Override
-	public boolean equals(final Object o) {
-		if (o instanceof ITask) {
-			final ITask t = (ITask) o;
+	public static boolean isTasksEqual(final ITask t1, final ITask t2) {
 
-			if (this.getCustomPosition() == t.getCustomPosition()
-					&& this.isCompleted() == t.isCompleted()
-					&& this.getDescription().equals(t.getDescription())
-					&& this.getName().equals(t.getName())
-					&& this.getPriority().getValue() == t.getPriority()
-							.getValue()) {
+		if (t1.getCustomPosition() == t2.getCustomPosition()
+				&& t1.isCompleted() == t2.isCompleted()
+				&& t1.getDescription().equals(t2.getDescription())
+				&& t1.getName().equals(t2.getName())
+				&& t1.getPriority().getValue() == t2.getPriority().getValue()) {
 
-				if (t.getDueDate() != null) {
-					this.getDueDate().equals(t.getDueDate());
+			if (t2.getDueDate() != null) {
+				t1.getDueDate().equals(t2.getDueDate());
 
-					if (t.getReminderDate() != null) {
-						this.getReminderDate().equals(t.getReminderDate());
+				if (t2.getReminderDate() != null) {
+					t1.getReminderDate().equals(t2.getReminderDate());
+				} else {
+					if (t1.getDueDate() == null) {
+						return true;
+					}
+				}
+
+			} else {
+				if (t1.getDueDate() == null) {
+
+					if (t2.getReminderDate() != null) {
+						t1.getReminderDate().equals(t2.getReminderDate());
 					} else {
-						if (this.dueDate == null) {
+						if (t1.getDueDate() == null) {
 							return true;
 						}
 					}
 
-				} else {
-					if (this.dueDate == null) {
-
-						if (t.getReminderDate() != null) {
-							this.getReminderDate().equals(t.getReminderDate());
-						} else {
-							if (this.dueDate == null) {
-								return true;
-							}
-						}
-
-					}
 				}
 			}
-			return false;
-		} else {
-			return false;
 		}
-
-	}
-
-	@Override
-	public int hashCode() {
-		int hash = 101;
-		hash = hash * 17 + customPosition;
-		hash = hash * 31 + name.hashCode();
-		hash = hash * 19 + (isCompleted ? 1 : 2);
-		hash = hash * 13 + (dueDate == null ? 0 : dueDate.hashCode());
-		hash = hash * 37 + (reminderDate == null ? 0 : reminderDate.hashCode());
-		hash = hash * 29 + priority.hashCode();
-		hash = hash * 23 + description.hashCode();
-		return hash;
+		return false;
 	}
 
 }
