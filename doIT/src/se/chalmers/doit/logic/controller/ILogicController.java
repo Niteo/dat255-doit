@@ -5,6 +5,7 @@ import java.util.Collection;
 import se.chalmers.doit.core.ITask;
 import se.chalmers.doit.core.ITaskCollection;
 import se.chalmers.doit.data.storage.IDataStorage;
+import se.chalmers.doit.data.storage.IStatisticsDataStorage;
 
 /**
  * An interface to delegate instructions from the GUI to the logic layer.
@@ -381,4 +382,12 @@ public interface ILogicController {
 	 *
 	 */
 	public void setStorageStrategy(IDataStorage dataStorage);
+
+	/**
+	 * Sets the statistics strategy.
+	 *
+	 * @param statisticsStorage
+	 *            The statistics strategy
+	 */
+	public void setStatisticsStrategy(IStatisticsDataStorage statisticsStorage);
 }
