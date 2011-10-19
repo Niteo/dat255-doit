@@ -2,8 +2,7 @@ package se.chalmers.doit.data.storage;
 
 import java.util.Collection;
 
-import se.chalmers.doit.core.ITask;
-import se.chalmers.doit.core.ITaskCollection;
+import se.chalmers.doit.core.*;
 
 /**
  * An interface handling the storage of tasks and lists between the application
@@ -47,7 +46,8 @@ public interface IDataStorage {
 	public boolean addTask(ITask task, ITaskCollection collection);
 
 	/**
-	 * Adds several tasks to a list in the data storage if the specified list exists
+	 * Adds several tasks to a list in the data storage if the specified list
+	 * exists
 	 * 
 	 * @param tasks
 	 *            a Collection of ITasks to be added

@@ -9,32 +9,39 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.*;
 
 /**
  * An activity to display statistics as numbers.
- *
+ * 
  * @author Boel
- *
+ * 
  */
 public class Statistics extends Activity {
 
-	private int daysInterval;
-	private Spinner intervalSpinner;
 	private ArrayAdapter<CharSequence> adapter;
-	private HashMap<String, Integer> intervalMap = new HashMap<String, Integer>();
-	private HashMap<Integer, Integer> positionMap = new HashMap<Integer, Integer>();
 	private ILogicController controller;
+	private int daysInterval;
+	private HashMap<String, Integer> intervalMap = new HashMap<String, Integer>();
+	private Spinner intervalSpinner;
+	private HashMap<Integer, Integer> positionMap = new HashMap<Integer, Integer>();
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.statistics);
 
 		_init();
+	}
+
+	private int _findInterval(final String s) {
+		Integer ret = intervalMap.get(s);
+		return ret.intValue();
+	}
+
+	private int _findPosition(final Integer value) {
+		Integer ret = positionMap.get(value);
+		return ret.intValue();
 	}
 
 	private void _init() {
@@ -60,8 +67,8 @@ public class Statistics extends Activity {
 				.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 					@SuppressWarnings("synthetic-access")
 					@Override
-					public void onItemSelected(AdapterView<?> parent,
-							View view, int pos, long id) {
+					public void onItemSelected(final AdapterView<?> parent,
+							final View view, final int pos, final long id) {
 						Object item = parent.getItemAtPosition(pos);
 						if (item != null) {
 							if (item.toString() != null) {
@@ -79,53 +86,13 @@ public class Statistics extends Activity {
 					}
 
 					@Override
-					public void onNothingSelected(AdapterView<?> parent) {
+					public void onNothingSelected(final AdapterView<?> parent) {
 						// Nothing happens
 					}
 				});
 
 		intervalSpinner.setSelection(_findPosition(Integer
 				.valueOf(daysInterval)));
-	}
-
-	private void _update(int interval) {
-		_setCompletedTasksNumber(controller.getNumberOfFinishedTasks(interval));
-		_setCreatedTasksNumber(controller.getNumberOfCreatedTasks(interval));
-		_setDeletedTasksNumber(controller.getNumberOfDeletedTasks(interval));
-		_setExpiredTasksNumber(controller.getNumberOfOverdueTasks(interval));
-
-		_setCreatedListsNumber(controller.getNumberOfCreatedLists(interval));
-		_setDeletedListsNumber(controller.getNumberOfDeletedLists(interval));
-	}
-
-	private void _setCreatedTasksNumber(int amount) {
-		((TextView) findViewById(R.id.createdTasksNumber)).setText("" + amount);
-	}
-
-	private void _setCompletedTasksNumber(int amount) {
-		((TextView) findViewById(R.id.completedTasksNumber)).setText(""
-				+ amount);
-
-	}
-
-	private void _setDeletedTasksNumber(int amount) {
-		((TextView) findViewById(R.id.deletedTasksNumber)).setText("" + amount);
-
-	}
-
-	private void _setExpiredTasksNumber(int amount) {
-		((TextView) findViewById(R.id.expiredTasksNumber)).setText("" + amount);
-
-	}
-
-	private void _setCreatedListsNumber(int amount) {
-		((TextView) findViewById(R.id.createdListsNumber)).setText("" + amount);
-
-	}
-
-	private void _setDeletedListsNumber(int amount) {
-		((TextView) findViewById(R.id.deletedListsNumber)).setText("" + amount);
-
 	}
 
 	private void _initHashMap() {
@@ -149,13 +116,43 @@ public class Statistics extends Activity {
 
 	}
 
-	private int _findInterval(String s) {
-		Integer ret = intervalMap.get(s);
-		return ret.intValue();
+	private void _setCompletedTasksNumber(final int amount) {
+		((TextView) findViewById(R.id.completedTasksNumber)).setText(""
+				+ amount);
+
 	}
 
-	private int _findPosition(Integer value) {
-		Integer ret = positionMap.get(value);
-		return ret.intValue();
+	private void _setCreatedListsNumber(final int amount) {
+		((TextView) findViewById(R.id.createdListsNumber)).setText("" + amount);
+
+	}
+
+	private void _setCreatedTasksNumber(final int amount) {
+		((TextView) findViewById(R.id.createdTasksNumber)).setText("" + amount);
+	}
+
+	private void _setDeletedListsNumber(final int amount) {
+		((TextView) findViewById(R.id.deletedListsNumber)).setText("" + amount);
+
+	}
+
+	private void _setDeletedTasksNumber(final int amount) {
+		((TextView) findViewById(R.id.deletedTasksNumber)).setText("" + amount);
+
+	}
+
+	private void _setExpiredTasksNumber(final int amount) {
+		((TextView) findViewById(R.id.expiredTasksNumber)).setText("" + amount);
+
+	}
+
+	private void _update(final int interval) {
+		_setCompletedTasksNumber(controller.getNumberOfFinishedTasks(interval));
+		_setCreatedTasksNumber(controller.getNumberOfCreatedTasks(interval));
+		_setDeletedTasksNumber(controller.getNumberOfDeletedTasks(interval));
+		_setExpiredTasksNumber(controller.getNumberOfOverdueTasks(interval));
+
+		_setCreatedListsNumber(controller.getNumberOfCreatedLists(interval));
+		_setDeletedListsNumber(controller.getNumberOfDeletedLists(interval));
 	}
 }

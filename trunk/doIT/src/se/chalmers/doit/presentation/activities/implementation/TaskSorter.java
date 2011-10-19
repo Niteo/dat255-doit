@@ -8,34 +8,42 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
+import android.widget.*;
 
 public class TaskSorter extends Activity {
 
-	private Spinner primarySpinner;
-	private Spinner secondarySpinner;
-	private Spinner tertiarySpinner;
+	private ArrayAdapter<CharSequence> adapter;
+	private Button cancelButton;
 	private int primarySelectedIndex;
+	private Spinner primarySpinner;
 	private int secondarySelectedIndex;
-	private int tertiarySelectedIndex;
+	private Spinner secondarySpinner;
+	private Button sortButton;
+	private final HashMap<String, Integer> sortingMap = new HashMap<String, Integer>();
 	private int tempPrimary;
 	private int tempSecondary;
 	private int tempTertiary;
-	private Button cancelButton;
-	private Button sortButton;
 
-	private ArrayAdapter<CharSequence> adapter;
-	private final HashMap<String, Integer> sortingMap = new HashMap<String, Integer>();
+	private int tertiarySelectedIndex;
+	private Spinner tertiarySpinner;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tasksorter);
 
 		_init();
+	}
+
+	private void _cancel() {
+
+		this.finish();
+
+	}
+
+	@SuppressWarnings("boxing")
+	private int _findSelectedIndex(final String selectedWord) {
+		return sortingMap.get(selectedWord);
 	}
 
 	private void _init() {
@@ -102,9 +110,91 @@ public class TaskSorter extends Activity {
 		sortingMap.put(array[5], Integer.valueOf(5));
 	}
 
-	@SuppressWarnings("boxing")
-	private int _findSelectedIndex(String selectedWord) {
-		return sortingMap.get(selectedWord);
+	private void _initListeners() {
+
+		sortButton.setOnClickListener(new View.OnClickListener() {
+
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void onClick(final View v) {
+				_sort();
+			}
+		});
+
+		cancelButton.setOnClickListener(new View.OnClickListener() {
+
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void onClick(final View v) {
+				_cancel();
+			}
+		});
+
+		primarySpinner
+				.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+					@SuppressWarnings("synthetic-access")
+					@Override
+					public void onItemSelected(final AdapterView<?> parent,
+							final View view, final int pos, final long id) {
+						Object item = parent.getItemAtPosition(pos);
+						if (item != null) {
+							if (item.toString() != null) {
+								String s = item.toString();
+								tempPrimary = _findSelectedIndex(s);
+
+							}
+						}
+					}
+
+					@Override
+					public void onNothingSelected(final AdapterView<?> parent) {
+						// Nothing happens
+					}
+				});
+
+		secondarySpinner
+				.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+					@SuppressWarnings("synthetic-access")
+					@Override
+					public void onItemSelected(final AdapterView<?> parent,
+							final View view, final int pos, final long id) {
+						Object item = parent.getItemAtPosition(pos);
+						if (item != null) {
+							if (item.toString() != null) {
+								String s = item.toString();
+								tempSecondary = _findSelectedIndex(s);
+
+							}
+						}
+					}
+
+					@Override
+					public void onNothingSelected(final AdapterView<?> parent) {
+						// Nothing happens
+					}
+				});
+
+		tertiarySpinner
+				.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+					@SuppressWarnings("synthetic-access")
+					@Override
+					public void onItemSelected(final AdapterView<?> parent,
+							final View view, final int pos, final long id) {
+						Object item = parent.getItemAtPosition(pos);
+						if (item != null) {
+							if (item.toString() != null) {
+								String s = item.toString();
+								tempTertiary = _findSelectedIndex(s);
+
+							}
+						}
+					}
+
+					@Override
+					public void onNothingSelected(final AdapterView<?> parent) {
+						// Nothing happens
+					}
+				});
 	}
 
 	private void _sort() {
@@ -132,98 +222,5 @@ public class TaskSorter extends Activity {
 		edit.commit();
 
 		this.finish();
-	}
-
-	private void _cancel() {
-
-		this.finish();
-
-	}
-
-	private void _initListeners() {
-
-		sortButton.setOnClickListener(new View.OnClickListener() {
-
-			@SuppressWarnings("synthetic-access")
-			@Override
-			public void onClick(final View v) {
-				_sort();
-			}
-		});
-
-		cancelButton.setOnClickListener(new View.OnClickListener() {
-
-			@SuppressWarnings("synthetic-access")
-			@Override
-			public void onClick(final View v) {
-				_cancel();
-			}
-		});
-
-		primarySpinner
-				.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-					@SuppressWarnings("synthetic-access")
-					@Override
-					public void onItemSelected(AdapterView<?> parent,
-							View view, int pos, long id) {
-						Object item = parent.getItemAtPosition(pos);
-						if (item != null) {
-							if (item.toString() != null) {
-								String s = item.toString();
-								tempPrimary = _findSelectedIndex(s);
-
-							}
-						}
-					}
-
-					@Override
-					public void onNothingSelected(AdapterView<?> parent) {
-						// Nothing happens
-					}
-				});
-
-		secondarySpinner
-				.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-					@SuppressWarnings("synthetic-access")
-					@Override
-					public void onItemSelected(AdapterView<?> parent,
-							View view, int pos, long id) {
-						Object item = parent.getItemAtPosition(pos);
-						if (item != null) {
-							if (item.toString() != null) {
-								String s = item.toString();
-								tempSecondary = _findSelectedIndex(s);
-
-							}
-						}
-					}
-
-					@Override
-					public void onNothingSelected(AdapterView<?> parent) {
-						// Nothing happens
-					}
-				});
-
-		tertiarySpinner
-				.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-					@SuppressWarnings("synthetic-access")
-					@Override
-					public void onItemSelected(AdapterView<?> parent,
-							View view, int pos, long id) {
-						Object item = parent.getItemAtPosition(pos);
-						if (item != null) {
-							if (item.toString() != null) {
-								String s = item.toString();
-								tempTertiary = _findSelectedIndex(s);
-
-							}
-						}
-					}
-
-					@Override
-					public void onNothingSelected(AdapterView<?> parent) {
-						// Nothing happens
-					}
-				});
 	}
 }

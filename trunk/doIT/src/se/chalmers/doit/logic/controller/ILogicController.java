@@ -2,22 +2,20 @@ package se.chalmers.doit.logic.controller;
 
 import java.util.Collection;
 
-import se.chalmers.doit.core.ITask;
-import se.chalmers.doit.core.ITaskCollection;
-import se.chalmers.doit.data.storage.IDataStorage;
-import se.chalmers.doit.data.storage.IStatisticsDataStorage;
+import se.chalmers.doit.core.*;
+import se.chalmers.doit.data.storage.*;
 
 /**
  * An interface to delegate instructions from the GUI to the logic layer.
- *
+ * 
  * @author Boel
- *
+ * 
  */
 public interface ILogicController {
 
 	/**
 	 * Adds a list to the data storage.
-	 *
+	 * 
 	 * @param collection
 	 *            The ITaskCollection to add
 	 * @return true if the list was successfully added, false if not
@@ -29,7 +27,7 @@ public interface ILogicController {
 
 	/**
 	 * Adds several lists to the data storage.
-	 *
+	 * 
 	 * @param collection
 	 *            The lists to add
 	 * @return the number of lists that were successfully added
@@ -41,7 +39,7 @@ public interface ILogicController {
 
 	/**
 	 * Adds a task to the data storage.
-	 *
+	 * 
 	 * @param task
 	 *            The task to add
 	 * @param collection
@@ -55,7 +53,7 @@ public interface ILogicController {
 
 	/**
 	 * Adds several tasks to the data storage.
-	 *
+	 * 
 	 * @param tasks
 	 *            The tasks to add
 	 * @param collection
@@ -69,15 +67,23 @@ public interface ILogicController {
 
 	/**
 	 * Clears all task- and list-related data from the data storage
-	 *
+	 * 
 	 * @throws IllegalStateException
 	 *             if storage strategy is not set
 	 */
 	public void clearData() throws IllegalStateException;
 
 	/**
+	 * Clears all statistics-related data from the data storage
+	 * 
+	 * @throws IllegalStateException
+	 *             if storage strategy is not set
+	 */
+	public void clearStatisticsData() throws IllegalStateException;
+
+	/**
 	 * Marks a task as completed.
-	 *
+	 * 
 	 * @param task
 	 *            The task to complete
 	 * @return true if the task was successfully completed, false if not
@@ -88,7 +94,7 @@ public interface ILogicController {
 
 	/**
 	 * Marks a task as decompleted.
-	 *
+	 * 
 	 * @param task
 	 *            The task to decomplete
 	 * @return true if the task was successfully decompleted, false if not
@@ -99,7 +105,7 @@ public interface ILogicController {
 
 	/**
 	 * Edits a list.
-	 *
+	 * 
 	 * @param oldCollection
 	 *            The old ITaskCollection
 	 * @param newCollection
@@ -113,7 +119,7 @@ public interface ILogicController {
 
 	/**
 	 * Edits a task.
-	 *
+	 * 
 	 * @param oldTask
 	 *            The old task
 	 * @param newTask
@@ -127,7 +133,7 @@ public interface ILogicController {
 
 	/**
 	 * Returns all lists.
-	 *
+	 * 
 	 * @return all ITaskCollections in the data storage
 	 * @throws IllegalStateException
 	 *             if storage strategy is not set
@@ -137,7 +143,7 @@ public interface ILogicController {
 
 	/**
 	 * Returns all tasks.
-	 *
+	 * 
 	 * @return all ITasks in the data storage
 	 * @throws IllegalStateException
 	 *             if storage strategy is not set
@@ -145,75 +151,22 @@ public interface ILogicController {
 	public Collection<ITask> getAllTasks() throws IllegalStateException;
 
 	/**
-	 * Moves a task to a new location.
-	 *
-	 * @param task
-	 *            The task to move
-	 * @param taskCollection
-	 *            The location to move the task to
-	 *
-	 * @return true if the task was moved successfully, false if not
+	 * Returns the number of created lists between the current day and a
+	 * specified number of days in the past.
+	 * 
+	 * @param pastDays
+	 *            The number of days in the pasts the interval will reach to
+	 * @return The number of created lists for the interval
 	 * @throws IllegalStateException
 	 *             if storage strategy is not set
 	 */
-	public boolean moveTask(ITask task, ITaskCollection taskCollection)
-			throws IllegalStateException;
-
-	/**
-	 * Removes a list from the data storage.
-	 *
-	 * @param collection
-	 *            The list to remove
-	 *
-	 * @return true if the list was removed successfully, false if not
-	 * @throws IllegalStateException
-	 *             if storage strategy is not set
-	 */
-	public boolean removeList(ITaskCollection collection)
-			throws IllegalStateException;
-
-	/**
-	 * Removes several lists from the data storage.
-	 *
-	 * @param collection
-	 *            The lists to remove
-	 *
-	 * @return the number of lists successfully removed
-	 * @throws IllegalStateException
-	 *             if storage strategy is not set
-	 */
-	public int removeLists(Collection<ITaskCollection> collection)
-			throws IllegalStateException;
-
-	/**
-	 * Removes a task from the data storage.
-	 *
-	 * @param task
-	 *            The task to remove
-	 *
-	 * @return true if the task was removed successfully, false if not
-	 * @throws IllegalStateException
-	 *             if storage strategy is not set
-	 */
-	public boolean removeTask(ITask task) throws IllegalStateException;
-
-	/**
-	 * Removes several tasks from the data storage.
-	 *
-	 * @param listOfTasksToRemove
-	 *            The tasks to remove
-	 *
-	 * @return the number of tasks successfully removed
-	 * @throws IllegalStateException
-	 *             if storage strategy is not set
-	 */
-	public int removeTasks(Collection<ITask> listOfTasksToRemove)
+	public int getNumberOfCreatedLists(int pastDays)
 			throws IllegalStateException;
 
 	/**
 	 * Returns the number of created tasks between the current day and a
 	 * specified number of days in the past.
-	 *
+	 * 
 	 * @param pastDays
 	 *            The number of days in the pasts the interval will reach to
 	 * @return The number of created tasks for the interval
@@ -224,9 +177,35 @@ public interface ILogicController {
 			throws IllegalStateException;
 
 	/**
+	 * Returns the number of deleted lists between the current day and a
+	 * specified number of days in the past.
+	 * 
+	 * @param pastDays
+	 *            The number of days in the pasts the interval will reach to
+	 * @return The number of deleted lists for the interval
+	 * @throws IllegalStateException
+	 *             if storage strategy is not set
+	 */
+	public int getNumberOfDeletedLists(int pastDays)
+			throws IllegalStateException;
+
+	/**
+	 * Returns the number of deleted tasks between the current day and a
+	 * specified number of days in the past.
+	 * 
+	 * @param pastDays
+	 *            The number of days in the pasts the interval will reach to
+	 * @return The number of deleted tasks for the interval
+	 * @throws IllegalStateException
+	 *             if storage strategy is not set
+	 */
+	public int getNumberOfDeletedTasks(int pastDays)
+			throws IllegalStateException;
+
+	/**
 	 * Returns the number of finished tasks between the current day and a
 	 * specified number of days in the past.
-	 *
+	 * 
 	 * @param pastDays
 	 *            The number of days in the pasts the interval will reach to
 	 * @return The number of finished tasks for the interval
@@ -239,7 +218,7 @@ public interface ILogicController {
 	/**
 	 * Returns the number of overdue tasks between the current day and a
 	 * specified number of days in the past.
-	 *
+	 * 
 	 * @param pastDays
 	 *            The number of days in the pasts the interval will reach to
 	 * @return The number of overdue tasks for the interval
@@ -250,47 +229,19 @@ public interface ILogicController {
 			throws IllegalStateException;
 
 	/**
-	 * Returns the number of deleted tasks between the current day and a
-	 * specified number of days in the past.
-	 *
-	 * @param pastDays
-	 *            The number of days in the pasts the interval will reach to
-	 * @return The number of deleted tasks for the interval
+	 * Increments the number of created lists by a given amount
+	 * 
+	 * @param amount
+	 *            the amount to increment
 	 * @throws IllegalStateException
 	 *             if storage strategy is not set
 	 */
-	public int getNumberOfDeletedTasks(int pastDays)
-			throws IllegalStateException;
-
-	/**
-	 * Returns the number of created lists between the current day and a
-	 * specified number of days in the past.
-	 *
-	 * @param pastDays
-	 *            The number of days in the pasts the interval will reach to
-	 * @return The number of created lists for the interval
-	 * @throws IllegalStateException
-	 *             if storage strategy is not set
-	 */
-	public int getNumberOfCreatedLists(int pastDays)
-			throws IllegalStateException;
-
-	/**
-	 * Returns the number of deleted lists between the current day and a
-	 * specified number of days in the past.
-	 *
-	 * @param pastDays
-	 *            The number of days in the pasts the interval will reach to
-	 * @return The number of deleted lists for the interval
-	 * @throws IllegalStateException
-	 *             if storage strategy is not set
-	 */
-	public int getNumberOfDeletedLists(int pastDays)
+	public void incrementNumberOfCreatedLists(int amount)
 			throws IllegalStateException;
 
 	/**
 	 * Increments the number of created tasks by a given amount
-	 *
+	 * 
 	 * @param amount
 	 *            the amount to increment
 	 * @throws IllegalStateException
@@ -300,8 +251,30 @@ public interface ILogicController {
 			throws IllegalStateException;
 
 	/**
+	 * Increments the number of deleted lists by a given amount
+	 * 
+	 * @param amount
+	 *            the amount to increment
+	 * @throws IllegalStateException
+	 *             if storage strategy is not set
+	 */
+	public void incrementNumberOfDeletedLists(int amount)
+			throws IllegalStateException;
+
+	/**
+	 * Increments the number of deleted tasks by a given amount
+	 * 
+	 * @param amount
+	 *            the amount to increment
+	 * @throws IllegalStateException
+	 *             if storage strategy is not set
+	 */
+	public void incrementNumberOfDeletedTasks(int amount)
+			throws IllegalStateException;
+
+	/**
 	 * Increments the number of finished tasks by a given amount
-	 *
+	 * 
 	 * @param amount
 	 *            the amount to increment
 	 * @throws IllegalStateException
@@ -312,7 +285,7 @@ public interface ILogicController {
 
 	/**
 	 * Increments the number of overdue tasks by a given amount
-	 *
+	 * 
 	 * @param amount
 	 *            the amount to increment
 	 * @throws IllegalStateException
@@ -322,49 +295,91 @@ public interface ILogicController {
 			throws IllegalStateException;
 
 	/**
-	 * Increments the number of deleted tasks by a given amount
-	 *
-	 * @param amount
-	 *            the amount to increment
+	 * Moves a task to a new location.
+	 * 
+	 * @param task
+	 *            The task to move
+	 * @param taskCollection
+	 *            The location to move the task to
+	 * 
+	 * @return true if the task was moved successfully, false if not
 	 * @throws IllegalStateException
 	 *             if storage strategy is not set
 	 */
-	public void incrementNumberOfDeletedTasks(int amount)
+	public boolean moveTask(ITask task, ITaskCollection taskCollection)
 			throws IllegalStateException;
 
 	/**
-	 * Increments the number of created lists by a given amount
-	 *
-	 * @param amount
-	 *            the amount to increment
+	 * Removes a list from the data storage.
+	 * 
+	 * @param collection
+	 *            The list to remove
+	 * 
+	 * @return true if the list was removed successfully, false if not
 	 * @throws IllegalStateException
 	 *             if storage strategy is not set
 	 */
-	public void incrementNumberOfCreatedLists(int amount)
+	public boolean removeList(ITaskCollection collection)
 			throws IllegalStateException;
 
 	/**
-	 * Increments the number of deleted lists by a given amount
-	 *
-	 * @param amount
-	 *            the amount to increment
+	 * Removes several lists from the data storage.
+	 * 
+	 * @param collection
+	 *            The lists to remove
+	 * 
+	 * @return the number of lists successfully removed
 	 * @throws IllegalStateException
 	 *             if storage strategy is not set
 	 */
-	public void incrementNumberOfDeletedLists(int amount)
+	public int removeLists(Collection<ITaskCollection> collection)
 			throws IllegalStateException;
 
 	/**
-	 * Clears all statistics-related data from the data storage
-	 *
+	 * Removes a task from the data storage.
+	 * 
+	 * @param task
+	 *            The task to remove
+	 * 
+	 * @return true if the task was removed successfully, false if not
 	 * @throws IllegalStateException
 	 *             if storage strategy is not set
 	 */
-	public void clearStatisticsData() throws IllegalStateException;
+	public boolean removeTask(ITask task) throws IllegalStateException;
+
+	/**
+	 * Removes several tasks from the data storage.
+	 * 
+	 * @param listOfTasksToRemove
+	 *            The tasks to remove
+	 * 
+	 * @return the number of tasks successfully removed
+	 * @throws IllegalStateException
+	 *             if storage strategy is not set
+	 */
+	public int removeTasks(Collection<ITask> listOfTasksToRemove)
+			throws IllegalStateException;
+
+	/**
+	 * Sets the statistics strategy.
+	 * 
+	 * @param statisticsStorage
+	 *            The statistics strategy
+	 */
+	public void setStatisticsStrategy(IStatisticsDataStorage statisticsStorage);
+
+	/**
+	 * Sets the storage strategy.
+	 * 
+	 * @param dataStorage
+	 *            The storage strategy
+	 * 
+	 */
+	public void setStorageStrategy(IDataStorage dataStorage);
 
 	/**
 	 * Toggles the completion state of a task.
-	 *
+	 * 
 	 * @param task
 	 *            The task to toggle
 	 * @return task true if the task's completion state was successfully
@@ -373,21 +388,4 @@ public interface ILogicController {
 	 *             if storage strategy is not set
 	 */
 	public boolean toggleTaskCompleted(ITask task) throws IllegalStateException;
-
-	/**
-	 * Sets the storage strategy.
-	 *
-	 * @param dataStorage
-	 *            The storage strategy
-	 *
-	 */
-	public void setStorageStrategy(IDataStorage dataStorage);
-
-	/**
-	 * Sets the statistics strategy.
-	 *
-	 * @param statisticsStorage
-	 *            The statistics strategy
-	 */
-	public void setStatisticsStrategy(IStatisticsDataStorage statisticsStorage);
 }

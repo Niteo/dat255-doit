@@ -1,31 +1,27 @@
 package se.chalmers.doit.data.storage.implementation;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
-import se.chalmers.doit.core.ITask;
-import se.chalmers.doit.core.ITaskCollection;
+import se.chalmers.doit.core.*;
 import se.chalmers.doit.core.implementation.TaskCollection;
-import se.chalmers.doit.data.storage.IDataSQL;
-import se.chalmers.doit.data.storage.IDataStorage;
+import se.chalmers.doit.data.storage.*;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
- *
+ * 
  * @author Boel
- *
+ * 
  */
 public class DataStorage implements IDataStorage {
 
 	private IDataStorage cache;
-	private IDataSQL sql;
 	// Maps ITaskCollection to correspond to an ID
 	private Map<ITaskCollection, Integer> listMap;
+	private IDataSQL sql;
 	// Maps ITask to correspond to an ID
 	private Map<ITask, Integer> taskMap;
 
-	public DataStorage(SQLiteDatabase database) {
+	public DataStorage(final SQLiteDatabase database) {
 		cache = new DataCache();
 		sql = new DataSQL();
 
@@ -184,17 +180,17 @@ public class DataStorage implements IDataStorage {
 
 	@Override
 	public int removeLists(final Collection<ITaskCollection> collection) {
-		if (cache.removeLists(collection)==collection.size()) {
+		if (cache.removeLists(collection) == collection.size()) {
 			int[] ids = new int[collection.size()];
 			int index = 0;
-			for(ITaskCollection c : collection){
+			for (ITaskCollection c : collection) {
 				ids[index++] = listMap.get(c).intValue();
 			}
 
 			int count = 0;
 			for (int id : ids) {
 				int[] taskIds = sql.getTaskIDs(id);
-				if(sql.removeList(id)){
+				if (sql.removeList(id)) {
 					sql.removeTasks(taskIds);
 					count++;
 				}
@@ -241,6 +237,27 @@ public class DataStorage implements IDataStorage {
 		return 0;
 	}
 
+	private int[] _addTasksSQL(final Collection<ITask> tasks, final int listID) {
+		ITask[] array = new ITask[tasks.size()];
+		array = tasks.toArray(array);
+
+		return sql.addTasks(array, listID);
+	}
+
+	private Collection<ITask> _getTasksFromIDs(final int[] taskIDs) {
+		Collection<ITask> ret = new ArrayList<ITask>();
+
+		for (int i : taskIDs) {
+			for (ITask task : taskMap.keySet()) {
+				if (i == taskMap.get(task).intValue()) {
+					ret.add(task);
+				}
+
+			}
+		}
+		return ret;
+	}
+
 	private void _populateCache() {
 		// Get all ITaskCollections
 		ITaskCollection[] collection = new ITaskCollection[listMap.keySet()
@@ -263,33 +280,12 @@ public class DataStorage implements IDataStorage {
 		}
 	}
 
-	private Collection<ITask> _getTasksFromIDs(int[] taskIDs) {
-		Collection<ITask> ret = new ArrayList<ITask>();
-
-		for (int i : taskIDs) {
-			for (ITask task : taskMap.keySet()) {
-				if (i == taskMap.get(task).intValue()) {
-					ret.add(task);
-				}
-
-			}
-		}
-		return ret;
-	}
-
 	private void _rebuildCache() {
 		cache.clearData();
 		listMap = sql.getAllLists();
 		taskMap = sql.getAllTasks();
 
 		_populateCache();
-	}
-
-	private int[] _addTasksSQL(final Collection<ITask> tasks, final int listID) {
-		ITask[] array = new ITask[tasks.size()];
-		array = tasks.toArray(array);
-
-		return sql.addTasks(array, listID);
 	}
 
 }

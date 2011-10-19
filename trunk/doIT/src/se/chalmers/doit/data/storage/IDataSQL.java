@@ -1,6 +1,6 @@
 package se.chalmers.doit.data.storage;
 
-import java.util.*;
+import java.util.Map;
 
 import se.chalmers.doit.core.*;
 import android.database.sqlite.SQLiteDatabase;
@@ -102,6 +102,14 @@ public interface IDataSQL {
 	public Map<ITask, Integer> getAllTasks();
 
 	/**
+	 * Returns the IDs of all tasks connected to the provided list
+	 * 
+	 * @param listID
+	 * @return array of integers representing task IDs
+	 */
+	public int[] getTaskIDs(int listID);
+
+	/**
 	 * Moves a task from one list to another list
 	 * 
 	 * @param taskID
@@ -138,14 +146,6 @@ public interface IDataSQL {
 	 * @return true if task was removed, false if not
 	 */
 	public boolean removeTask(int taskID);
-
-	/**
-	 * Returns the IDs of all tasks connected to the provided list
-	 * 
-	 * @param listID
-	 * @return array of integers representing task IDs
-	 */
-	public int[] getTaskIDs(int listID);
 
 	/**
 	 * Remove several tasks from the SQLite database

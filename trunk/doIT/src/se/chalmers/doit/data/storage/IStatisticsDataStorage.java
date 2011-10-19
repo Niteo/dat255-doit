@@ -1,7 +1,6 @@
 package se.chalmers.doit.data.storage;
 
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 import se.chalmers.doit.core.IStatisticalData;
 
@@ -15,48 +14,16 @@ import se.chalmers.doit.core.IStatisticalData;
 public interface IStatisticsDataStorage {
 
 	/**
-	 * Reports that a number of tasks have been marked as finished on a given
-	 * date to the data storage
-	 * 
-	 * @param numberOfFinishedTasks
-	 *            The number of finished tasks that is reported
-	 * @param date
-	 *            The date on which the tasks was marked as finished
+	 * Clear all data from the data storage
 	 */
-	public void reportFinishedTasks(int numberOfFinishedTasks, Date date);
+	public void clearData();
 
 	/**
-	 * Reports that a number of tasks have been created on a given date to the
-	 * data storage
+	 * Returns all statistics data as a collection of IStatisticalData
 	 * 
-	 * @param numberOFCreatedTasks
-	 *            The number of tasks that is reported
-	 * @param date
-	 *            The date on which the tasks was created
+	 * @return a Collection of IStatisticalData
 	 */
-	public void reportCreatedTasks(int numberOFCreatedTasks, Date date);
-
-	/**
-	 * Reports that a number of tasks have been deleted on a given date to the
-	 * data storage
-	 * 
-	 * @param numberOfCreatedTasks
-	 *            The number of tasks that is reported
-	 * @param date
-	 *            The date on which the tasks was deleted
-	 */
-	public void reportDeletedTasks(int numberOfDeletedTasks, Date date);
-
-	/**
-	 * Reports that a number of tasks have not met their due date on a given
-	 * date to the data storage
-	 * 
-	 * @param numberOfOverdueTasks
-	 *            the number of tasks that is reported
-	 * @param date
-	 *            The date on which the tasks was overdue
-	 */
-	public void reportOverdueTasks(int numberOfOverdueTasks, Date date);
+	public Collection<IStatisticalData> getStatisticsData();
 
 	/**
 	 * Reports that a number of lists have been created on a given date to the
@@ -70,6 +37,17 @@ public interface IStatisticsDataStorage {
 	public void reportCreatedLists(int numberOfCreatedLists, Date date);
 
 	/**
+	 * Reports that a number of tasks have been created on a given date to the
+	 * data storage
+	 * 
+	 * @param numberOFCreatedTasks
+	 *            The number of tasks that is reported
+	 * @param date
+	 *            The date on which the tasks was created
+	 */
+	public void reportCreatedTasks(int numberOFCreatedTasks, Date date);
+
+	/**
 	 * Reports that a number of lists have been deleted on a given date to the
 	 * data storage
 	 * 
@@ -81,15 +59,36 @@ public interface IStatisticsDataStorage {
 	public void reportDeletedLists(int numberOfDeletedLists, Date date);
 
 	/**
-	 * Returns all statistics data as a collection of IStatisticalData
+	 * Reports that a number of tasks have been deleted on a given date to the
+	 * data storage
 	 * 
-	 * @return a Collection of IStatisticalData
+	 * @param numberOfCreatedTasks
+	 *            The number of tasks that is reported
+	 * @param date
+	 *            The date on which the tasks was deleted
 	 */
-	public Collection<IStatisticalData> getStatisticsData();
+	public void reportDeletedTasks(int numberOfDeletedTasks, Date date);
 
 	/**
-	 * Clear all data from the data storage
+	 * Reports that a number of tasks have been marked as finished on a given
+	 * date to the data storage
+	 * 
+	 * @param numberOfFinishedTasks
+	 *            The number of finished tasks that is reported
+	 * @param date
+	 *            The date on which the tasks was marked as finished
 	 */
-	public void clearData();
+	public void reportFinishedTasks(int numberOfFinishedTasks, Date date);
+
+	/**
+	 * Reports that a number of tasks have not met their due date on a given
+	 * date to the data storage
+	 * 
+	 * @param numberOfOverdueTasks
+	 *            the number of tasks that is reported
+	 * @param date
+	 *            The date on which the tasks was overdue
+	 */
+	public void reportOverdueTasks(int numberOfOverdueTasks, Date date);
 
 }

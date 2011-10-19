@@ -3,8 +3,7 @@ package se.chalmers.doit.util.implementation;
 import java.util.Comparator;
 
 import se.chalmers.doit.core.ITask;
-import se.chalmers.doit.util.IComparatorStrategy;
-import se.chalmers.doit.util.ISortingComparator;
+import se.chalmers.doit.util.*;
 
 // TODO: think about whether the null checks in the sorting methods can be made more elegantly
 
@@ -29,6 +28,35 @@ public class SortingComparator implements ISortingComparator {
 		this.secondary = secondary;
 		this.tertiary = tertiary;
 
+	}
+
+	@Override
+	public int compare(final ITask t1, final ITask t2) {
+
+		// Sorts first by completion, then sorts by primary, secondary and
+		// tertiary orders.
+		return sortByCompletion(t1, t2);
+	}
+
+	@Override
+	public void setSortingOrder(final IComparatorStrategy primary,
+			final IComparatorStrategy secondary,
+			final IComparatorStrategy tertiary) {
+
+		this.primary = primary;
+		this.secondary = secondary;
+		this.tertiary = tertiary;
+
+	}
+
+	private int sortByCompletion(final ITask t1, final ITask t2) {
+		if (t1.isCompleted() && !t2.isCompleted()) {
+			return 1;
+		} else if (!t1.isCompleted() && t2.isCompleted()) {
+			return -1;
+		} else {
+			return sortPrimary(t1, t2);
+		}
 	}
 
 	private int sortPrimary(final ITask t1, final ITask t2) {
@@ -72,35 +100,6 @@ public class SortingComparator implements ISortingComparator {
 		} else {
 			return 0;
 		}
-
-	}
-
-	private int sortByCompletion(final ITask t1, final ITask t2) {
-		if (t1.isCompleted() && !t2.isCompleted()) {
-			return 1;
-		} else if (!t1.isCompleted() && t2.isCompleted()) {
-			return -1;
-		} else {
-			return sortPrimary(t1, t2);
-		}
-	}
-
-	@Override
-	public int compare(final ITask t1, final ITask t2) {
-
-		// Sorts first by completion, then sorts by primary, secondary and
-		// tertiary orders.
-		return sortByCompletion(t1, t2);
-	}
-
-	@Override
-	public void setSortingOrder(final IComparatorStrategy primary,
-			final IComparatorStrategy secondary,
-			final IComparatorStrategy tertiary) {
-
-		this.primary = primary;
-		this.secondary = secondary;
-		this.tertiary = tertiary;
 
 	}
 
