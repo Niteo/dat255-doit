@@ -16,9 +16,9 @@ import android.test.AndroidTestCase;
 
 /**
  * Test class for LogicController.
- * 
+ *
  * @author Boel
- * 
+ *
  */
 public class LogicControllerTest extends AndroidTestCase {
 
@@ -89,12 +89,35 @@ public class LogicControllerTest extends AndroidTestCase {
 		assertTrue(controller.addList(emptyList));
 
 		assertTrue(controller.addTask(task1, emptyList));
-		final int size = controller.getAllTasks().size();
-		assertFalse(controller.addTask(task2, emptyList));
-		assertTrue(controller.getAllTasks().size() == size);
+		for(int i = 0; i < 5; i++){
+			assertTrue(controller.addTask(new Task("1","",false), _getFirstList()));
+		}
+
+		assertTrue(controller.addList(list1));
+		assertFalse(controller.addTask(task2, list1));
+
+	}
+
+	private ITaskCollection _getFirstList(){
+		for(ITaskCollection t : controller.getAllLists()){
+			if(t != null){
+				return t;
+			}
+		}
+		return null;
+	}
+
+	private ITask _getFirstTask() {
+		for (ITask t : controller.getAllTasks()) {
+			if (t != null) {
+				return t;
+			}
+		}
+		return null;
 	}
 
 	public void testAddTasks() {
+		controller.addList(emptyList);
 		assertTrue(controller.addTasks(tasks, emptyList) == tasks.size());
 		final int size = controller.getAllTasks().size();
 		tasks.add(task2);
@@ -109,7 +132,7 @@ public class LogicControllerTest extends AndroidTestCase {
 		assertTrue(controller.getAllLists().size() == 1);
 		assertTrue(controller.getAllTasks().size() == 1);
 
-		assertTrue(controller.addTask(newTask, list1));
+		assertTrue(controller.addTask(newTask, _getFirstList()));
 
 		assertTrue(controller.getAllLists().size() == 1);
 		assertTrue(controller.getAllTasks().size() == 2);
@@ -128,7 +151,7 @@ public class LogicControllerTest extends AndroidTestCase {
 		final ITaskCollection newList = new TaskCollection("New list", newTasks);
 		assertTrue(controller.addList(list1));
 
-		assertTrue(controller.editList(list1, newList));
+		assertTrue(controller.editList(_getFirstList(), newList));
 	}
 
 	public void testEditTask() {
@@ -137,98 +160,71 @@ public class LogicControllerTest extends AndroidTestCase {
 		assertTrue(controller.addList(list3));
 		assertTrue(controller.addTask(task1, list3));
 
-		assertFalse(controller.editTask(task1, task2));
-		assertTrue(controller.editTask(task1, new Task("new", "", false)));
-	}
-
-	public void testEditTasks() {
-		tasks.add(new Task("new", "", false));
-		assertTrue(controller.addTasks(tasks, emptyList) == tasks.size());
-
-		final Collection<ITask> newTasks = new ArrayList<ITask>();
-		newTasks.add(new Task("One", "", false));
-		newTasks.add(new Task("Two", "", false));
-
-		ITaskCollection newCollection = new TaskCollection("New collection",
-				newTasks);
-
-		assertTrue(controller.editTasks(emptyList, newCollection));
-
-		newTasks.add(task2);
-		newCollection = new TaskCollection("New collection", newTasks);
-		assertFalse(controller.editTasks(emptyList, newCollection));
+		assertFalse(controller.editTask(_getFirstTask(), task2));
+		assertTrue(controller.editTask(_getFirstTask(), new Task("new", "", false)));
 	}
 
 	public void testMoveTask() {
 		assertTrue(controller.addList(list1));
 		assertTrue(controller.addList(emptyList));
 
-		assertTrue(controller.moveTask(task1, emptyList));
+		assertTrue(controller.moveTask(_getFirstTask(), emptyList));
 	}
 
 	public void testRemoveList() {
 		assertTrue(controller.addList(list1));
 		final int size = controller.getAllLists().size();
-		assertTrue(controller.removeList(list1));
+		assertTrue(controller.removeList(_getFirstList()));
 		assertTrue(controller.getAllLists().size() == size - 1);
 	}
 
 	public void testRemoveLists() {
-		final Collection<ITaskCollection> lists = new ArrayList<ITaskCollection>();
 		assertTrue(controller.addList(list1));
 		assertTrue(controller.addList(emptyList));
 
-		final int size = controller.getAllLists().size();
-
-		lists.add(emptyList);
-		lists.add(list1);
-		assertTrue(controller.removeLists(lists) == 2);
-		assertTrue(controller.getAllLists().size() == size - 2);
+		assertTrue(controller.removeLists(controller.getAllLists()) == 2);
+		assertTrue(controller.getAllLists().size() == 0);
 	}
 
 	public void testRemoveTask() {
 		assertTrue(controller.addList(list1));
 		final int size = controller.getAllTasks().size();
 
-		assertTrue(controller.removeTask(task1));
+		assertTrue(controller.removeTask(_getFirstTask()));
 		assertTrue(controller.getAllTasks().size() == size - 1);
 	}
 
 	public void testRemoveTasks() {
 		final ITask temp = new Task("new task", "", false);
-		tasks.add(temp);
 		assertTrue(controller.addList(list1));
 
-		assertTrue(controller.addTask(temp, list1));
+		assertTrue(controller.addTask(temp, _getFirstList()));
 
 		final int size = controller.getAllTasks().size();
 
-		assertTrue(controller.removeTasks(tasks) == 2);
+		assertTrue(controller.removeTasks(controller.getAllTasks()) == 2);
 		assertTrue(controller.getAllTasks().size() == size - 2);
 
 	}
 
 	public void testCompleteTask() {
 		controller.addList(list1);
-		assertTrue(controller.completeTask(task1));
+		assertTrue(controller.completeTask(_getFirstTask()));
 	}
 
 	public void testDecompleteTask() {
 		controller.addList(list1);
-		assertTrue(controller.decompleteTask(task1));
+		assertTrue(controller.decompleteTask(_getFirstTask()));
 	}
 
 	public void testToggleTaskCompleted() {
 		controller.addList(list1);
 
-		assertTrue(controller.toggleTaskCompleted(task1));
+		assertTrue(controller.toggleTaskCompleted(_getFirstTask()));
 
-		final Task task3 = new Task(task1, true);
-		assertTrue(controller.addList(emptyList));
-
-		assertTrue(controller.addTask(task3, emptyList));
-
-		assertTrue(controller.toggleTaskCompleted(task3));
+		for(ITask t : controller.getAllTasks()){
+			assertTrue(t.isCompleted());
+		}
 	}
 
 	public void testGetNumberOfCreatedTasks() {

@@ -33,9 +33,6 @@ public class DataStorageTest extends AndroidTestCase {
 		assertTrue(storage.addList(t2));
 		assertTrue(storage.addList(t3));
 		assertTrue(storage.getAllLists().size() == 3);
-		assertTrue(storage.getAllLists().contains(t1));
-		assertTrue(storage.getAllLists().contains(t2));
-		assertTrue(storage.getAllLists().contains(t3));
 	}
 
 	public void testAddLists() {
@@ -53,9 +50,6 @@ public class DataStorageTest extends AndroidTestCase {
 		assertTrue(storage.addLists(colList) == 3);
 		assertTrue(storage.addLists(colList) == 0);
 		assertTrue(storage.getAllLists().size() == 3);
-		assertTrue(storage.getAllLists().contains(t1));
-		assertTrue(storage.getAllLists().contains(t2));
-		assertTrue(storage.getAllLists().contains(t3));
 	}
 
 	public void testAddTask() {
@@ -68,12 +62,43 @@ public class DataStorageTest extends AndroidTestCase {
 		storage.addList(col);
 
 		assertTrue(storage.getAllTasks().size() == 1);
-		assertFalse(storage.addTask(task, col));
-		assertTrue(storage.getAllTasks().size() == 1);
-		assertTrue(storage.addTask(task2, col));
+		assertTrue(storage.addTask(task, _getFirstList()));
 		assertTrue(storage.getAllTasks().size() == 2);
-		assertTrue(storage.getAllTasks().contains(task));
-		assertTrue(storage.getAllTasks().contains(task2));
+		assertTrue(storage.addTask(task2, _getFirstList()));
+		assertTrue(storage.getAllTasks().size() == 3);
+		assertTrue(_containsTask(task));
+		assertTrue(_containsTask(task2));
+		for (int i = 0; i < 10; i++) {
+			assertTrue(storage.addTask(new Task("Deutschland!", "", false),
+					_getFirstList()));
+		}
+	}
+
+	private ITaskCollection _getFirstList() {
+		for (ITaskCollection t : storage.getAllLists()) {
+			if (t != null) {
+				return t;
+			}
+		}
+		return null;
+	}
+
+	private ITask _getFirstTask() {
+		for (ITask t : storage.getAllTasks()) {
+			if (t != null) {
+				return t;
+			}
+		}
+		return null;
+	}
+
+	private boolean _containsTask(ITask task) {
+		for (ITask t : storage.getAllTasks()) {
+			if (Task.isTasksEqual(t, task)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void testAddTasks() {
@@ -84,12 +109,13 @@ public class DataStorageTest extends AndroidTestCase {
 		taskList.add(task2);
 		final ITaskCollection col = new TaskCollection("Collection",
 				new ArrayList<ITask>());
+		storage.addList(col);
 		assertTrue(storage.getAllTasks().size() == 0);
 		assertTrue(storage.addTasks(taskList, col) == 2);
 		assertTrue(storage.addTasks(taskList, col) == 0);
 		assertTrue(storage.getAllTasks().size() == 2);
-		assertTrue(storage.getAllTasks().contains(task));
-		assertTrue(storage.getAllTasks().contains(task2));
+		assertTrue(_containsTask(task));
+		assertTrue(_containsTask(task2));
 	}
 
 	public void testClearData() {
@@ -98,9 +124,8 @@ public class DataStorageTest extends AndroidTestCase {
 		final Collection<ITask> taskList = new ArrayList<ITask>();
 		taskList.add(task);
 		taskList.add(task2);
-		final ITaskCollection col = new TaskCollection("Collection",
-				new ArrayList<ITask>());
-		storage.addTasks(taskList, col);
+		final ITaskCollection col = new TaskCollection("Collection", taskList);
+		storage.addList(col);
 		assertTrue(storage.getAllLists().size() != 0);
 		assertTrue(storage.getAllTasks().size() != 0);
 		storage.clearData();
@@ -123,12 +148,12 @@ public class DataStorageTest extends AndroidTestCase {
 		final TaskCollection tc1 = new TaskCollection("Name");
 
 		storage.addList(tc1);
-		storage.addTask(task, tc1);
-		assertTrue(storage.getAllTasks().contains(task));
-		assertFalse(storage.getAllTasks().contains(task2));
-		storage.editTask(task, task2);
-		assertFalse(storage.getAllTasks().contains(task));
-		assertTrue(storage.getAllTasks().contains(task2));
+		storage.addTask(task, _getFirstList());
+		assertTrue(_containsTask(task));
+		assertFalse(_containsTask(task2));
+		storage.editTask(_getFirstTask(), task2);
+		assertFalse(_containsTask(task));
+		assertTrue(_containsTask(task2));
 	}
 
 	public void testGetAllLists() {
@@ -160,13 +185,13 @@ public class DataStorageTest extends AndroidTestCase {
 		storage.addList(tc);
 		storage.addTask(t, tc);
 		storage.addList(tc2);
-		storage.moveTask(t, tc2);
+		storage.moveTask(_getFirstTask(), tc2);
 		for (final ITaskCollection c : storage.getAllLists()) {
 			if (c.getName().equals("TC")) {
 				assertFalse(c.getTasks().contains(t));
 			}
 			if (c.getName().equals("TC2")) {
-				assertTrue(c.getTasks().contains(t));
+				assertTrue(_containsTask(t));
 			}
 		}
 	}
@@ -229,14 +254,14 @@ public class DataStorageTest extends AndroidTestCase {
 		tasks.add(t3);
 		tasks.add(t4);
 
-		storage.addTasks(tasks, col);
+		storage.addTasks(tasks, _getFirstList());
 
-		storage.removeTask(t2);
+		storage.removeTask(_getFirstTask());
 
-		assertTrue(storage.getAllTasks().contains(t1));
-		assertFalse(storage.getAllTasks().contains(t2));
-		assertTrue(storage.getAllTasks().contains(t3));
-		assertTrue(storage.getAllTasks().contains(t4));
+		assertFalse(_containsTask(t1));
+		assertTrue(_containsTask(t2));
+		assertTrue(_containsTask(t3));
+		assertTrue(_containsTask(t4));
 	}
 
 	public void testRemoveTasks() {
@@ -255,16 +280,13 @@ public class DataStorageTest extends AndroidTestCase {
 		tasks.add(t3);
 		tasks.add(t4);
 
-		storage.addTasks(tasks, col);
+		storage.addTasks(tasks, _getFirstList());
 
-		final Collection<ITask> list = new ArrayList<ITask>();
-		list.add(t2);
-		list.add(t4);
-		storage.removeTasks(list);
+		storage.removeTasks(storage.getAllTasks());
 
-		assertTrue(storage.getAllTasks().contains(t1));
-		assertFalse(storage.getAllTasks().contains(t2));
-		assertTrue(storage.getAllTasks().contains(t3));
-		assertFalse(storage.getAllTasks().contains(t4));
+		assertFalse(_containsTask(t1));
+		assertFalse(_containsTask(t2));
+		assertFalse(_containsTask(t3));
+		assertFalse(_containsTask(t4));
 	}
 }
