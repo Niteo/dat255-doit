@@ -9,6 +9,7 @@ import se.chalmers.doit.core.implementation.Task;
 import se.chalmers.doit.core.implementation.TaskCollection;
 import se.chalmers.doit.data.storage.IDataStorage;
 import se.chalmers.doit.data.storage.implementation.DataStorage;
+import se.chalmers.doit.data.storage.implementation.StatisticsDataCache;
 import se.chalmers.doit.logic.controller.ILogicController;
 import se.chalmers.doit.logic.controller.implementation.LogicController;
 import android.database.sqlite.SQLiteDatabase;
@@ -39,6 +40,7 @@ public class LogicControllerTest extends AndroidTestCase {
 		controller = LogicController.getInstance();
 		data = new DataStorage(SQLiteDatabase.create(null));
 		controller.setStorageStrategy(data);
+		controller.setStatisticsStrategy(new StatisticsDataCache());
 
 		emptyList = new TaskCollection("List2", tasks);
 
