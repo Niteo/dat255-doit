@@ -1,15 +1,10 @@
 package se.chalmers.doit.logic.controller.implementation;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
-import se.chalmers.doit.core.IStatisticalData;
-import se.chalmers.doit.core.ITask;
-import se.chalmers.doit.core.ITaskCollection;
+import se.chalmers.doit.core.*;
 import se.chalmers.doit.core.implementation.Task;
-import se.chalmers.doit.data.storage.IDataStorage;
-import se.chalmers.doit.data.storage.IStatisticsDataStorage;
+import se.chalmers.doit.data.storage.*;
 import se.chalmers.doit.logic.controller.ILogicController;
 import se.chalmers.doit.logic.verification.IDataVerifier;
 import se.chalmers.doit.logic.verification.implementation.DataVerifier;
@@ -17,10 +12,19 @@ import se.chalmers.doit.util.implementation.Constants;
 
 public final class LogicController implements ILogicController {
 
-	private final IDataVerifier verifier;
+	private static LogicController instance;
+
+	public static synchronized ILogicController getInstance() {
+		if (instance == null) {
+			instance = new LogicController();
+		}
+		return instance;
+	}
+
 	private IDataStorage data;
 	private IStatisticsDataStorage statistics;
-	private static LogicController instance;
+
+	private final IDataVerifier verifier;
 
 	private LogicController() {
 		verifier = new DataVerifier();
@@ -34,8 +38,10 @@ public final class LogicController implements ILogicController {
 		}
 
 		if (verifier.verifyList(taskCollection, data.getAllLists())) {
-			incrementNumberOfCreatedLists(1);
-			return data.addList(taskCollection);
+			if (data.addList(taskCollection)) {
+				incrementNumberOfCreatedLists(1);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -59,8 +65,9 @@ public final class LogicController implements ILogicController {
 		}
 
 		if (canBeAdded) {
-			incrementNumberOfCreatedLists(collection.size());
-			return data.addLists(collection);
+			int nAdded = data.addLists(collection);
+			incrementNumberOfCreatedLists(nAdded);
+			return nAdded;
 		}
 		return 0;
 	}
@@ -73,8 +80,10 @@ public final class LogicController implements ILogicController {
 		}
 
 		if (verifier.verifyTask(task)) {
-			incrementNumberOfCreatedTasks(1);
-			return data.addTask(task, collection);
+			if (data.addTask(task, collection)) {
+				incrementNumberOfCreatedTasks(1);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -91,8 +100,10 @@ public final class LogicController implements ILogicController {
 				return 0;
 			}
 		}
-		incrementNumberOfCreatedTasks(tasks.size());
-		return data.addTasks(tasks, collection);
+
+		int nAdded = data.addTasks(tasks, collection);
+		incrementNumberOfCreatedTasks(nAdded);
+		return nAdded;
 	}
 
 	@Override
@@ -102,6 +113,16 @@ public final class LogicController implements ILogicController {
 		}
 
 		data.clearData();
+	}
+
+	@Override
+	public void clearStatisticsData() throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException(
+					"No statistics strategy has been set!");
+		}
+
+		statistics.clearData();
 	}
 
 	@Override
@@ -178,11 +199,171 @@ public final class LogicController implements ILogicController {
 		return data.getAllTasks();
 	}
 
-	public static synchronized ILogicController getInstance() {
-		if (instance == null) {
-			instance = new LogicController();
+	@Override
+	public int getNumberOfCreatedLists(final int pastDays)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException(
+					"No statistics strategy has been set!");
 		}
-		return instance;
+
+		int retVal = 0;
+		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
+			retVal += d.getCreatedLists();
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public int getNumberOfCreatedTasks(final int pastDays)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException(
+					"No statistics strategy has been set!");
+		}
+
+		int retVal = 0;
+		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
+			retVal += d.getCreatedTasks();
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public int getNumberOfDeletedLists(final int pastDays)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException(
+					"No statistics strategy has been set!");
+		}
+
+		int retVal = 0;
+		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
+			retVal += d.getDeletedLists();
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public int getNumberOfDeletedTasks(final int pastDays)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException(
+					"No statistics strategy has been set!");
+		}
+
+		int retVal = 0;
+		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
+			retVal += d.getDeletedTasks();
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public int getNumberOfFinishedTasks(final int pastDays)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException(
+					"No statistics strategy has been set!");
+		}
+
+		int retVal = 0;
+		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
+			retVal += d.getFinishedTasks();
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public int getNumberOfOverdueTasks(final int pastDays)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException(
+					"No statistics strategy has been set!");
+		}
+
+		int retVal = 0;
+		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
+			retVal += d.getOverdueTasks();
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public void incrementNumberOfCreatedLists(final int amount)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException(
+					"No statistics strategy has been set!");
+		}
+
+		statistics.reportCreatedLists(amount, new Date());
+
+	}
+
+	@Override
+	public void incrementNumberOfCreatedTasks(final int amount)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException(
+					"No statistics strategy has been set!");
+		}
+
+		statistics.reportCreatedTasks(amount, new Date());
+
+	}
+
+	@Override
+	public void incrementNumberOfDeletedLists(final int amount)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException(
+					"No statistics strategy has been set!");
+		}
+
+		statistics.reportDeletedLists(amount, new Date());
+	}
+
+	@Override
+	public void incrementNumberOfDeletedTasks(final int amount)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException(
+					"No statistics strategy has been set!");
+		}
+
+		statistics.reportDeletedTasks(amount, new Date());
+
+	}
+
+	@Override
+	public void incrementNumberOfFinishedTasks(final int amount)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException(
+					"No statistics strategy has been set!");
+		}
+
+		statistics.reportFinishedTasks(amount, new Date());
+
+	}
+
+	@Override
+	public void incrementNumberOfOverdueTasks(final int amount)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException(
+					"No statistics strategy has been set!");
+		}
+
+		statistics.reportOverdueTasks(amount, new Date());
+
 	}
 
 	@Override
@@ -202,8 +383,12 @@ public final class LogicController implements ILogicController {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
-		incrementNumberOfDeletedLists(1);
-		return data.removeList(collection);
+		if (data.removeList(collection)) {
+			incrementNumberOfDeletedLists(1);
+			incrementNumberOfDeletedTasks(collection.getTasks().size());
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -213,6 +398,11 @@ public final class LogicController implements ILogicController {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
+		int nTasks = 0;
+		for (ITaskCollection t : collection) {
+			nTasks += t.getTasks().size();
+		}
+		incrementNumberOfDeletedTasks(nTasks);
 		incrementNumberOfDeletedLists(collection.size());
 		return data.removeLists(collection);
 	}
@@ -223,8 +413,11 @@ public final class LogicController implements ILogicController {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
-		incrementNumberOfDeletedTasks(1);
-		return data.removeTask(task);
+		if (data.removeTask(task)) {
+			incrementNumberOfDeletedTasks(1);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -234,174 +427,20 @@ public final class LogicController implements ILogicController {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
-		incrementNumberOfDeletedTasks(listOfTasksToRemove.size());
-		return data.removeTasks(listOfTasksToRemove);
+		int nRemoved = data.removeTasks(listOfTasksToRemove);
+		incrementNumberOfDeletedTasks(nRemoved);
+		return nRemoved;
 	}
 
 	@Override
-	public int getNumberOfCreatedTasks(final int pastDays)
-			throws IllegalStateException {
-		if (statistics == null) {
-			throw new IllegalStateException("No statistics strategy has been set!");
-		}
-
-		int retVal = 0;
-		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
-			retVal += d.getCreatedTasks();
-		}
-
-		return retVal;
+	public void setStatisticsStrategy(
+			final IStatisticsDataStorage statisticsStorage) {
+		statistics = statisticsStorage;
 	}
 
 	@Override
-	public int getNumberOfFinishedTasks(final int pastDays)
-			throws IllegalStateException {
-		if (statistics == null) {
-			throw new IllegalStateException("No statistics strategy has been set!");
-		}
-
-		int retVal = 0;
-		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
-			retVal += d.getFinishedTasks();
-		}
-
-		return retVal;
-	}
-
-	@Override
-	public int getNumberOfOverdueTasks(final int pastDays)
-			throws IllegalStateException {
-		if (statistics == null) {
-			throw new IllegalStateException("No statistics strategy has been set!");
-		}
-
-		int retVal = 0;
-		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
-			retVal += d.getOverdueTasks();
-		}
-
-		return retVal;
-	}
-
-	@Override
-	public int getNumberOfDeletedTasks(final int pastDays)
-			throws IllegalStateException {
-		if (statistics == null) {
-			throw new IllegalStateException("No statistics strategy has been set!");
-		}
-
-		int retVal = 0;
-		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
-			retVal += d.getDeletedTasks();
-		}
-
-		return retVal;
-	}
-
-	@Override
-	public int getNumberOfCreatedLists(final int pastDays)
-			throws IllegalStateException {
-		if (statistics == null) {
-			throw new IllegalStateException("No statistics strategy has been set!");
-		}
-
-		int retVal = 0;
-		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
-			retVal += d.getCreatedLists();
-		}
-
-		return retVal;
-	}
-
-	@Override
-	public int getNumberOfDeletedLists(final int pastDays)
-			throws IllegalStateException {
-		if (statistics == null) {
-			throw new IllegalStateException("No statistics strategy has been set!");
-		}
-
-		int retVal = 0;
-		for (final IStatisticalData d : _getDataForInterval(pastDays)) {
-			retVal += d.getDeletedLists();
-		}
-
-		return retVal;
-	}
-
-	@Override
-	public void incrementNumberOfCreatedTasks(final int amount)
-			throws IllegalStateException {
-		if (statistics == null) {
-			throw new IllegalStateException("No statistics strategy has been set!");
-		}
-
-		statistics.reportCreatedTasks(amount, new Date());
-
-	}
-
-	@Override
-	public void incrementNumberOfFinishedTasks(final int amount)
-			throws IllegalStateException {
-		if (statistics == null) {
-			throw new IllegalStateException("No statistics strategy has been set!");
-		}
-
-		statistics.reportFinishedTasks(amount, new Date());
-
-	}
-
-	@Override
-	public void incrementNumberOfOverdueTasks(final int amount)
-			throws IllegalStateException {
-		if (statistics == null) {
-			throw new IllegalStateException("No statistics strategy has been set!");
-		}
-
-		statistics.reportOverdueTasks(amount, new Date());
-
-	}
-
-	@Override
-	public void incrementNumberOfDeletedTasks(final int amount)
-			throws IllegalStateException {
-		if (statistics == null) {
-			throw new IllegalStateException("No statistics strategy has been set!");
-		}
-
-		statistics.reportDeletedTasks(amount, new Date());
-
-	}
-
-	@Override
-	public void incrementNumberOfCreatedLists(final int amount)
-			throws IllegalStateException {
-		if (statistics == null) {
-			throw new IllegalStateException("No statistics strategy has been set!");
-		}
-
-		statistics.reportCreatedLists(amount, new Date());
-
-	}
-
-	@Override
-	public void incrementNumberOfDeletedLists(final int amount)
-			throws IllegalStateException {
-		if (statistics == null) {
-			throw new IllegalStateException("No statistics strategy has been set!");
-		}
-
-		statistics.reportDeletedLists(amount, new Date());
-
-	}
-
-	@Override
-	public void clearStatisticsData() throws IllegalStateException {
-		if (statistics == null) {
-			throw new IllegalStateException("No statistics strategy has been set!");
-		}
-
-		statistics.clearData();
-
+	public void setStorageStrategy(final IDataStorage dataStorage) {
+		data = dataStorage;
 	}
 
 	@Override
@@ -417,14 +456,13 @@ public final class LogicController implements ILogicController {
 		return _completeTask(task);
 	}
 
-	@Override
-	public void setStorageStrategy(IDataStorage dataStorage) {
-		data = dataStorage;
+	private boolean _completeTask(final ITask task) {
+		incrementNumberOfFinishedTasks(1);
+		return data.editTask(task, new Task(task, true));
 	}
 
-	@Override
-	public void setStatisticsStrategy(IStatisticsDataStorage statisticsStorage) {
-		statistics = statisticsStorage;
+	private boolean _decompleteTask(final ITask task) {
+		return data.editTask(task, new Task(task, false));
 	}
 
 	private Collection<IStatisticalData> _getDataForInterval(final int interval) {
@@ -437,8 +475,8 @@ public final class LogicController implements ILogicController {
 		tempDate.setMinutes(0);
 		tempDate.setHours(0);
 
-		Date date = new Date(tempDate.getTime() - (long) Constants.MILLISECONDS_IN_A_DAY
-				* (long) interval);
+		Date date = new Date(tempDate.getTime()
+				- (long) Constants.MILLISECONDS_IN_A_DAY * (long) interval);
 
 		if (interval < 0) {
 			date = new Date(0);
@@ -453,14 +491,4 @@ public final class LogicController implements ILogicController {
 		return retList;
 
 	}
-
-	private boolean _completeTask(final ITask task) {
-		incrementNumberOfFinishedTasks(1);
-		return data.editTask(task, new Task(task, true));
-	}
-
-	private boolean _decompleteTask(final ITask task) {
-		return data.editTask(task, new Task(task, false));
-	}
-
 }
