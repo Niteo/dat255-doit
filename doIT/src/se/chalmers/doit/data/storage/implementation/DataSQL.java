@@ -47,8 +47,9 @@ public class DataSQL implements IDataSQL {
 		if (cur.moveToFirst()) {
 			do {
 				ret.put(new TaskCollection(cur.getString(cur
-						.getColumnIndex(SQLConstants.LIST_NAME))), cur
-						.getInt(cur.getColumnIndex(SQLConstants.LIST_ID)));
+						.getColumnIndex(SQLConstants.LIST_NAME))), Integer
+						.valueOf(cur.getInt(cur
+								.getColumnIndex(SQLConstants.LIST_ID))));
 			} while (cur.moveToNext());
 		}
 		cur.close();
@@ -81,13 +82,13 @@ public class DataSQL implements IDataSQL {
 				_getContentValuesList(newListProperties), SQLConstants.LIST_ID
 						+ "=" + listID, null);
 		switch (nAffected) {
-			case 0:
-				return false;
-			case 1:
-				return true;
-			default:
-				throw new IllegalStateException(
-						"More than one line was modified. Database corrupt!");
+		case 0:
+			return false;
+		case 1:
+			return true;
+		default:
+			throw new IllegalStateException(
+					"More than one line was modified. Database corrupt!");
 		}
 	}
 
@@ -97,13 +98,13 @@ public class DataSQL implements IDataSQL {
 				_getContentValuesTask(newTaskProperties), SQLConstants.TASK_ID
 						+ "=" + taskID, null);
 		switch (nAffected) {
-			case 0:
-				return false;
-			case 1:
-				return true;
-			default:
-				throw new IllegalStateException(
-						"More than one line was modified. Database corrupt!");
+		case 0:
+			return false;
+		case 1:
+			return true;
+		default:
+			throw new IllegalStateException(
+					"More than one line was modified. Database corrupt!");
 		}
 	}
 
@@ -119,10 +120,11 @@ public class DataSQL implements IDataSQL {
 				Date reminderDate = null;
 
 				if (!cur.isNull(cur.getColumnIndex(SQLConstants.TASK_DUEDATE))) {
-					dueDate = new Date(cur.getLong(
-							cur.getColumnIndex(SQLConstants.TASK_DUEDATE)));
+					dueDate = new Date(cur.getLong(cur
+							.getColumnIndex(SQLConstants.TASK_DUEDATE)));
 				}
-				if (!cur.isNull(cur.getColumnIndex(SQLConstants.TASK_REMINDERDATE))) {
+				if (!cur.isNull(cur
+						.getColumnIndex(SQLConstants.TASK_REMINDERDATE))) {
 					reminderDate = new Date(cur.getLong(cur
 							.getColumnIndex(SQLConstants.TASK_REMINDERDATE)));
 				}
@@ -141,8 +143,8 @@ public class DataSQL implements IDataSQL {
 						cur.getInt(cur
 								.getColumnIndex(SQLConstants.TASK_COMPLETED)) == 1);
 
-				Integer value = cur.getInt(cur
-						.getColumnIndex(SQLConstants.TASK_ID));
+				Integer value = Integer.valueOf(cur.getInt(cur
+						.getColumnIndex(SQLConstants.TASK_ID)));
 				ret.put(key, value);
 			} while (cur.moveToNext());
 		}
@@ -153,17 +155,17 @@ public class DataSQL implements IDataSQL {
 	@Override
 	public boolean moveTask(int taskID, int listID) {
 		ContentValues cv = new ContentValues();
-		cv.put(SQLConstants.TASK_CONNECTED_LIST_ID, listID);
+		cv.put(SQLConstants.TASK_CONNECTED_LIST_ID, Integer.valueOf(listID));
 		int nAffected = db.update(SQLConstants.TASK_TABLE_NAME, cv,
 				SQLConstants.TASK_ID + "=" + taskID, null);
 		switch (nAffected) {
-			case 0:
-				return false;
-			case 1:
-				return true;
-			default:
-				throw new IllegalStateException(
-						"More than one line was modified. Database corrupt!");
+		case 0:
+			return false;
+		case 1:
+			return true;
+		default:
+			throw new IllegalStateException(
+					"More than one line was modified. Database corrupt!");
 		}
 	}
 
@@ -199,13 +201,13 @@ public class DataSQL implements IDataSQL {
 		int nAffected = db.delete(SQLConstants.LIST_TABLE_NAME,
 				SQLConstants.LIST_ID + "=" + id, null);
 		switch (nAffected) {
-			case 0:
-				return false;
-			case 1:
-				return true;
-			default:
-				throw new IllegalStateException(
-						"More than one line was modified. Database corrupt!");
+		case 0:
+			return false;
+		case 1:
+			return true;
+		default:
+			throw new IllegalStateException(
+					"More than one line was modified. Database corrupt!");
 		}
 	}
 
@@ -213,13 +215,13 @@ public class DataSQL implements IDataSQL {
 		int nAffected = db.delete(SQLConstants.TASK_TABLE_NAME,
 				SQLConstants.LIST_ID + "=" + id, null);
 		switch (nAffected) {
-			case 0:
-				return false;
-			case 1:
-				return true;
-			default:
-				throw new IllegalStateException(
-						"More than one line was modified. Database corrupt!");
+		case 0:
+			return false;
+		case 1:
+			return true;
+		default:
+			throw new IllegalStateException(
+					"More than one line was modified. Database corrupt!");
 		}
 	}
 
@@ -249,7 +251,7 @@ public class DataSQL implements IDataSQL {
 		// Add each task to the database and retrieve it's row's value
 		for (int i = 0; i < tasks.length; i++) {
 			ContentValues cv = _getContentValuesTask(tasks[i]);
-			cv.put(SQLConstants.TASK_CONNECTED_LIST_ID, listID);
+			cv.put(SQLConstants.TASK_CONNECTED_LIST_ID, Integer.valueOf(listID));
 			rowAdded[i] = db.insert(SQLConstants.TASK_TABLE_NAME, null, cv) != -1;
 		}
 
@@ -293,18 +295,22 @@ public class DataSQL implements IDataSQL {
 		if (task.getDueDate() == null) {
 			ret.putNull(SQLConstants.TASK_DUEDATE);
 		} else {
-			ret.put(SQLConstants.TASK_DUEDATE, task.getDueDate().getTime());
+			ret.put(SQLConstants.TASK_DUEDATE,
+					Long.valueOf(task.getDueDate().getTime()));
 		}
 		ret.put(SQLConstants.TASK_NAME, task.getName());
-		ret.put(SQLConstants.TASK_PRIORITY, task.getPriority().getValue());
+		ret.put(SQLConstants.TASK_PRIORITY,
+				Byte.valueOf(task.getPriority().getValue()));
 		if (task.getReminderDate() == null) {
 			ret.putNull(SQLConstants.TASK_REMINDERDATE);
 		} else {
-			ret.put(SQLConstants.TASK_REMINDERDATE, task.getReminderDate()
-					.getTime());
+			ret.put(SQLConstants.TASK_REMINDERDATE,
+					Long.valueOf(task.getReminderDate().getTime()));
 		}
-		ret.put(SQLConstants.TASK_COMPLETED, task.isCompleted() ? 1 : 0);
-		ret.put(SQLConstants.TASK_CUSTOMPOS, task.getCustomPosition());
+		ret.put(SQLConstants.TASK_COMPLETED,
+				Integer.valueOf(task.isCompleted() ? 1 : 0));
+		ret.put(SQLConstants.TASK_CUSTOMPOS,
+				Integer.valueOf(task.getCustomPosition()));
 
 		return ret;
 	}

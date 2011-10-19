@@ -29,9 +29,9 @@ import android.widget.Toast;
 
 /**
  * View for viewing lists
- * 
+ *
  * @author Kaufmann
- * 
+ *
  */
 public class ListViewer extends ListActivity {
 	private ListListAdapter adapter;
@@ -61,6 +61,7 @@ public class ListViewer extends ListActivity {
 
 			alert.setPositiveButton("Change",
 					new DialogInterface.OnClickListener() {
+						@Override
 						public void onClick(DialogInterface dialog,
 								int whichButton) {
 							String value = input.getText().toString();
@@ -81,6 +82,7 @@ public class ListViewer extends ListActivity {
 
 			alert.setNegativeButton("Cancel",
 					new DialogInterface.OnClickListener() {
+						@Override
 						public void onClick(DialogInterface dialog,
 								int whichButton) {
 							// Canceled
@@ -117,6 +119,7 @@ public class ListViewer extends ListActivity {
 		final Button quickAddButton = (Button) findViewById(R.id.lv_addlistbutton);
 
 		quickAddButton.setOnClickListener(new View.OnClickListener() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void onClick(final View v) {
 				if (edittext.getText().toString().length() > 0) {
@@ -129,6 +132,7 @@ public class ListViewer extends ListActivity {
 		});
 
 		edittext.setOnKeyListener(new OnKeyListener() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public boolean onKey(final View v, final int keyCode,
 					final KeyEvent event) {
@@ -167,7 +171,7 @@ public class ListViewer extends ListActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
-		final Intent intent = intentMap.get(item.getItemId());
+		final Intent intent = intentMap.get(Integer.valueOf(item.getItemId()));
 		if (intent != null) {
 			startActivity(intent);
 			return true;
@@ -209,10 +213,10 @@ public class ListViewer extends ListActivity {
 
 	private void _createIntentMap() {
 		intentMap.clear();
-		intentMap.put(R.id.menu_about, new Intent(this, About.class));
-		intentMap.put(R.id.menu_help, new Intent(this, Help.class));
-		intentMap.put(R.id.menu_statistics, new Intent(this, Statistics.class));
-		intentMap.put(R.id.menu_settings, new Intent(this, Preferences.class));
+		intentMap.put(Integer.valueOf(R.id.menu_about), new Intent(this, About.class));
+		intentMap.put(Integer.valueOf(R.id.menu_help), new Intent(this, Help.class));
+		intentMap.put(Integer.valueOf(R.id.menu_statistics), new Intent(this, Statistics.class));
+		intentMap.put(Integer.valueOf(R.id.menu_settings), new Intent(this, Preferences.class));
 	}
 
 	private void _deleteList(final ITaskCollection list) {
