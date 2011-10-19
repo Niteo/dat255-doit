@@ -41,9 +41,9 @@ import android.widget.Toast;
 
 /**
  * Activity displaying the default list.
- * 
+ *
  * @author Marco Baxemyr
- * 
+ *
  */
 public class TaskViewer extends ListActivity {
 
@@ -84,12 +84,10 @@ public class TaskViewer extends ListActivity {
 			editTaskIntent.putExtra("taskName", name);
 			editTaskIntent.putExtra("taskDescription", description);
 			editTaskIntent.putExtra("taskPriority", priority.getValue());
-			editTaskIntent.putExtra("taskDueDate",
-					dueDate == null ? -1 : Long.valueOf(dueDate.getTime()));
-			editTaskIntent.putExtra(
-					"taskReminderDate",
-					reminderDate == null ? -1 : Long.valueOf(reminderDate
-							.getTime()));
+			editTaskIntent.putExtra("taskDueDate", dueDate == null ? -1
+					: dueDate.getTime());
+			editTaskIntent.putExtra("taskReminderDate",
+					reminderDate == null ? -1 : reminderDate.getTime());
 			editTaskIntent.putExtra("taskIsCompleted", isCompleted);
 			startActivityForResult(editTaskIntent, EDIT_TASK);
 			return true;
@@ -105,9 +103,10 @@ public class TaskViewer extends ListActivity {
 					LogicController.getInstance().moveTask(task, list);
 				}
 			}
-
+			return true;
 		default: // can handle submenus if we save off info.position
 			this.mParentContextMenuListIndex = idxOfList;
+			break;
 		}
 		return false;
 	}

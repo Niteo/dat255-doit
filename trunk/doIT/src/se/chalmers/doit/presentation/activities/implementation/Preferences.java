@@ -19,6 +19,7 @@ public class Preferences extends PreferenceActivity {
 
 		final Button dataEraserButton = (Button) findViewById(R.id.erase_all_data_button);
 		dataEraserButton.setOnClickListener(new View.OnClickListener() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void onClick(final View v) {
 				_removeListsTasks();
@@ -27,6 +28,7 @@ public class Preferences extends PreferenceActivity {
 
 		final Button statisticsEraserButton = (Button) findViewById(R.id.erase_all_statistics_button);
 		statisticsEraserButton.setOnClickListener(new View.OnClickListener() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void onClick(final View v) {
 				_removeStatistics();

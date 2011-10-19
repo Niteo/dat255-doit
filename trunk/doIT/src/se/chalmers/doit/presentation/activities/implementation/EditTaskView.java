@@ -24,9 +24,9 @@ import android.widget.Toast;
 
 /**
  * Activity for creating new tasks and editing existing tasks.
- * 
+ *
  * @author Marco Baxemyr
- * 
+ *
  */
 public class EditTaskView extends Activity {
 
@@ -52,6 +52,7 @@ public class EditTaskView extends Activity {
 
 	private final DatePickerDialog.OnDateSetListener mDueDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
+		@SuppressWarnings("synthetic-access")
 		@Override
 		public void onDateSet(final DatePicker view, final int year,
 				final int monthOfYear, final int dayOfMonth) {
@@ -64,6 +65,7 @@ public class EditTaskView extends Activity {
 	};
 	private final DatePickerDialog.OnDateSetListener mReminderDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
+		@SuppressWarnings("synthetic-access")
 		@Override
 		public void onDateSet(final DatePicker view, final int year,
 				final int monthOfYear, final int dayOfMonth) {
@@ -76,6 +78,7 @@ public class EditTaskView extends Activity {
 
 	};
 	private final TimePickerDialog.OnTimeSetListener mReminderTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+		@SuppressWarnings("synthetic-access")
 		@Override
 		public void onTimeSet(final TimePicker view, final int hourOfDay,
 				final int minute) {
@@ -87,6 +90,7 @@ public class EditTaskView extends Activity {
 	};
 
 	private final DialogInterface.OnCancelListener mOnCancelReminderTimeListener = new DialogInterface.OnCancelListener() {
+		@SuppressWarnings("synthetic-access")
 		@Override
 		public void onCancel(final DialogInterface dialog) {
 			resetReminderTime();
@@ -94,6 +98,7 @@ public class EditTaskView extends Activity {
 	};
 
 	private final DialogInterface.OnCancelListener mOnCancelReminderDateListener = new DialogInterface.OnCancelListener() {
+		@SuppressWarnings("synthetic-access")
 		@Override
 		public void onCancel(final DialogInterface dialog) {
 			resetReminderDate();
@@ -101,6 +106,7 @@ public class EditTaskView extends Activity {
 	};
 
 	private final DialogInterface.OnCancelListener mOnCancelDueDateListener = new DialogInterface.OnCancelListener() {
+		@SuppressWarnings("synthetic-access")
 		@Override
 		public void onCancel(final DialogInterface dialog) {
 			resetDueDate();
@@ -200,6 +206,7 @@ public class EditTaskView extends Activity {
 		final Button saveButton = (Button) findViewById(R.id.savebutton);
 		saveButton.setOnClickListener(new View.OnClickListener() {
 
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void onClick(final View v) {
 				final Task task = _generateTask();
@@ -322,6 +329,7 @@ public class EditTaskView extends Activity {
 					mDueDateSetListener, mDueYear, mDueMonth, mDueDay);
 			dueDatePicker.setButton(DialogInterface.BUTTON_NEGATIVE, "Disable",
 					new DialogInterface.OnClickListener() {
+						@SuppressWarnings("synthetic-access")
 						@Override
 						public void onClick(final DialogInterface dialog,
 								final int which) {
@@ -336,6 +344,7 @@ public class EditTaskView extends Activity {
 					mDueDay);
 			reminderDatePicker.setButton(DialogInterface.BUTTON_NEGATIVE,
 					"Disable", new DialogInterface.OnClickListener() {
+						@SuppressWarnings("synthetic-access")
 						@Override
 						public void onClick(final DialogInterface dialog,
 								final int which) {
@@ -351,6 +360,7 @@ public class EditTaskView extends Activity {
 					true);
 			timePicker.setButton(DialogInterface.BUTTON_NEGATIVE, "Disable",
 					new DialogInterface.OnClickListener() {
+						@SuppressWarnings("synthetic-access")
 						@Override
 						public void onClick(final DialogInterface dialog,
 								final int which) {
