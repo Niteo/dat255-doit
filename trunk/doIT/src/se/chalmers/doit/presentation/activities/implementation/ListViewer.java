@@ -64,13 +64,18 @@ public class ListViewer extends ListActivity {
 						public void onClick(DialogInterface dialog,
 								int whichButton) {
 							String value = input.getText().toString();
-							if (!LogicController.getInstance().editList(col,
-									new TaskCollection(value, col.getTasks()))) {
-								Toast.makeText(ListViewer.this,
-										"Something went wrong!",
-										Toast.LENGTH_SHORT).show();
+							if (!col.getName().equals(value)) {
+								if (!LogicController.getInstance().editList(
+										col,
+										new TaskCollection(value, col
+												.getTasks()))) {
+									Toast.makeText(
+											ListViewer.this,
+											"List named " + value
+													+ " already exists.",
+											Toast.LENGTH_SHORT).show();
+								}
 							}
-
 						}
 					});
 
