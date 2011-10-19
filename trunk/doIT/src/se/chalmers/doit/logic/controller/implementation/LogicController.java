@@ -10,26 +10,26 @@ import se.chalmers.doit.core.ITaskCollection;
 import se.chalmers.doit.core.implementation.Task;
 import se.chalmers.doit.data.storage.IDataStorage;
 import se.chalmers.doit.data.storage.IStatisticsDataStorage;
-import se.chalmers.doit.data.storage.implementation.StatisticsDataCache;
 import se.chalmers.doit.logic.controller.ILogicController;
 import se.chalmers.doit.logic.verification.IDataVerifier;
 import se.chalmers.doit.logic.verification.implementation.DataVerifier;
+import se.chalmers.doit.util.implementation.Constants;
 
 public final class LogicController implements ILogicController {
 
 	private final IDataVerifier verifier;
 	private IDataStorage data;
-	private final IStatisticsDataStorage statistics;
+	private IStatisticsDataStorage statistics;
 	private static LogicController instance;
 
 	private LogicController() {
 		verifier = new DataVerifier();
-		statistics = new StatisticsDataCache();
 	}
 
 	@Override
-	public boolean addList(final ITaskCollection taskCollection) throws IllegalStateException {
-		if(data==null){
+	public boolean addList(final ITaskCollection taskCollection)
+			throws IllegalStateException {
+		if (data == null) {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
@@ -41,8 +41,9 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public int addLists(final Collection<ITaskCollection> collection)throws IllegalStateException {
-		if(data==null){
+	public int addLists(final Collection<ITaskCollection> collection)
+			throws IllegalStateException {
+		if (data == null) {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
@@ -65,8 +66,9 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public boolean addTask(final ITask task, final ITaskCollection collection)throws IllegalStateException {
-		if(data==null){
+	public boolean addTask(final ITask task, final ITaskCollection collection)
+			throws IllegalStateException {
+		if (data == null) {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
@@ -79,8 +81,8 @@ public final class LogicController implements ILogicController {
 
 	@Override
 	public int addTasks(final Collection<ITask> tasks,
-			final ITaskCollection collection)throws IllegalStateException {
-		if(data==null){
+			final ITaskCollection collection) throws IllegalStateException {
+		if (data == null) {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
@@ -94,8 +96,8 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public void clearData()throws IllegalStateException {
-		if(data==null){
+	public void clearData() throws IllegalStateException {
+		if (data == null) {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
@@ -103,8 +105,8 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public boolean completeTask(final ITask task)throws IllegalStateException {
-		if(data==null){
+	public boolean completeTask(final ITask task) throws IllegalStateException {
+		if (data == null) {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
@@ -112,8 +114,9 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public boolean decompleteTask(final ITask task)throws IllegalStateException {
-		if(data==null){
+	public boolean decompleteTask(final ITask task)
+			throws IllegalStateException {
+		if (data == null) {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
@@ -122,9 +125,9 @@ public final class LogicController implements ILogicController {
 
 	@Override
 	public boolean editList(final ITaskCollection oldCollection,
-			final ITaskCollection newCollection)throws IllegalStateException {
+			final ITaskCollection newCollection) throws IllegalStateException {
 
-		if(data==null){
+		if (data == null) {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
@@ -133,8 +136,8 @@ public final class LogicController implements ILogicController {
 				return false;
 			}
 		}
-		for(ITask t :newCollection.getTasks()){
-			if(!verifier.verifyTask(t)){
+		for (ITask t : newCollection.getTasks()) {
+			if (!verifier.verifyTask(t)) {
 				return false;
 			}
 		}
@@ -144,8 +147,9 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public boolean editTask(final ITask oldTask, final ITask newTask)throws IllegalStateException {
-		if(data==null){
+	public boolean editTask(final ITask oldTask, final ITask newTask)
+			throws IllegalStateException {
+		if (data == null) {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
@@ -155,11 +159,10 @@ public final class LogicController implements ILogicController {
 		return false;
 	}
 
-
-
 	@Override
-	public Collection<ITaskCollection> getAllLists()throws IllegalStateException {
-		if(data==null){
+	public Collection<ITaskCollection> getAllLists()
+			throws IllegalStateException {
+		if (data == null) {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
@@ -167,8 +170,8 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public Collection<ITask> getAllTasks()throws IllegalStateException {
-		if(data==null){
+	public Collection<ITask> getAllTasks() throws IllegalStateException {
+		if (data == null) {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
@@ -184,8 +187,8 @@ public final class LogicController implements ILogicController {
 
 	@Override
 	public boolean moveTask(final ITask task,
-			final ITaskCollection taskCollection)throws IllegalStateException {
-		if(data==null){
+			final ITaskCollection taskCollection) throws IllegalStateException {
+		if (data == null) {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
@@ -193,8 +196,9 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public boolean removeList(final ITaskCollection collection)throws IllegalStateException {
-		if(data==null){
+	public boolean removeList(final ITaskCollection collection)
+			throws IllegalStateException {
+		if (data == null) {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
@@ -203,8 +207,9 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public int removeLists(final Collection<ITaskCollection> collection)throws IllegalStateException {
-		if(data==null){
+	public int removeLists(final Collection<ITaskCollection> collection)
+			throws IllegalStateException {
+		if (data == null) {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
@@ -213,8 +218,8 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public boolean removeTask(final ITask task)throws IllegalStateException {
-		if(data==null){
+	public boolean removeTask(final ITask task) throws IllegalStateException {
+		if (data == null) {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
@@ -223,8 +228,9 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public int removeTasks(final Collection<ITask> listOfTasksToRemove)throws IllegalStateException {
-		if(data==null){
+	public int removeTasks(final Collection<ITask> listOfTasksToRemove)
+			throws IllegalStateException {
+		if (data == null) {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
@@ -233,9 +239,10 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public int getNumberOfCreatedTasks(final int pastDays) throws IllegalStateException{
-		if(data==null){
-			throw new IllegalStateException("No storage strategy has been set!");
+	public int getNumberOfCreatedTasks(final int pastDays)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException("No statistics strategy has been set!");
 		}
 
 		int retVal = 0;
@@ -247,9 +254,10 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public int getNumberOfFinishedTasks(final int pastDays) throws IllegalStateException {
-		if(data==null){
-			throw new IllegalStateException("No storage strategy has been set!");
+	public int getNumberOfFinishedTasks(final int pastDays)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException("No statistics strategy has been set!");
 		}
 
 		int retVal = 0;
@@ -261,9 +269,10 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public int getNumberOfOverdueTasks(final int pastDays) throws IllegalStateException{
-		if(data==null){
-			throw new IllegalStateException("No storage strategy has been set!");
+	public int getNumberOfOverdueTasks(final int pastDays)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException("No statistics strategy has been set!");
 		}
 
 		int retVal = 0;
@@ -275,9 +284,10 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public int getNumberOfDeletedTasks(final int pastDays)throws IllegalStateException {
-		if(data==null){
-			throw new IllegalStateException("No storage strategy has been set!");
+	public int getNumberOfDeletedTasks(final int pastDays)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException("No statistics strategy has been set!");
 		}
 
 		int retVal = 0;
@@ -289,9 +299,10 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public int getNumberOfCreatedLists(final int pastDays)throws IllegalStateException {
-		if(data==null){
-			throw new IllegalStateException("No storage strategy has been set!");
+	public int getNumberOfCreatedLists(final int pastDays)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException("No statistics strategy has been set!");
 		}
 
 		int retVal = 0;
@@ -303,9 +314,10 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public int getNumberOfDeletedLists(final int pastDays)throws IllegalStateException {
-		if(data==null){
-			throw new IllegalStateException("No storage strategy has been set!");
+	public int getNumberOfDeletedLists(final int pastDays)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException("No statistics strategy has been set!");
 		}
 
 		int retVal = 0;
@@ -317,9 +329,10 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public void incrementNumberOfCreatedTasks(final int amount) throws IllegalStateException{
-		if(data==null){
-			throw new IllegalStateException("No storage strategy has been set!");
+	public void incrementNumberOfCreatedTasks(final int amount)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException("No statistics strategy has been set!");
 		}
 
 		statistics.reportCreatedTasks(amount, new Date());
@@ -327,9 +340,10 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public void incrementNumberOfFinishedTasks(final int amount)throws IllegalStateException {
-		if(data==null){
-			throw new IllegalStateException("No storage strategy has been set!");
+	public void incrementNumberOfFinishedTasks(final int amount)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException("No statistics strategy has been set!");
 		}
 
 		statistics.reportFinishedTasks(amount, new Date());
@@ -337,9 +351,10 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public void incrementNumberOfOverdueTasks(final int amount) throws IllegalStateException{
-		if(data==null){
-			throw new IllegalStateException("No storage strategy has been set!");
+	public void incrementNumberOfOverdueTasks(final int amount)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException("No statistics strategy has been set!");
 		}
 
 		statistics.reportOverdueTasks(amount, new Date());
@@ -347,9 +362,10 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public void incrementNumberOfDeletedTasks(final int amount) throws IllegalStateException{
-		if(data==null){
-			throw new IllegalStateException("No storage strategy has been set!");
+	public void incrementNumberOfDeletedTasks(final int amount)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException("No statistics strategy has been set!");
 		}
 
 		statistics.reportDeletedTasks(amount, new Date());
@@ -357,9 +373,10 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public void incrementNumberOfCreatedLists(final int amount)throws IllegalStateException {
-		if(data==null){
-			throw new IllegalStateException("No storage strategy has been set!");
+	public void incrementNumberOfCreatedLists(final int amount)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException("No statistics strategy has been set!");
 		}
 
 		statistics.reportCreatedLists(amount, new Date());
@@ -367,9 +384,10 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public void incrementNumberOfDeletedLists(final int amount)throws IllegalStateException {
-		if(data==null){
-			throw new IllegalStateException("No storage strategy has been set!");
+	public void incrementNumberOfDeletedLists(final int amount)
+			throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException("No statistics strategy has been set!");
 		}
 
 		statistics.reportDeletedLists(amount, new Date());
@@ -377,9 +395,9 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public void clearStatisticsData()throws IllegalStateException {
-		if(data==null){
-			throw new IllegalStateException("No storage strategy has been set!");
+	public void clearStatisticsData() throws IllegalStateException {
+		if (statistics == null) {
+			throw new IllegalStateException("No statistics strategy has been set!");
 		}
 
 		statistics.clearData();
@@ -387,8 +405,9 @@ public final class LogicController implements ILogicController {
 	}
 
 	@Override
-	public boolean toggleTaskCompleted(final ITask task)throws IllegalStateException {
-		if(data==null){
+	public boolean toggleTaskCompleted(final ITask task)
+			throws IllegalStateException {
+		if (data == null) {
 			throw new IllegalStateException("No storage strategy has been set!");
 		}
 
@@ -403,6 +422,11 @@ public final class LogicController implements ILogicController {
 		data = dataStorage;
 	}
 
+	@Override
+	public void setStatisticsStrategy(IStatisticsDataStorage statisticsStorage) {
+		statistics = statisticsStorage;
+	}
+
 	private Collection<IStatisticalData> _getDataForInterval(final int interval) {
 
 		final Collection<IStatisticalData> retList = new ArrayList<IStatisticalData>();
@@ -413,7 +437,7 @@ public final class LogicController implements ILogicController {
 		tempDate.setMinutes(0);
 		tempDate.setHours(0);
 
-		Date date = new Date(tempDate.getTime() - (long) 86400000
+		Date date = new Date(tempDate.getTime() - (long) Constants.MILLISECONDS_IN_A_DAY
 				* (long) interval);
 
 		if (interval < 0) {

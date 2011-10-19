@@ -2,6 +2,7 @@ package se.chalmers.doit.presentation.activities.implementation;
 
 import se.chalmers.doit.R;
 import se.chalmers.doit.data.storage.implementation.DataStorage;
+import se.chalmers.doit.data.storage.implementation.StatisticsDataCache;
 import se.chalmers.doit.logic.controller.implementation.LogicController;
 import se.chalmers.doit.util.implementation.Constants;
 import android.app.TabActivity;
@@ -21,6 +22,7 @@ public class MainActivity extends TabActivity {
 		LogicController.getInstance().setStorageStrategy(
 				new DataStorage(this.openOrCreateDatabase(
 						Constants.DATABASE_NAME, MODE_PRIVATE, null)));
+		LogicController.getInstance().setStatisticsStrategy(new StatisticsDataCache());
 
 		Resources res = getResources();
 		TabHost tabHost = getTabHost();
