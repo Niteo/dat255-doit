@@ -11,7 +11,7 @@ public class StatisticsDataStorage implements IStatisticsDataStorage {
 
 	private SharedPreferences pref;
 	private final String TASKS_FINISHED = "FINISHEDTASKS";
-	private final String TASKS_CREATED = "FINISHEDTASKS";
+	private final String TASKS_CREATED = "CREATEDTASKS";
 	private final String TASKS_DELETED = "DELETEDTASKS";
 	private final String TASKS_OVERDUE = "OVERDUETASKS";
 	private final String LISTS_CREATED = "CREATEDLISTS";
